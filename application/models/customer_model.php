@@ -149,7 +149,7 @@ class customer_model extends CI_Model {
         foreach($pageData as &$v){
             $v['checkbox'] = "<input name='row_sel' type='checkbox' id='{$v['id']}'>";
             $v['oper'] = "<a rel='{$v['id']}'class='edit oper'>编辑</a>";
-            $v['oper'] .= "<a rel='{$v['id']}'class='load oper'>&nbsp;&nbsp;&nbsp;导入</a>";
+            //$v['oper'] .= "<a rel='{$v['id']}'class='load oper'>&nbsp;&nbsp;&nbsp;导入</a>";
             $v['status'] = isset($this->_customer_status[$v['status']])?$this->_customer_status[$v['status']]:'';
         }
     }

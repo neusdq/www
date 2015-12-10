@@ -5,27 +5,24 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-12">
-        <h3 class="heading">客户列表</h3>
+        <h3 class="heading">兑换网站列表</h3>
         <div class="w-box-header">
             <div class="pull-left sort-disabled margin-left-2">
-                <input name="s_name" class="input-medium form-control" placeholder="名称" type="text">
+                <input name="s_name" class="input-medium form-control" placeholder="网站名称" type="text">
             </div>
             <div class="pull-left sort-disabled margin-left-2">
-                <input name="s_id" class="input-medium form-control" placeholder="id" type="text">
+                <input name="s_id" class="input-medium form-control" placeholder="网站id" type="text">
             </div>
             <div class="pull-left sort-disabled margin-left-2">
-                <input name="s_contact_person" class="input-medium form-control" placeholder="联系人" type="text">
-            </div>    
-            <div class="pull-left sort-disabled margin-left-2">
-                <input name="s_phone" class="input-medium form-control" placeholder="手机号" type="text">
-            </div>              
+                <input name="s_domain" class="input-medium form-control" placeholder="网站域名" type="text">
+            </div>
             <div class="pull-left sort-disabled margin-left-2">
                 <select name="s_type" class="select-medium form-control">
-                    <option value="0">全部客户</option>
-                    <option value="1">代理商</option>
-                    <option value="2">企业大客户</option>
+                    <option value="0">全部类型</option>
+                    <option value="1">兑换网站</option>
+                    <option value="2">礼册商城</option>
                 </select>
-            </div>            
+            </div>  
             <div class="pull-left sort-disabled margin-left-2">
                 <select name="s_status" class="select-medium form-control">
                     <option value="0">全部状态</option>
@@ -40,23 +37,24 @@
         <div class="empty"></div>
         <div class="w-box-header">
             <div class="pull-left sort-disabled">
-                <a class="btn btn-success label" href="/customer_manage/add_customer">新建</a>
-                <a class="btn btn-success label margin-left-2" id="stop-giftbook">停用</a>
-                <a class="btn btn-success label margin-left-2" id="start-giftbook">启用</a>
+                <a class="btn btn-success label" href="/website_manage/add_website">新建</a>
+                <a class="btn btn-success label margin-left-2" id="stop-website">停用</a>
+                <a class="btn btn-success label margin-left-2" id="start-website">启用</a>
             </div>
         </div>
-        <table class="table table-striped table-bordered dTableR" id="giftbook_tb">
+        <table class="table table-striped table-bordered dTableR" id="website_tb">
             <thead>
                 <tr>
                     <th class="table_checkbox center">
-                        <input name="select_rows" class="select_rows" data-tableid="giftbook_tb" type="checkbox">
+                        <input name="select_rows" class="select_rows" data-tableid="website_tb" type="checkbox">
                     </th>
-                    <th class="center">客户名称</th>
-                    <th class="center">客户id</th>
-                    <th class="center">客户类型</th>
-                    <th class="center">联系人</th>
-                    <th class="center">手机号</th>
-                    <th class="center">地址</th>
+                    <th class="center">网站id</th>
+                    <th class="center">网站名称</th>
+                    <th class="center">网站类型</th>
+                    <th class="center">域名</th>
+                    <th class="center">客服热线</th>
+                    <th class="center">客服QQ</th>
+                    <th class="center">有效期</th>
                     <th class="center">状态</th>
                     <th class="center">操作</th>
                 </tr>
@@ -81,5 +79,6 @@
 <!-- tables functions -->
 <script src="<?php echo RES; ?>js/pages/gebo_tables.js"></script>
 
-<script src="<?php echo RES; ?>customer/customer_list.js"></script>
+<script src="<?php echo RES; ?>website/website_list.js"></script>
+
 

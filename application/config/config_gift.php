@@ -30,7 +30,7 @@ if(! defined('IMAGE_SERVER')){
     define('IMAGE_SERVER', 'http://localhost/server/php/');
 }
 //上传文件路径
-$config['upload_path'] = "D:/work/git/dc/upfile/";
+$config['upload_path'] = "/usr/local/nginx/www/upfile/";
 
 $config['alw_uc'] = array(
     'auto_check'=>true,

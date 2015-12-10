@@ -140,7 +140,8 @@
                 },function(ret){
                     var d = $.parseJSON(ret);
                     if(d.errCode==0){
-                        alertSuccess("#alert-success",'/customer_manage/add_customer');
+                        alert('test');
+                        alertSuccess("#alert-success",'/customer_manage/customer_list');
                     }else{
                         alertError("#alert-error",d.msg);
                     }

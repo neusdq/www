@@ -74,6 +74,31 @@ class upload_model extends CI_Model {
         }
         return $media;
     }
+    /**
+     * 
+     * 处理多媒体文件
+     * @return array
+     */
+       public function deal_media_upload($thumb_config){
+        
+        foreach ($_FILES as $file) {
+            $media = array();
+            $media['path'] = 'img/'. date('Ymd') . '/' . substr(create_uniqid(), 0,6) . '/';
+            $path = $this->config->item('upload_path') . $media['path'];
+            if ($file["error"] == 0) {
+                $media['name'] = $file['name'];
+                $path = make_dir($path);
+                $to_file = $path . $file['name'];
+                $thumb_config['source_image'] = $to_file;
+                if(move_uploaded_file($file["tmp_name"],$to_file)!==false){
+                    $media['id'] = $this->media_model->add_media($media);
+                }else{
+                    $media = array();
+                }
+            }
+        }
+        return $media;
+    }
 
     /**
      * 更新商品表

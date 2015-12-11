@@ -34,7 +34,7 @@ class media_manage extends CI_Controller {
             $data['ctime'] = $data['utime'] = date('Y-m-d H:i:s');
             $data['status'] = 1;
             //$data['expire_date']=date('Y-m-d');
-            if ($insert_id = $this->media_model->add_media($data)) {
+            if ($insert_id = $this->media_model->add_mediainfo($data)) {
                 json_out_put(return_model(0, '添加成功', $insert_id));
             } else {
                 json_out_put(return_model('2001', '添加失败', NULL));
@@ -72,6 +72,7 @@ class media_manage extends CI_Controller {
      */
     public function media_list_page() {
         $d = $this->media_model->media_page_data($this->data_table_parser);
+        //vardump($d);
         $this->load->view('json/datatable', $d);
     }
     

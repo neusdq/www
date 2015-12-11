@@ -131,64 +131,35 @@
             var flag = true;
             var name = $("#a_name").val();
             var type = $('#a_type').val();
-            var price = $("#a_price").val();
-            var theme = $("#a_theme").val();
-            var set = $("#a_set").val();
-            var gift_ids = $("#a_giftids").val();
-            var description = $("#a_description").val();
-            var remark = $("#a_remark").val();
-            var pic_ids = getUploadImg();
-            var price_preg = /^([0-9]+[\.]?[0-9]+|\d+)$/;
+            var author = $("#a_author").val();
+            var expire_date = $("#a_expire_date").val();
+            var remark = $("#a_remark").val();           
+            var pic_ids = getUploadImg().split(',')[0];       
             if(name=='' || name==undefined){
                 flag = flag & false;
-                alertError("#alert-error",'礼册名称不能为空！');
+                alertError("#alert-error",'名称不能为空！');
                 return ;
             }
-            if(price=='' || !price_preg.test(price)){
+
+            if(author==''||author==undefined){
                 flag = flag & false;
-                alertError("#alert-error",'请填写正确的销售价格！');
-                return ;
-            }
-            if(type==''||type==undefined){
-                flag = flag & false;
-                alertError("#alert-error",'请选择礼册类型！');
-                return ;
-            }
-            if(theme==''||theme==undefined){
-                flag = flag & false;
-                alertError("#alert-error",'请选择礼册主题！');
-                return ;
-            }
-            if(set==''||set==undefined){
-                flag = flag & false;
-                alertError("#alert-error",'请选择礼册系列！');
-                return ;
-            }
-            if(gift_ids==''||gift_ids==undefined){
-                flag = flag & false;
-                alertError("#alert-error",'请填写商品id！');
-                return ;
-            }
-            if(description==''||description==undefined){
-                flag = flag & false;
-                alertError("#alert-error",'请填写礼册描述！');
+                alertError("#alert-error",'请填写作者！');
                 return ;
             }
             if(pic_ids==''){
                 flag = flag & false;
-                alertError("#alert-error",'请上传宣传图片！');
+                alertError("#alert-error",'请上传多媒体文件！');
                 return ;
             }
             if(flag){
                 $.post('/media_manage/add_media',
                 {
-                    name:name,price:price,type:type,theme:theme,
-                    set:set,gift_ids:gift_ids,des:description,
-                    pic_ids:pic_ids,remark:remark
+                    name:name,type:type,author:author,expire_date:expire_date,
+                    remark:remark,pic_ids:pic_ids
                 },function(ret){
                     var d = $.parseJSON(ret);
                     if(d.errCode==0){
-                        alertSuccess("#alert-success",'/media_manage/add_media');
+                        alertSuccess("#alert-success",'/business_manage/media_list');
                     }else{
                         alertError("#alert-error",d.msg);
                     }

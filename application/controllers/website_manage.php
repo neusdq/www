@@ -72,7 +72,9 @@ class website_manage extends CI_Controller {
      */
     public function website_list_page() {
         $d = $this->website_model->website_page_data($this->data_table_parser);
-        $this->load->view('json/datatable', $d);
+        var_dump($d);
+        exit();
+        //$this->load->view('json/datatable', $d);
     }
     
     /**

@@ -5,7 +5,7 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-12 col_lg_12">
-        <h3 class="heading">兑换列表</h3>
+        <h3 class="heading">实物销售管理</h3>
         <div class="w-box-header col_lg_12">
             <div class="pull-left sort-disabled margin-left-1">
                 <input name="s_customer_name" class="input-medium form-control" placeholder="客户名称" type="text">
@@ -14,7 +14,7 @@
                 <input name="s_order_name" class="input-medium form-control" placeholder="商品" type="text">
             </div>
             <div class="pull-left sort-disabled margin-left-1">
-                <input name="sales" class="input-medium form-control" placeholder="销售员" type="text">
+                <input name="s_sales_name" class="input-medium form-control" placeholder="销售员" type="text">
             </div>
             <div class="pull-left sort-disabled margin-left-1">
                 <select name="s_status" class="select-medium form-control">
@@ -23,14 +23,14 @@
                     <option value="2">已付款</option>
                 </select>
             </div>
-            <!--
-            <div class="pull-left sort-disabled margin-left-1 col-xs-1">
+            
+            <div class="pull-left sort-disabled margin-left-1">
                 <input name="a_start_date" id="a_deliver_date" class="datepicker" data-date-format="yy-mm-dd" placeholder="开始时间">
             </div>
-            <div class="pull-left sort-disabled margin-left-2 col-xs-1">
+            <div class="pull-left sort-disabled margin-left-1">
                 <input name="a_end_date" id="a_deliver_date" class="datepicker" data-date-format="yy-mm-dd" placeholder="结束时间">
             </div>
-            !-->
+            
 
             <div class="pull-left sort-disabled margin-left-2">
                 <button class="btn btn-success label search">查询</button>
@@ -38,12 +38,12 @@
         </div>
         <div class="w-box-header">
             <div class="pull-left sort-disabled">
-                <a class="btn btn-success label" href="/media_manage/add_media">新建订单</a>
-                <a class="btn btn-success label margin-left-2" id="stop-media">更改状态</a>               
+                <a class="btn btn-success label" href="/order_manage/add_eorder">新建实物销售</a>
+                <a class="btn btn-success label margin-left-2" id="stop-media">修改付款状态</a>               
             </div>
         </div>
         <div class="empty"></div>
-        <table class="table table-striped table-bordered dTableR" id="orderlist_tb">
+        <table class="table table-striped table-bordered dTableR" id="eorderlist_tb">
             <thead
                 <tr>
                     <th class="table_checkbox center">

@@ -116,6 +116,24 @@ class order_manage extends CI_Controller {
         //var_dump($d);
         $this->load->view('json/datatable', $d);
     }
+    
+    /*
+     * 实物销售列表页面
+     */
+    
+    public function eorder_list(){
+            $d = array('title' => '实物销售管理', 'msg' => '', 'no_load_bootstrap_plugins' => true);
+            $this->layout->view('order_manage/eorder_list', $d);
+    }
+    
+    /*
+     * 退换货管理页面
+     */
+    
+    public function rorder_list(){
+            $d = array('title' => '退换货管理', 'msg' => '', 'no_load_bootstrap_plugins' => true);
+            $this->layout->view('order_manage/rorder_list', $d);
+    }
     /**
      * 加载编辑视图
      */

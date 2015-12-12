@@ -6,23 +6,20 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-12">
-        <h3 class="heading">礼品卡库</h3>
+        <h3 class="heading">商品品牌列表</h3>
         <div class="w-box-header">
             <div class="pull-left sort-disabled margin-left-2">
-                <input name="s_name" class="input-medium form-control" placeholder="卡号" type="text">
+                <input name="s_name" class="input-medium form-control" placeholder="品牌名称" type="text">
+            </div>
+            <div class="pull-left sort-disabled margin-left-2">
+                <input name="s_id" class="input-medium form-control" placeholder="品牌id" type="text">
             </div>
             <div class="pull-left sort-disabled margin-left-2">
                 <select name="s_status" class="select-medium form-control">
-                    <option value="0">状态</option>
-                    <option value="1">已开卡</option>
-                    <option value="2">未开卡</option>
+                    <option value="0">全部状态</option>
+                    <option value="1">启用</option>
+                    <option value="2">停用</option>
                 </select>
-            </div>
-            <div class="pull-left sort-disabled margin-left-2">
-                <input name="s_id" class="input-medium form-control" placeholder="开始号码" type="text">
-            </div>
-            <div class="pull-left sort-disabled margin-left-2">
-                <input name="s_id" class="input-medium form-control" placeholder="结束号码" type="text">
             </div>
             <div class="pull-left sort-disabled margin-left-6">
                 <button class="btn btn-success label search">查询</button>
@@ -31,7 +28,7 @@
         <div class="empty"></div>
         <div class="w-box-header">
             <div class="pull-left sort-disabled">
-                <a class="btn btn-success label" id="edit-pay-status">生成</a>
+                <a class="btn btn-success label" id="edit-pay-status">修改付款状态</a>
             </div>
         </div>
         <table class="table table-striped table-bordered dTableR" id="giftcard-order_tb">
@@ -40,10 +37,16 @@
                     <th class="table_checkbox center">
                         <input name="select_rows" class="select_rows" data-tableid="giftcard-order_tb" type="checkbox">
                     </th>
-                    <th class="center">卡号</th>
-                    <th class="center">密码</th>
-                    <th class="center">状态</th>
-                    <th class="center">生成时间</th>
+                    <th class="center">交易时间</th>
+                    <th class="center">销售员</th>
+                    <th class="center">客户名称</th>
+                    <th class="center">记录人</th>
+                    <th class="center">礼册</th>
+                    <th class="center">总价格</th>
+                    <th class="center">付款状态</th>
+                    <th class="center">付款备注</th>
+                    <th class="center">开卡备注</th>
+                    <th class="center" width="200">操&nbsp;&nbsp;&nbsp;&nbsp;作</th>
                 </tr>
             </thead>
             <tbody class="center">

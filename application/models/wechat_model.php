@@ -62,6 +62,8 @@ class wechat_model extends CI_Model {
         return $query->result_array();
     }
     
+
+    
     /**
      * 获取列表条件
      * @return type

@@ -9,7 +9,6 @@
 /**
  * Description of customer_manage
  * 客户管理
- * @author pbchen
  */
 class customer_manage extends CI_Controller {
 
@@ -25,9 +24,6 @@ class customer_manage extends CI_Controller {
      * 添加客户
      */
     public function add_customer() {
-        //no_load_bootstrap_plugins 
-        //不加载 bootstrap.plugins.min.js 加载后影响图片上传插件 
-        //默认是加载的
         if ($_POST) {
             $data = $this->customer_model->get_customer_params();
             $data['ctime'] = $data['utime'] = date('Y-m-d H:i:s');
@@ -39,21 +35,18 @@ class customer_manage extends CI_Controller {
             }
         } else {
             $d = array('title' => '客户管理', 'msg' => '', 'no_load_bootstrap_plugins' => true);
-//            $d['brand'] = $this->brand_model->get_brand();
-//            $d['classify'] = $this->classify_model->get_classify();
-//            $d['suppley'] = $this->supply_model->get_supply();
-//            $d['deliver'] = $this->deliver_model->get_deliver();
             $this->layout->view('customer_manage/add_customer', $d);
         }
     }
+
     /**
      * 加载编辑视图
      */
-    public function edit_customer(){
+    public function edit_customer() {
         $id = $this->input->get('id');
         $d = array('title' => '编辑客户', 'msg' => '', 'no_load_bootstrap_plugins' => true);
-        $customer = $this->customer_model->get_customer_info(array('id'=>$id));
-        $d['customer'] = $customer[0];
+        $customer = $this->customer_model->get_customer(array('id' => $id))[0];
+        $d['customer']=$customer;
         $this->layout->view('customer_manage/edit_customer', $d);
     }
 
@@ -72,24 +65,42 @@ class customer_manage extends CI_Controller {
         $d = $this->customer_model->customer_page_data($this->data_table_parser);
         $this->load->view('json/datatable', $d);
     }
-    
+
     /**
      * 编辑客户
      */
-    public function update_customer_info(){
+    public function update_customer_info() {
         $customer_id = $this->input->post('id');
-        $data = $this->customer_model->get_customer_params();
-        if ($data['type'] == customer_manage_model::MULTIPLE_GOODS_TYPE) {
-            if ($check_info = $this->customer_model->check_customer_num($data['groupid'], 1)) {
-                json_out_put(return_model('2002', $check_info, NULL));
-            }
-        }
-        $affect_row = $this->customer_model->update_customer_info($data,array('id'=>$customer_id));
+        $data['name'] = $this->input->post('name');
+        $data['contact_person'] = $this->input->post('contact_person');
+        $data['type'] = $this->input->post('type');
+        $data['phone'] = $this->input->post('phone');
+        $data['postcode'] = $this->input->post('postcode');
+        $data['email'] = $this->input->post('email');
+        $data['address'] = $this->input->post('address');
+        $data['remark'] = $this->input->post('remark');
+        
+        $affect_row = $this->customer_model->update_customer_info($data, array('id' => $customer_id));
         if (is_numeric($affect_row)) {
             json_out_put(return_model(0, '更新成功', $affect_row));
         } else {
             json_out_put(return_model('2001', '更新失败', NULL));
         }
     }
-    
+    /**
+     * 更改状态
+     */
+    public function update_status() {
+        $ids = $this->input->post('ids');
+        $status = $this->input->post('status');
+        $data['status'] = $status;
+        $affect_row = $this->customer_model->update_status($data, $ids);
+        if (is_numeric($affect_row)) {
+            json_out_put(return_model(0, '更新成功', $affect_row));
+        } else {
+            json_out_put(return_model('2001', '更新失败', NULL));
+        }
+         
+         
+    }
 }

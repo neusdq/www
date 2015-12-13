@@ -18,6 +18,10 @@ class customer_model extends CI_Model {
         '1' => '启用',
         '2' => '停用'
     );
+    private $_customer_type = array(
+        '1' => '代理商',
+        '2' => '企业大客户'
+    );
     
     function __construct() {
         parent::__construct();
@@ -49,11 +53,9 @@ class customer_model extends CI_Model {
      * 获取客户列表
      * @param type $where
      */
-    public function get_customer($where=array('status'=>1)){
-        $this->db->select('*')->from($this->_customer_tb);
-        if($where){
-            $this->db->where($where);
-        }
+    public function get_customer($where=array()){
+        $this->db->select('*')->from($this->_customer_tb);     
+        $this->db->where($where);
         $query = $this->db->get();
         return $query->result_array();
     }
@@ -109,7 +111,13 @@ class customer_model extends CI_Model {
         $this->db->update($this->_customer_tb,$updata);
         return $this->db->affected_rows();
     }
-    
+    public function update_status($updata,$where=array()){
+        if($where){
+            $this->db->where_in('id', $where);
+        }
+        $this->db->update($this->_customer_tb,$updata);
+        return $this->db->affected_rows();
+    }
      /**
      * 获取客户分页数据
      * @param type $dtparser datatable类库
@@ -148,27 +156,11 @@ class customer_model extends CI_Model {
     public function ajax_list_table_data(&$pageData){
         foreach($pageData as &$v){
             $v['checkbox'] = "<input name='row_sel' type='checkbox' id='{$v['id']}'>";
-            $v['oper'] = "<a rel='{$v['id']}'class='edit oper'>编辑</a>";
-            //$v['oper'] .= "<a rel='{$v['id']}'class='load oper'>&nbsp;&nbsp;&nbsp;导入</a>";
+            $v['oper'] = "<a rel='{$v['id']}'class='edit oper' href='/customer_manage/edit_customer?id={$v['id']}'>编辑</a>";
             $v['status'] = isset($this->_customer_status[$v['status']])?$this->_customer_status[$v['status']]:'';
+            $v['type'] = isset($this->_customer_type[$v['type']])?$this->_customer_type[$v['type']]:'';
         }
     }
     
-    /**
-     * 检查更新客户信息
-     * @param type $group_goods
-     * @return string
-     */
-    public function check_customer_update($customer_ids,$status){
-        $ret = '客户ID:';
-        if($status==self::BRAND_STOP_STATUS){
-            $goods = $this->goods_manage_model->get_goods_groupby_col('customer_id',$customer_ids);
-            foreach($goods as $k=>$v){
-                if($v && intval($v)>0) $ret .= $k . '下有' . $v . '个商品,';
-            }
-        }
-        $ret = $ret=='客户ID:' ? '' : $ret;
-        return $ret;
-    }
     
 }

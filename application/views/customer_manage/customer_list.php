@@ -41,8 +41,8 @@
         <div class="w-box-header">
             <div class="pull-left sort-disabled">
                 <a class="btn btn-success label" href="/customer_manage/add_customer">新建</a>
-                <a class="btn btn-success label margin-left-2" id="stop-giftbook">停用</a>
-                <a class="btn btn-success label margin-left-2" id="start-giftbook">启用</a>
+                <a class="btn btn-success label margin-left-2" id="stop-customer">停用</a>
+                <a class="btn btn-success label margin-left-2" id="start-customer">启用</a>
             </div>
         </div>
         <table class="table table-striped table-bordered dTableR" id="giftbook_tb">

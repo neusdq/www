@@ -116,6 +116,7 @@ class order_manage extends CI_Controller {
      */
     public function ajax_eorder_list() {
         $d = $this->order_model->eorder_page_data($this->data_table_parser);
+        //var_dump($d);
         $this->load->view('json/datatable', $d);
     }
 
@@ -148,7 +149,25 @@ class order_manage extends CI_Controller {
         }
         $data['order_name'] = rtrim($order_name,',');
         $data['price'] = $price;
-        if ($insert_id = $this->order_model->save_eorder($data)) {
+        $insert_id = $this->order_model->save_eorder($data);
+        $eorder_book_maps = array();
+        foreach ($gift_book_arr as $tmp) {
+            $eorder_book_map= array();
+            $eorder_book_map['eorder_id'] = $insert_id;
+            $eorder_book_map['book_id'] = $tmp['gift_book_id'];
+            $eorder_book_map['book_name'] = $tmp['gift_book_name'];
+            $eorder_book_map['price'] = $tmp['price'];
+            $eorder_book_map['discount'] = $tmp['discount'];
+            $eorder_book_map['book_count'] = $tmp['book_count'];
+            $eorder_book_map['sum_price'] = $tmp['sum_price'];
+            $eorder_book_map['book_remark'] = $tmp['book_remark'];
+            $eorder_book_map['status'] = 1;
+            $eorder_book_map['ctime'] = date('Y-m-d H:i:s');
+            $eorder_book_map['utime'] = date('Y-m-d H:i:s');
+            array_push($eorder_book_maps,$eorder_book_map);     
+        }
+        $this->order_model->minsert_eorder_book($eorder_book_maps);
+        if ($insert_id) {
             json_out_put(return_model(0, '添加成功', $insert_id));
         } else {
             json_out_put(return_model('3001', '添加失败', NULL));

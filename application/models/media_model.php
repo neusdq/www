@@ -110,7 +110,7 @@ class media_model extends CI_Model {
     public function ajax_list_table_data(&$pageData){
         foreach($pageData as &$v){
             $v['checkbox'] = "<input name='row_sel' type='checkbox' id='{$v['id']}'>";
-            $v['oper'] = "<a rel='{$v['id']}'class='edit oper'>编辑</a>";
+            $v['oper'] = "<a rel='{$v['id']}'class='edit oper' href='/media_manage/edit_media?id={$v['id']}'>编辑</a>";
             //$v['oper'] .= "<a rel='{$v['id']}'class='load oper'>&nbsp;&nbsp;&nbsp;导入</a>";
             $v['status'] = isset($this->_media_status[$v['status']])?$this->_media_status[$v['status']]:'';
             $v['type'] = isset($this->_media_type[$v['type']])?$this->_media_type[$v['type']]:'';
@@ -128,10 +128,41 @@ class media_model extends CI_Model {
         if (isset($_REQUEST['type']) && $_REQUEST['type']!=0) {
             $cwhere['`mediainfo`.`type`'] = $_REQUEST['type'];
         }        
-        if (isset($_REQUEST['status']) && $_REQUEST['status'] != '') {
+        if (isset($_REQUEST['status']) && $_REQUEST['status'] != 0) {
             $cwhere['`mediainfo`.`status`'] = $_REQUEST['status'];
         }         
         return $cwhere;
+    }
+    
+    public function get_mediainfo($where) {
+        $this->db->select('*')->from($this->_mediainfo_tb);
+        $this->db->where($where);
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+    /*
+     * 更新mediainfo
+     */
+
+    public function update_media_info($updata, $where = array()) {
+        if ($where) {
+            $this->db->where($where);
+        }
+        $this->db->update($this->_mediainfo_tb, $updata);
+        return $this->db->affected_rows();
+    }
+
+    /*
+     * 更新状态
+     */
+
+    public function update_status($updata, $where = array()) {
+        if ($where) {
+            $this->db->where_in('id', $where);
+        }
+        $this->db->update($this->_mediainfo_tb, $updata);
+        return $this->db->affected_rows();
     }
     
 }

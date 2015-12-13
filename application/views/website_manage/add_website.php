@@ -111,6 +111,16 @@
                 alertError("#alert-error",'网站名称不能为空！');
                 return ;
             }
+            if(domain=='' || domain==undefined){
+                flag = flag & false;
+                alertError("#alert-error",'域名不能为空！');
+                return ;
+            }
+            if(hotline=='' || hotline==undefined){
+                flag = flag & false;
+                alertError("#alert-error",'热线电话不能为空！');
+                return ;
+            }
             if(flag){
                 $.post('/website_manage/add_website',
                 {

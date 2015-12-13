@@ -73,7 +73,7 @@ $(document).ready(function () {
     }
 
     /**
-     * 获取选中的商品id
+     * 获取选中的模版id
      * @returns {Array}
      */
     function getCheckedIds() {
@@ -88,10 +88,10 @@ $(document).ready(function () {
     //停用和启动操作
     function downUpOper(clickId) {
         var status = 1;
-        var msg = '请选择要启用的礼册！';
+        var msg = '请选择要启用的模版！';
         if (clickId == 'stop-wechat') {
             status = 2;
-            msg = '请选择要停用的礼册！';
+            msg = '请选择要停用的模版！';
         }
         var flag = true;
         var ids = getCheckedIds();
@@ -101,7 +101,7 @@ $(document).ready(function () {
             return;
         }
         if (flag) {
-            $.post('/wechat_manage/update_wechat?', {ids: ids, status: status}, function (ret) {
+            $.post('/wechat_manage/update_status?', {ids: ids, status: status}, function (ret) {
                 var d = $.parseJSON(ret);
                 if (d.errCode == 0) {
                     alertSuccess("#alert-success", '');
@@ -122,85 +122,6 @@ $(document).ready(function () {
     $("#start-wechat").click(function () {
         downUpOper('start-wechat');
     });
-    
-    //新建
-    $("#add-wechat").click(function(){
-        $("#add-wechat-modal").modal('show');
-        $("#add-wechat-bnt").die().live('click',function(){
-            $(".alert-label-error").text('');
-            var flag = true;
-            var name = $("input[name=a_name]").val();
-            var remark = $("textarea[name=a_remark]").val();
-           if( name=='' ){
-               flag = flag & false;
-               $("#name-error").text('请填写品牌名称！');
-           }
-           if( remark=='' ){
-               flag = flag & false;
-               $("#remark-error").text('请填写备注！');
-           }
-           if(flag){
-               $.post('/wechat_manage/add_wechat?',{name:name,remark:remark},function(ret){
-                   var d = $.parseJSON(ret);
-                   $("#add-wechat-modal").modal('hide');
-                   if (d.errCode==0) {
-                        alertSuccess("#alert-success",'');
-                        var oSettings = oTable.fnSettings();
-                        oSettings.sAjaxSource = ajax_source + getSearchParams();
-                        oTable.fnDraw();
-                    } else {
-                        alertError("#alert-error",d.msg);
-                    }
-               });
-           }
-        });
-    })
-    
-    //编辑
-    $("a.edit").die().live('click',function(){
-        $("span[name=e_id]").text($(this).parent().siblings().eq(2).text());
-        $("input[name=e_name]").val($(this).parent().siblings().eq(1).text());
-        var status = 1;
-        if($(this).parent().siblings().eq(3).text()=='停用'){
-            var status = 2;
-        }
-        $("select[name=e_status]").val(status);
-        $("textarea[name=e_remark]").val($(this).parent().siblings().eq(5).text());
-        $("#edit-wechat-modal").modal('show');
-        $("#edit-wechat-bnt").die().live('click',function(){
-            $(".alert-label-error").text('');
-            var flag = true;
-            var name = $("input[name=e_name]").val();
-            var remark = $("textarea[name=e_remark]").val();
-            var id = $("span[name=e_id]").text();
-           if( name=='' ){
-               flag = flag & false;
-               $("#edit-name-error").text('请填写品牌名称！');
-           }
-           if( remark=='' ){
-               flag = flag & false;
-               $("#edit-remark-error").text('请填写备注！');
-           }
-           if(flag){
-               $.post('/wechat_manage/edit_wechat?',{
-                   id:id,status:$("select[name=e_status]").val(),
-                   name:name,remark:remark
-               },function(ret){
-                   var d = $.parseJSON(ret);
-                   if (d.errCode==0) {
-                        $("#edit-wechat-modal").modal('hide');
-                        alertSuccess("#alert-success",'');
-                        var oSettings = oTable.fnSettings();
-                        oSettings.sAjaxSource = ajax_source + getSearchParams();
-                        oTable.fnDraw();
-                    } else {
-                        $("#edit-status-error").text(d.msg);
-                    }
-               });
-            }
-        });
-    })
-
 });
 
 

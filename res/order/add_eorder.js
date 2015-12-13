@@ -41,7 +41,7 @@ $(document).ready(function () {
                 book_count.parents('tr').find('.alert-label-error').html('请填写正确的数量');
             }
 
-            if (sum_price.val() == '' || !isNum.test(sum_price.val())) {
+            if (sum_price.val() == '' || sum_price.val()==undefined) {
                 flag = flag & false;
                 sum_price.parents('tr').find('.alert-label-error').html('请填写正确的总价');
             }

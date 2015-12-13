@@ -111,14 +111,14 @@
                 alertError("#alert-error",'联系人不能为空！');
                 return ;
             }
-            if(phone=='' ||( !is_phone.test(phone) && !is_mobile.test(phone))){
+            if(phone=='' ||phone==undefined){
                 flag = flag & false;
-                alertError("#alert-error",'请填写正确的手机号！');
+                alertError("#alert-error",'请填写手机号！');
                 return ;
             }
-            if(email=='' || !is_email.test(email)){
+            if(email=='' || email==undefined){
                 flag = flag & false;
-                alertError("#alert-error",'请填写正确的邮箱！');
+                alertError("#alert-error",'请填写邮箱！');
                 return ;
             }
             if(postcode=='' || postcode.length<6){

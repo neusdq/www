@@ -20,6 +20,7 @@
                         <select name="a_style" id="a_style" data-placeholder="选择样式..." class="chzn_a form-control">
                             <option value="1" selected="selected">样式1</option>
                             <option value="2">样式2</option>
+                            <option value="3">样式3</option>
                         </select>
                     </div>
                 </div>

@@ -15,6 +15,7 @@ class order_model extends CI_Model {
 
     private $_order_tb = '`gift_management`.`change_order`';
     private $_eorder_tb = '`gift_management`.`entity_order`';
+    private $_eorder_book_map_tb = '`gift_management`.`entity_order_book_map`';
     private $_order_gift_card = '`gift_management`.`gift_card`';
     private $_view_book_gift_tb = '`gift_management`.`view_book_gift`';
     private $_view_order_gift_card_tb = '`gift_management`.`view_order_gift_card`';
@@ -251,13 +252,14 @@ class order_model extends CI_Model {
             $this->ajax_eorderlist_table_data($arr);
             $d['aaData'] = $arr;
         }
+        //return $this->db->last_query();
         return $d;
     }
     
     public function get_eorder_page_where() {
         $cwhere = array();
-        if (isset($_REQUEST['customer_name']) && $_REQUEST['customer_name'] != 0) {
-            $cwhere['`view_eorder_customer_user`.`customer_name`'] = $_REQUEST['customer_name'];
+        if (isset($_REQUEST['customer_name']) && $_REQUEST['customer_name'] != '') {
+            $cwhere['`view_eorder_customer_user`.`customer_name` LIKE '] = '%' . $_REQUEST['customer_name'] . '%';
         }
         if (isset($_REQUEST['order_name']) && $_REQUEST['order_name'] != '') {
             $cwhere['`view_eorder_customer_user`.`order_name` LIKE '] = '%' . $_REQUEST['order_name'] . '%';
@@ -265,26 +267,33 @@ class order_model extends CI_Model {
         if (isset($_REQUEST['sales_name']) && $_REQUEST['sales_name'] != '') {
             $cwhere['`view_eorder_customer_user`.`sales_name` LIKE '] = '%' . $_REQUEST['sales_name'] . '%';
         }
-        if (isset($_REQUEST['status']) && $_REQUEST['status'] != '') {
+        if (isset($_REQUEST['status']) && $_REQUEST['status'] != 0) {
             $cwhere['`view_eorder_customer_user`.`status`'] = $_REQUEST['status'];
         }
-        if (isset($_REQUEST['start_date']) && $_REQUEST['start_date'] != '') {
+        if (isset($_REQUEST['start_date']) && $_REQUEST['start_date'] != 'undefined' &&$_REQUEST['start_date'] != '') {
             $cwhere['`view_eorder_customer_user`.`deal_date` >='] = $_REQUEST['start_date'];
         }
-        if (isset($_REQUEST['end_date']) && $_REQUEST['end_date'] != '') {
-            $cwhere['`view_eorder_customer_user`.`deal_date` >='] = $_REQUEST['end_date'];
+        if (isset($_REQUEST['end_date']) && $_REQUEST['end_date'] != 'undefined' && $_REQUEST['end_date'] != '') {
+            $cwhere['`view_eorder_customer_user`.`deal_date` <='] = $_REQUEST['end_date'];
         }
         return $cwhere;
     }
       public function ajax_eorderlist_table_data(&$pageData) {
         foreach ($pageData as &$v) {
             $v['checkbox'] = "<input name='row_sel' type='checkbox' id='{$v['id']}'>";
-            $v['oper'] = "<a rel='{$v['id']}'class='edit oper'>查看</a>";
-            $v['oper'] .= "<a rel='{$v['id']}'class='edit oper'>编辑</a>";
-            $v['oper'] .= "<a rel='{$v['id']}'class='edit oper'>打印</a>";
+            $v['oper'] = "<a rel='{$v['id']}'class='edit oper'>编辑</a>";
+            $v['oper'] .= "<a rel='{$v['id']}'class='edit oper'>&nbsp;打印</a>";
             $v['status'] = isset($this->_eorder_status[$v['status']]) ? $this->_eorder_status[$v['status']] : '';
             
         }
+    }
+    /*
+     * 批量插入eorder book map batch
+     */
+    public function minsert_eorder_book($data){
+        $this->db->insert_batch($this->_eorder_book_map_tb, $data);
+        return $this->db->affected_rows();
+        
     }
 
 }

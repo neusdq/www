@@ -9,7 +9,7 @@
         <h3 class="heading">礼品卡库</h3>
         <div class="w-box-header">
             <div class="pull-left sort-disabled margin-left-2">
-                <input name="s_name" class="input-medium form-control" placeholder="卡号" type="text">
+                <input name="s_code" class="input-medium form-control" placeholder="卡号" type="text">
             </div>
             <div class="pull-left sort-disabled margin-left-2">
                 <select name="s_status" class="select-medium form-control">
@@ -19,10 +19,13 @@
                 </select>
             </div>
             <div class="pull-left sort-disabled margin-left-2">
-                <input name="s_id" class="input-medium form-control" placeholder="开始号码" type="text">
+                <input name="s_scode" class="input-medium form-control" placeholder="开始号码" type="text">
             </div>
             <div class="pull-left sort-disabled margin-left-2">
-                <input name="s_id" class="input-medium form-control" placeholder="结束号码" type="text">
+                <input name="s_ecode" class="input-medium form-control" placeholder="结束号码" type="text">
+            </div>
+            <div class="pull-left sort-disabled margin-left-2">
+                <input name="s_date" class="input-medium form-control" placeholder="导入/生产时间" type="text">
             </div>
             <div class="pull-left sort-disabled margin-left-6">
                 <button class="btn btn-success label search">查询</button>
@@ -31,15 +34,15 @@
         <div class="empty"></div>
         <div class="w-box-header">
             <div class="pull-left sort-disabled">
-                <a class="btn btn-success label" id="edit-pay-status">生成</a>
+                <a class="btn btn-success label" id="down-giftcard">导出</a>
+            </div>
+            <div class="pull-left sort-disabled margin-left-2">
+                <a class="btn btn-success label" id="create-giftcard">生成</a>
             </div>
         </div>
-        <table class="table table-striped table-bordered dTableR" id="giftcard-order_tb">
+        <table class="table table-striped table-bordered dTableR" id="giftcard-tb">
             <thead>
                 <tr>
-                    <th class="table_checkbox center">
-                        <input name="select_rows" class="select_rows" data-tableid="giftcard-order_tb" type="checkbox">
-                    </th>
                     <th class="center">卡号</th>
                     <th class="center">密码</th>
                     <th class="center">状态</th>
@@ -54,86 +57,34 @@
 </div>
 
 <!---------新建弹层---------->
-<div class="modal fade" id="add-giftcard-order-modal">
+<div class="modal fade" id="create-giftcard-modal">
     <div class="modal-dialog">
         <div class="modal-content" id="modal-max-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h3 class="modal-title">新建品牌</h3>
+                <h3 class="modal-title">生产礼卡片</h3>
             </div>
             <div class="modal-body">
                 <table class="table table-condensed table-striped">
                     <tbody>
                         <tr>
-                            <td class="center">品牌名称</td>
+                            <td class="center">号段</td>
                             <td>
-                                <input name="a_name" type="text" class="form-control">
+                                <input name="a_scode" type="text" class="form-control" placeholder="开始号段">
                             </td>
-                            <td class="alert-label-error center" id="name-error"></td>
-                        </tr>
-                        <tr>
-                            <td class="center">备注</td>
+                            <td class="center">
+                                ------
+                            </td>
                             <td>
-                                <textarea name="a_remark" cols="6" rows="3" class="form-control"></textarea>
-                            </td>
-                            <td class="alert-label-error center" id="remark-error"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" class="center">
-                                <button type="button" class="btn btn-success" id="add-giftcard-order-bnt">确认</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!---------编辑弹层---------->
-<div class="modal fade" id="edit-giftcard-order-modal">
-    <div class="modal-dialog">
-        <div class="modal-content" id="modal-max-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h3 class="modal-title">编辑品牌</h3>
-            </div>
-            <div class="modal-body">
-                <table class="table table-condensed table-striped">
-                    <tbody>
-                        <tr>
-                            <td class="center">品牌id</td>
-                            <td>
-                                <span name="e_id" class="form-control"></span>
+                                <input name="a_ecode" type="text" class="form-control" placeholder="结束号段">
                             </td>
                         </tr>
                         <tr>
-                            <td class="center">名称</td>
-                            <td>
-                                <input name="e_name" type="text" class="form-control">
-                            </td>
-                            <td class="alert-label-error center" id="edit-name-error"></td>
+                            <td class="alert-label-error center" colspan="4" id="crate-giftcard-error"></td>
                         </tr>
                         <tr>
-                            <td class="center">状态</td>
-                            <td>
-                                <select name="e_status" class="form-control">
-                                    <option value="1">启用</option>
-                                    <option value="2">停用</option>
-                                </select>
-                            </td>
-                            <td class="alert-label-error center" id="edit-status-error"></td>
-                        </tr>
-                        <tr>
-                            <td class="center">备注</td>
-                            <td>
-                                <textarea name="e_remark" cols="6" rows="2" class="form-control"></textarea>
-                            </td>
-                            <td class="alert-label-error center" id="edit-remark-error"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" class="center">
-                                <button type="button" class="btn btn-success" id="edit-giftcard-order-bnt">确认</button>
+                            <td colspan="4" class="center">
+                                <button type="button" class="btn btn-success" id="crate-giftcard-bnt">确认</button>
                             </td>
                         </tr>
                     </tbody>
@@ -159,5 +110,5 @@
 <?php $this->load->view('shared/upload-file'); ?>
 <?php $this->load->view('shared/alert-upload'); ?>
 
-<script src="<?php echo RES; ?>giftcard/giftcard_order_list.js"></script>
+<script src="<?php echo RES; ?>giftcard/giftcard_inventory.js"></script>
 

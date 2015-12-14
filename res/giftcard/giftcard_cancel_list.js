@@ -30,7 +30,7 @@ $(document).ready(function () {
        }
     });
 
-    var ajax_source = "/giftcard_manage/giftcard_order_list_page";
+    var ajax_source = "/giftcard_manage/cancel_giftcard_page?";
     //列表datatable
     var oTable = $('#giftcard-order_tb').dataTable({
         "sDom": "<'row'<'col-sm-6'f>r>t<'row'<'col-sm-2'<'dt_actions'>l><'col-sm-2'i><'col-sm-8'p>>",
@@ -41,20 +41,18 @@ $(document).ready(function () {
         "bServerSide": true,
         "aoColumnDefs": [
             {
-                "aTargets": [0, 1, 2, 3, 4, 5, 7, 8, 9, 10],
+                "aTargets": [0, 2, 3, 4, 5, 7, 8],
                 "bSortable": false
             }
         ],
         "aoColumns": [
             {"mData": "checkbox"},
-            {"mData": "trade_date"},
+            {"mData": "cancel_date"},
             {"mData": "sales"},
             {"mData": "customer"},
-            {"mData": "contact_person"},
-            {"mData": "order_name"},
-            {"mData": "price"},
-            {"mData": "pay_status"},
-            {"mData": "pay_remark"},
+            {"mData": "end_user"},
+            {"mData": "modify_user"},
+            {"mData": "cancel_num"},
             {"mData": "remark"},
             {"mData": "oper"}
         ],
@@ -84,73 +82,24 @@ $(document).ready(function () {
      */
     function getSearchParams() {
         var params;
-        params = "?customer=" + encodeURIComponent($("input[name=s_customer]").val())
-                + "&giftbook=" + encodeURIComponent($("input[name=s_giftbook]").val())
-                + "&sales=" + encodeURIComponent($("input[name=s_sales]").val())
-                + "&paystatus=" + encodeURIComponent($("select[name=s_paystatus]").val());
+        params = "sales=" + encodeURIComponent($("input[name=s_sales]").val())
+               + "&sdate=" + encodeURIComponent($("input[name=s_sdate]").val())
+               + "&edate=" + encodeURIComponent($("input[name=s_edate]").val());
         return params;
     }
 
-    /**
-     * 获取选中的商品id
-     * @returns {Array}
-     */
-    function getCheckedIds() {
-        var ids = [],
-                checkedInput = $("tbody input[name=row_sel]:checked");
-        for (var i = 0; i < checkedInput.length; i++) {
-            ids.push(checkedInput[i].id);
-        }
-        return ids;
-    }
-    
-    //修改状态
-    $("#edit-pay-status").die().live('click',function(){
-        var ids = getCheckedIds();
-        if(ids=='' || ids.length<1){
-            alertError("#alert-error", '请选择要修改付款状态的记录');
-            return false;
-        }
-        $("#e_paystatus_remark-error").text('');
-        $("#update-giftcard-order-paystatus-modal").modal('show');
-        
-        $("#update-giftcard-order-status-bnt").die().live('click',function(){
-            var paystatus = $("select[name=e_paystatus]").val();
-            var pay_remark = $.trim($("textarea[name=e_paystatus_remark]").val());
-            if( pay_remark=='' || pay_remark==undefined ){
-                $("#e_paystatus_remark-error").text('修改付款状态备注不能为空！');
-                return false;
-            }
-            
-            $.post('/giftcard_manage/update_paystatus?', {ids: ids, paystatus: paystatus,pay_remark:pay_remark}
-            , function (ret) {
-                var d = $.parseJSON(ret);
-                $("#update-giftcard-order-paystatus-modal").modal('hide');
-                if (d.errCode == 0) {
-                    alertSuccess("#alert-success", '');
-                    var oSettings = oTable.fnSettings();
-                    oSettings.sAjaxSource = ajax_source + getSearchParams();
-                    oTable.fnDraw();
-                } else {
-                    alertError("#alert-error", d.msg);
-                }
-            });
-        })
-    });
-    
-    $("#edit-giftcard-order-bnt").die().live('click',function(){
-        var id = $("input[name=e_orderid]").val();
+    $("#edit-cancel-giftcard-bnt").die().live('click',function(){
+        var id = $("input[name=e_id]").val();
         var sales = $("select[name=e_sales]").val();
         var customer = $("select[name=e_customer]").val();
         var enduser = $("input[name=e_enduser]").val();
         var remark = $("textarea[name=e_remark]").val();
-        var wechat = $("select[name=e_wechat]").val();
-        $.post('/giftcard_manage/edit_giftcard_order?', 
+        $.post('/giftcard_manage/edit_cancel_giftcard?', 
             { id:id, sales:sales,customer:customer,
-              enduser:enduser, wechat:wechat,remark:remark
+              enduser:enduser,remark:remark
             }, function (ret) {
                 var d = $.parseJSON(ret);
-                $("#edit-giftcard-order-modal").modal('hide');
+                $("#edit-cancel-giftcard-modal").modal('hide');
                 if (d.errCode == 0) {
                     alertSuccess("#alert-success", '');
                     var oSettings = oTable.fnSettings();
@@ -164,13 +113,12 @@ $(document).ready(function () {
     });
     
     $("a.edit").die().live('click',function(){
-        $("input[name=e_orderid]").val($(this).attr('rel'));
+        $("input[name=e_id]").val($(this).attr('rel'));
         $("select[name=e_sales]").val($(this).attr('sales_id'));
         $("select[name=e_customer]").val($(this).attr('custom_id'));
-        $("select[name=e_wechat]").val($(this).attr('wechat_id'));
         $("input[name=e_enduser]").val($(this).attr('end_user'));
-        $("span[name=e_tradedate]").text($(this).attr('trade_date'));
-        $("textarea[name=e_remark]").text($(this).parent().siblings().eq(9).text());
+        $("span[name=e_canceldate]").text($(this).attr('cancel_date'));
+        $("textarea[name=e_remark]").text($(this).parent().siblings().eq(7).text());
         var customer = $(this).attr('custom_id');
         
         for(i in customerArr){
@@ -180,14 +128,12 @@ $(document).ready(function () {
                 $("input[name=e_address]").val(customerArr[i].address);
             }
        }
-       $("#edit-giftcard-order-modal").modal('show');
-    });
-    
-    $('a.ewm').die().live('click',function(){
-        $("#ewm-modal div.modal-body").html($(this).attr('ewm_url'));
-        $("#ewm-modal").modal('show');
+       $("#edit-cancel-giftcard-modal").modal('show');
     });
     
 });
+
+
+
 
 

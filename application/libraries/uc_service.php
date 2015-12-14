@@ -103,7 +103,7 @@ class Uc_service {
     public function get_user_id() {
         $user = $this->get_user();
         if ( $user ) {
-            return $user['user_id'];
+            return $user['id'];
         } else {
             return -1;
         }

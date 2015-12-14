@@ -44,7 +44,7 @@ class wechat_model extends CI_Model {
         return $data;
     }
 
-    public function get_wechat($where) {
+    public function get_wechat($where=array()) {
         $this->db->select('*')->from($this->_wechat_tb);
         $this->db->where($where);
         $query = $this->db->get();

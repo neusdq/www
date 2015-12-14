@@ -47,6 +47,24 @@ class giftcard_manage extends CI_Controller {
     }
     
     /**
+     * 礼品卡编辑
+     */
+    public function edit_giftcard_order(){
+        $id = $this->input->post('id');
+        $d['sales_id'] = $this->input->post('sales');
+        $d['custom_id'] = $this->input->post('customer');
+        $d['end_user'] = $this->input->post('enduser');
+        $d['wechat_id'] = $this->input->post('wechat');
+        $d['remark'] = $this->input->post('remark');
+        $affect_row = $this->giftcard_model->update_giftcard_order_info($d,array('id'=>$id));
+        if (is_numeric($affect_row)) {
+            json_out_put(return_model(0, '更新成功', $affect_row));
+        } else {
+            json_out_put(return_model('3001', '更新失败', NULL));
+        }
+    }
+    
+    /**
      * 加载编辑视图
      */
     public function edit_giftcard(){
@@ -61,7 +79,10 @@ class giftcard_manage extends CI_Controller {
      * 礼册列表
      */
     public function giftcard_order_list() {
-        $d = array('title' => '礼册列表', 'msg' => '');
+        $d = array('title' => '礼品卡管理', 'msg' => '');
+        $d['sales'] = $this->user_model->get_user();
+        $d['customer'] = $this->customer_model->get_customer();
+        $d['wechat'] = $this->wechat_model->get_wechat();
         $this->layout->view('giftcard_manage/giftcard_order_list', $d);
     }
     
@@ -71,6 +92,21 @@ class giftcard_manage extends CI_Controller {
     public function giftcard_order_list_page() {
         $d = $this->giftcard_model->giftcard_order_list_page_data($this->data_table_parser);
         $this->load->view('json/datatable', $d);
+    }
+    
+    /**
+     * 修改开卡付款状态
+     */
+    public function update_paystatus(){
+        $ids = $this->input->post('ids');
+        $d['pay_status'] = $this->input->post('paystatus');
+        $d['pay_remark'] = $this->input->post('pay_remark');
+        $affect_row = $this->giftcard_model->update_giftcard_order_info($d,array(),array('id'=>$ids));
+        if (is_numeric($affect_row)) {
+            json_out_put(return_model(0, '更新成功', $affect_row));
+        } else {
+            json_out_put(return_model('3001', '更新失败', NULL));
+        }
     }
     
     /**
@@ -88,24 +124,7 @@ class giftcard_manage extends CI_Controller {
     }
     
     /**
-     * 编辑商品
-     */
-    public function update_giftcard_info(){
-        $giftcard_id = $this->input->post('id');
-        $data = $this->giftcard_model->get_giftcard_params();
-        if ($check_info = $this->goods_manage_model->check_goods_num($data['group_ids'])) {
-            json_out_put(return_model('3002', $check_info, NULL));
-        }
-        $affect_row = $this->giftcard_model->update_giftcard_info($data,array('id'=>$giftcard_id));
-        if (is_numeric($affect_row)) {
-            json_out_put(return_model(0, '更新成功', $affect_row));
-        } else {
-            json_out_put(return_model('3001', '更新失败', NULL));
-        }
-    }
-    
-    /**
-     * 礼品卡库列表
+     * 礼品卡库列表视图
      */
     public function giftcard_inventory(){
         $d = array('title' => '礼品卡库', 'msg' => '');
@@ -113,12 +132,91 @@ class giftcard_manage extends CI_Controller {
     }
     
     /**
+     * 礼品卡库列表数据
+     */
+    public function giftcard_inventory_page(){
+        $d = $this->giftcard_model->giftcard_inventory_page_data($this->data_table_parser);
+        $this->load->view('json/datatable', $d);
+    }
+    
+    /**
      * 退卡列表
      */
     public function cancel_giftcard(){
         $d = array('title' => '退卡列表', 'msg' => '');
-        $this->layout->view('giftcard_manage/cancel_giftcard', $d);
+        $d['sales'] = $this->user_model->get_user();
+        $d['customer'] = $this->customer_model->get_customer();
+        $this->layout->view('giftcard_manage/giftcard_cancel_list', $d);
     }
     
+    /**
+     * 退卡
+     */
+    public function cancel_giftcard_page(){
+        $d = $this->giftcard_model->cancel_giftcard_page_data($this->data_table_parser);
+        $this->load->view('json/datatable', $d);
+    }
+    
+    /**
+     * 下载
+     */
+    public function download_giftcard(){
+        $data = $this->giftcard_model->download_giftcard_data();
+        $header = array('卡号','密码','状态','生成时间');
+        download_model($header, $data);
+    }
+    
+    /**
+     * 生产礼卡
+     */
+    public function create_giftcard(){
+        $d['scode'] = $this->input->post('scode');
+        $d['ecode'] = $this->input->post('ecode');
+        $aff_row = $this->giftcard_model->create_giftcard($d);
+        if(intval($aff_row)>0){
+            json_out_put(return_model(0, '添加成功', $aff_row));
+        }else{
+            json_out_put(return_model(3001, '生成失败', NULL));
+        }
+    }
+    
+    /**
+     * 退卡
+     */
+    public function do_cancel_giftcard(){
+        
+        if($_POST){
+            $data = $this->giftcard_model->cancel_giftcard_params();
+            $data['modify_user'] = $this->uc_service->get_user_id();
+            if ($insert_id = $this->giftcard_model->add_cancel_giftcard($data)) {
+                json_out_put(return_model(0, '添加成功', $insert_id));
+            } else {
+                json_out_put(return_model('3001', '添加失败', NULL));
+            }
+        }else{
+            $d = array('title' => '退卡列表', 'msg' => '');
+            $d['sales'] = $this->user_model->get_user();
+            $d['customer'] = $this->customer_model->get_customer();
+            $this->layout->view('giftcard_manage/giftcard_cancel', $d);
+        }
+    }
+    
+    /**
+     * 修改退卡信息
+     */
+    public function edit_cancel_giftcard(){
+        $id = $this->input->post('id');
+        $d['sales_id'] = $this->input->post('sales');
+        $d['custom_id'] = $this->input->post('customer');
+        $d['end_user'] = $this->input->post('enduser');
+        $d['remark'] = $this->input->post('remark');
+        $d['modify_user'] = $this->uc_service->get_user_id();
+        $aff_row = $this->giftcard_model->update_cancel_giftcard($d,array('id'=>$id));
+        if(is_numeric($aff_row)){
+            json_out_put(return_model(0, '修改成功！', $aff_row));
+        }else{
+            json_out_put(return_model(3001, '修改失败！', NULL));
+        }
+    }
     
 }

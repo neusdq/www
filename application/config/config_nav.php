@@ -37,6 +37,15 @@ $config['gift_navigation'] = array(
                     'display_role'=>array(1),
                     'sub_nav' => array(),
                 ),
+            'user_list'=>array(
+                    'id' => '1_3',
+                    'title'=>'用户列表',
+                    'self_url'=>'user_list',
+                    'is_home'=> false,
+                    'sort' => 3,
+                    'display_role'=>array(1),
+                    'sub_nav' => array(),
+                ),
         ),
     ),
     'goods_manage'=>array(

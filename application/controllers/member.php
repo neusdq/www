@@ -15,6 +15,9 @@ class Member extends CI_Controller {
         parent::__construct();
         $this->load->helper('form');
         $this->load->model('user_model');
+        $this->load->model('role_model');
+        $this->load->library('Data_table_parser');
+        $this->data_table_parser->set_db($this->db);
         $this->load->library('uc_service', array('cfg' => $this->config->item('alw_uc')));
     }
 
@@ -65,6 +68,62 @@ class Member extends CI_Controller {
             redirect('/member/index');
         }
         $this->layout->view('member/change_info', $d);
+    }
+    
+    /**
+     * 用户列表
+     */
+    public function user_list(){
+        $d = array('title' => '用户列表', 'msg' => '');
+        $d['role'] = $this->role_model->get_role();
+        $this->layout->view('member/user_list', $d);
+    }
+    
+    public function user_list_page(){
+        $d = $this->user_model->user_list_page_data($this->data_table_parser);
+        $this->load->view('json/datatable', $d);
+    }
+    
+    /**
+     * 添加用户
+     */
+    public function add_user(){
+        $d['user_name'] = $this->input->post('name');
+        $d['nick_name'] = $this->input->post('nickname');
+        $d['email'] = $this->input->post('email');
+        $d['phone'] = $this->input->post('phone');
+        $d['role'] = implode(',', $this->input->post('roles'));
+        $d['password'] = md5($this->input->post('password'));
+        $d['create_time'] = date('Y-m-d H:i:s');
+        $inser_id = $this->user_model->add_user($d);
+        if(intval($inser_id)){
+            json_out_put(return_model(0, '添加成功！', $inser_id));
+        }else{
+            json_out_put(return_model(1001, '添加失败！', $inser_id));
+        }
+    }
+    
+    /**
+     * 编辑用户信息
+     */
+    public function edit_user(){
+        
+        $id = $this->input->post('id');
+        $d['nick_name'] = $this->input->post('nickname');
+        $d['email'] = $this->input->post('email');
+        $d['phone'] = $this->input->post('phone');
+        if($this->input->post('roles')){
+            $d['role'] = implode(',', $this->input->post('roles'));
+        }else{
+            $d['role'] = '';
+        }
+        $aff_row = $this->user_model->update_user_info($id,$d);
+        if(is_numeric($aff_row)){
+            json_out_put(return_model(0, '修改成功！', $aff_row));
+        }else{
+            json_out_put(return_model(1001, '修改失败！', NULL));
+        }
+        
     }
 
 }

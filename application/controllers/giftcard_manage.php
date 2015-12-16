@@ -219,4 +219,20 @@ class giftcard_manage extends CI_Controller {
         }
     }
     
+    /**
+     * 打印退卡信息
+     */
+    public function print_cancel_info(){
+        $id = $this->input->get('id');
+        $this->load->view('giftcard_manage/print_cancel', $d);
+    }
+    
+    /**
+     * 打印开卡信息
+     */
+    public function print_giftcard_order(){
+        $id = $this->input->get('id');
+        $this->load->view('giftcard_manage/print_giftcard_order', $d);
+    }
+    
 }

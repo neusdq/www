@@ -43,20 +43,23 @@ class order_model extends CI_Model {
     }
 
     public function check_cardauth($numcode, $password) {
-        $query = $this->db->query("SELECT num_code,password FROM gift_management.gift_card  where num_code='" . $numcode . "' and password='" . $password . "'");
-
+        $query = $this->db->query("SELECT id,num_code,password FROM gift_management.gift_card  where num_code='" . $numcode . "' and password='" . $password . "'");
         $row = $query->row();
-
-        $result = FALSE;
         if (isset($row)) {
-            $result = TRUE;
+            return $row;
+        }else{
+            return false;
         }
-        return $result;
+       
     }
-
-    public function get_card_info($numcode) {
-        $query = $this->db->query("SELECT a.num_code,a.expire_date,b.id book_id,b.name book_name,b.sale_price FROM gift_management.gift_card a join gift_management.gift_book b on a.book_id=b.id  where num_code='" . $numcode . "'");
-
+    
+    /**
+     * 
+     * @param type $id
+     * @return type
+     */
+    public function get_card_info($id) {
+        $query = $this->db->query("SELECT a.num_code,a.expire_date,b.id book_id,b.name book_name,b.sale_price FROM gift_management.gift_card a join gift_management.gift_book b on a.book_id=b.id  where a.id='" . $id . "'");
         $row = $query->row();
         $data['num_code'] = $row->num_code;
         $data['expire_date'] = $row->expire_date;

@@ -281,7 +281,7 @@ class order_model extends CI_Model {
       public function ajax_eorderlist_table_data(&$pageData) {
         foreach ($pageData as &$v) {
             $v['checkbox'] = "<input name='row_sel' type='checkbox' id='{$v['id']}'>";
-            $v['oper'] = "<a rel='{$v['id']}'class='edit oper'>编辑</a>";
+            $v['oper'] = "<a rel='{$v['id']}'class='edit oper' href='/order_manage/edit_eorder?id={$v['id']}'>编辑</a>";
             $v['oper'] .= "<a rel='{$v['id']}'class='edit oper'>&nbsp;打印</a>";
             $v['status'] = isset($this->_eorder_status[$v['status']]) ? $this->_eorder_status[$v['status']] : '';
             
@@ -294,6 +294,15 @@ class order_model extends CI_Model {
         $this->db->insert_batch($this->_eorder_book_map_tb, $data);
         return $this->db->affected_rows();
         
+    }
+    /*
+     * 编辑 获取订单信息
+     */
+    public function get_eorder_info($where) {
+        $this->db->select('*')->from($this->_eorder_tb);
+        $this->db->where($where);
+        $query = $this->db->get();
+        return $query->result_array();
     }
 
 }

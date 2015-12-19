@@ -175,6 +175,20 @@ class order_manage extends CI_Controller {
          
          
     }
+    /*
+     * 编辑实物订单
+     */
+        
+    public function edit_eorder() {
+        $id = $this->input->get('id');
+        $d = array('title' => '编辑实物销售单', 'msg' => '', 'no_load_bootstrap_plugins' => true);
+        $d['sales'] = $this->user_model->get_user();
+        $d['customer'] = $this->customer_model->get_customer();
+        $d['giftbook'] = $this->giftbook_model->get_giftbook_info();
+        $order = $this->order_model->get_eorder_info(array('id' => $id));
+        $d['order'] = $order[0];
+        $this->layout->view('order_manage/edit_eorder', $d);
+    }
 
     /*
      * 退换货管理页面
@@ -226,5 +240,6 @@ class order_manage extends CI_Controller {
             json_out_put(return_model('2001', '更新失败', NULL));
         }
     }
+
 
 }

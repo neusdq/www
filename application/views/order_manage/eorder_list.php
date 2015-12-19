@@ -39,7 +39,7 @@
         <div class="w-box-header">
             <div class="pull-left sort-disabled">
                 <a class="btn btn-success label" href="/order_manage/add_eorder">新建实物销售</a>
-                <a class="btn btn-success label margin-left-2" id="stop-media">修改付款状态</a>               
+                <a class="btn btn-success label margin-left-2" id="update-status">修改付款状态</a>               
             </div>
         </div>
         <div class="empty"></div>
@@ -65,7 +65,48 @@
 
             </tbody>        
         </table>
-    </div> 
+    </div>
+        <!---------修改状态弹层---------->
+    <div class="modal fade" id="update-status-modal">
+        <div class="modal-dialog">
+            <div class="modal-content" id="modal-max-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3 class="modal-title">修改付款状态</h3>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-condensed table-striped">
+                        <tbody>
+                            <tr>
+                                <td class="center">付款状态</td>
+                                <td>
+                                    <select name="status" id="status" data-placeholder="修改付款状态" class="chzn_a form-control">
+                                        <option value="1">未付款</option>
+                                        <option value="2">已付款</option>
+                            
+                                    </select>
+                                </td>
+                                <td class="alert-label-error center"></td>
+                            </tr>                          
+                            <tr>
+                                <td class="center">备注</td>
+                                <td>
+                                    <textarea name="pay_remark" id="pay_remark" cols="10" rows="3" class="form-control"></textarea>
+                                </td>
+                                <td class="alert-label-error center"></td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="3" class="center">
+                                    <button type="button" class="btn btn-success" id="eorder-status-btn">确认</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 

@@ -1,6 +1,6 @@
 
 $(document).ready(function () {
-    $('#update-status-modal').modal({
+    $('#return-order-modal').modal({
         backdrop: 'static',
         show: false
     });

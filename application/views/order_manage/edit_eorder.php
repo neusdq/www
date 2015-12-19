@@ -33,10 +33,10 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-12">
-        <h3 class="heading">新建实物销售单</h3>
+        <h3 class="heading">编辑实物销售单</h3>
         <div class="form-horizontal" id="fileupload">
             <fieldset>
-
+                <input name="eorder_id" id="eorder_id" type="hidden" value="<?php echo $eorder['id'] ?>">
                 <div class="form-group">
 
                     <label for="a_sales" class="control-label col-sm-2">销售员</label>
@@ -44,7 +44,7 @@
                         <select name="a_sales" id="a_sales" data-placeholder="选择销售员" class="chzn_a form-control">
                             <?php $i = 0; ?>
                             <?php foreach ($sales as $v): ?>
-                                <option value="<?php echo $v['id']; ?>" <?php echo $i == 0 ? 'selected="selected"' : ''; ?>>
+                                <option value="<?php echo $v['id']; ?>" <?php echo $v['id'] == $eorder['sales'] ? 'selected="selected"' : ''; ?>>
                                     <?php echo $v['nick_name'] ? $v['nick_name'] : $v['user_name']; ?>
                                 </option>
                                 <?php $i++; ?>
@@ -54,7 +54,7 @@
 
                     <label for="a_deal_date" class="control-label col-sm-1">交易日期</label>
                     <div class=" col-sm-2">
-                        <input class="form-control" readonly id="a_deal_date" type="text" value="2016-05-01">
+                        <input class="form-control" readonly id="a_deal_date" type="text" value="<?php echo $eorder['deal_date']; ?>">
                     </div>
 
                 </div>
@@ -64,26 +64,28 @@
                     <div class="col-sm-2">
                         <select name="a_customer" id="a_customer" data-placeholder="选择客户" class="chzn_a form-control">
                             <?php foreach ($customer as $v): ?>
-                                <option value="<?php echo $v['id']; ?>"><?php echo $v['name']; ?></option>
+                                <option value="<?php echo $v['id']; ?>"  <?php echo $v['id'] == $eorder['customer_id'] ? 'selected="selected"' : ''; ?>>
+                                    <?php echo $v['name']; ?>
+                                </option>
                             <?php endforeach; ?>
                         </select>
                     </div>
 
                     <label for="a_enduser" class="control-label col-sm-1">最终用户</label>
                     <div class="col-sm-2">
-                        <input name="a_enduser" id="a_enduser" class="input-xlarge form-control" value="" type="text">
+                        <input name="a_enduser" id="a_enduser" class="input-xlarge form-control" value="<?php echo $eorder['enduser']; ?>" type="text">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="a_contact_person" class="control-label col-sm-2">联系人</label>
                     <div class="col-sm-2">
-                        <input name="a_contact_person" id="a_contact_person" class="input-xlarge form-control" value="" type="text">
+                        <input name="a_contact_person" id="a_contact_person" class="input-xlarge form-control" value="<?php echo $init_customer['contact_person']; ?>" type="text">
                     </div>
 
                     <label for="a_telephone" class="control-label col-sm-1">电话</label>
                     <div class="col-sm-2">
-                        <input name="a_telephone" id="a_telephone" class="input-xlarge form-control" value="" type="text">
+                        <input name="a_telephone" id="a_telephone" class="input-xlarge form-control" value="<?php echo $init_customer['phone']; ?>" type="text">
                     </div>
 
                 </div>
@@ -91,14 +93,14 @@
                 <div class="form-group">
                     <label for="a_address" class="control-label col-sm-2">地址</label>
                     <div class="col-sm-5">
-                        <input name="a_address" id="a_address" class="input-xlarge form-control" value="" type="text">
+                        <input name="a_address" id="a_address" class="input-xlarge form-control" value="<?php echo $init_customer['address']; ?>" type="text">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="a_expire_date" class="control-label col-sm-2">失效日期</label>
                     <div class=" col-sm-2">
-                        <input class="form-control" id="a_expire_date" type="text" value="2016-05-01" readonly>
+                        <input class="form-control" id="a_expire_date" type="text" value="<?php echo $eorder['expire_date']; ?>" readonly>
                     </div>
                 </div>
 
@@ -107,7 +109,7 @@
                 <div class="form-group">
                     <label for="a_remark" class="control-label col-sm-2">备注</label>
                     <div class="col-sm-5">
-                        <textarea name="a_remark" id="a_remark" cols="10" rows="3" class="form-control"></textarea>
+                        <textarea name="a_remark" id="a_remark" cols="10" rows="3" class="form-control"><?php echo $eorder['remark']; ?></textarea>
                     </div>
                 </div>
 
@@ -118,7 +120,7 @@
                         <table class="table table-striped table-bordered " id="add_gift_list_tb">
                             <thead>
                                 <tr>
-                                  <th class="center">商品名称</th>
+                                    <th class="center">商品名称</th>
                                     <th class="center">单价</th>
                                     <th class="center">折扣</th>
                                     <th class="center">数量</th>
@@ -203,7 +205,7 @@
                                 </td>
                                 <td class="alert-label-error center"></td>
                             </tr>
-                            
+
                             <tr>
                                 <td class="center">备注</td>
                                 <td>
@@ -236,10 +238,23 @@
 <script src="<?php echo RES; ?>js/pages/gebo_user_profile.js"></script>
 
 <?php $this->load->view('shared/upload-file'); ?>
-<script src="<?php echo RES; ?>order/add_eorder.js"></script>
+<script src="<?php echo RES; ?>order/edit_eorder.js"></script>
 
 <script>
     var giftArr = [];
+    var giftList = <?php echo json_encode($book_list); ?>;
+    for (i in giftList) {
+        var gift_json = {};
+        gift_json.gift_book_id = giftList[i].book_id;
+        gift_json.gift_book_name = giftList[i].book_name;
+        gift_json.price = giftList[i].price;
+        gift_json.discount = giftList[i].discount;
+        gift_json.book_count = giftList[i].book_count;
+        gift_json.sum_price = giftList[i].sum_price;
+        gift_json.book_remark = giftList[i].book_remark;
+        giftArr.push(gift_json);
+    }
     var customerArr = <?php echo json_encode($customer); ?>;
+    
     var giftBook = <?php echo json_encode($giftbook); ?>;
 </script>

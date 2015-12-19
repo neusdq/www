@@ -54,7 +54,7 @@
 
                     <label for="a_deal_date" class="control-label col-sm-1">交易日期</label>
                     <div class=" col-sm-2">
-                        <input class="form-control" readonly id="a_deal_date" type="text" value="2016-05-01">
+                        <input class="form-control" readonly id="a_deal_date" type="text" value="">
                     </div>
 
                 </div>
@@ -98,7 +98,7 @@
                 <div class="form-group">
                     <label for="a_expire_date" class="control-label col-sm-2">失效日期</label>
                     <div class=" col-sm-2">
-                        <input class="form-control" id="a_expire_date" type="text" value="2016-05-01" readonly>
+                        <input class="form-control" id="a_expire_date" type="text" value="" readonly>
                     </div>
                 </div>
 
@@ -162,8 +162,9 @@
                                 <td>
                                     <select name="giftBook" id="giftBook" data-placeholder="选择礼册" class="chzn_a form-control">
                                         <?php $i = 0; ?>
+        
                                         <?php foreach ($giftbook as $v): ?>
-                                            <option value="<?php echo $v['id']; ?>" <?php echo $i == 0 ? 'selected:"selected"' : '' ?>>
+                                            <option value="<?php echo $v['id']; ?>">
                                                 <?php echo $v['name']; ?>
                                             </option>
                                             <?php $i++; ?>

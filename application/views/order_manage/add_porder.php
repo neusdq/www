@@ -7,33 +7,36 @@
 <div class="row">
     <div class="col-sm-10 col-md-10">
         <h3 class="heading">电话兑换</h3>
-        <form class="form-horizontal" id="fileupload">
+        <div class="form-horizontal">
             <fieldset>
                 <div class="form-group">
-                    <label for="a_numcode" class="control-label col-sm-1">卡号</label>
-                    <div class="col-sm-2">
-                        <input name="a_numcode" id="a_numcode" class="input-xlarge form-control" value="" type="text">
+                    <label for="a_numcode" class="control-label col-sm-2">卡号</label>
+                    <div class="col-sm-4">
+                        <input name="a_numcode" id="a_numcode" class="form-control" value="" type="text">
                     </div>
+                    <label class="col-lg-2 control-label alert-label-error" id="a-numcode-error" style="text-align: left;color: red;">
+
+                    </label>
                 </div>
                 <br/><br/>
+                
                 <div class="form-group">
-                    <label for="a_password" class="control-label col-sm-1">密码</label>
-                    <div class="col-sm-2">
-                        <input name="a_password" id="a_password" class="input-xlarge form-control" value="" type="text">
+                    <label for="a_password" class="control-label col-sm-2">密码</label>
+                    <div class="col-sm-4">
+                        <input name="a_password" id="a_password" class="form-control" value="" type="text">
                     </div>
- 
+                    <label class="col-lg-2 control-label alert-label-error" id="a-password-error" style="text-align: left;color: red;">
+
+                    </label>
                 </div>
-
-
-           
                 <br/>
                 <div class="form-group" style="text-align: center;">
-                    <div class="col-sm-5"  style="margin-left: 15%;">
+                    <div  style="margin-left: 25%">
                         <div class="btn btn-success col-sm-2" id="add-porder-ok">提交</div>
                     </div>
                 </div>
             </fieldset>
-        </form>
+        </div>
     </div>
 </div>
 
@@ -53,9 +56,7 @@
 
 <script>
     $(document).ready(function () {
-        $(".chzn_a").chosen({
-            allow_single_deselect: true
-        });
+        
         //成功提示框设置
         $('#alert-success').modal({
             backdrop: false,
@@ -70,6 +71,15 @@
             var flag = true;
             var numcode = $("#a_numcode").val();
             var password = $('#a_password').val();
+            $(".alert-label-error").text('');
+            if(numcode=='' || numcode==undefined){
+                $("#a-numcode-error").text('请输入卡号！');
+                flag = flag & false;
+            }
+            if(password=='' || password==undefined){
+                $("#a-password-error").text('请输入卡号密码！');
+                flag = flag & false;
+            }
             if(flag){
                 $.post('/order_manage/check_cardauth',
                 {
@@ -77,7 +87,7 @@
                 },function(ret){
                     var d = $.parseJSON(ret);
                     if(d.errCode==0){
-                        alertSuccess("#alert-success",'/order_manage/gift_list?num_code='+d.val);
+                        alertSuccess("#alert-success",'/order_manage/gift_list?id='+d.val);
                     }else{
                         alertError("#alert-error",d.msg);
                     }

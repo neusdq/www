@@ -164,7 +164,7 @@ class giftcard_model extends CI_Model {
     public function giftcard_inventory_page_data($dtparser){
         
         $cols = array('`gift_card`.`id`','`gift_card`.`num_code`','`gift_card`.`status`'
-            ,'`gift_card`.`ctime`','`gift_card`.`passwod`'
+            ,'`gift_card`.`ctime`','`gift_card`.`password`'
            );
         $sort_cols = array('1'=>'`num_code`','3'=>'`ctime`');
         $filter_cols = array();
@@ -220,7 +220,7 @@ class giftcard_model extends CI_Model {
      */
     public function download_giftcard_data(){
         $cols = array('`gift_card`.`num_code`','`gift_card`.`status`'
-            ,'`gift_card`.`passwod`','`gift_card`.`ctime`'
+            ,'`gift_card`.`password`','`gift_card`.`ctime`'
            );
         $cwhere = $this->giftcard_inventory_page_where();
         $this->db->select($cols);
@@ -253,8 +253,8 @@ class giftcard_model extends CI_Model {
         $time = date('Y-m-d H:i:s');
         for($i=0;$i<$num;$i++){
             $num_code = $d['ecode'] + $i;
-            $passwod = substr(create_uniqid(), 2, 6);
-            $data[] = array('num_code'=>$num_code,'passwod'=>$passwod,'ctime'=>$time);
+            $password = substr(create_uniqid(), 2, 6);
+            $data[] = array('num_code'=>$num_code,'password'=>$password,'ctime'=>$time);
         }
         $rt = FALSE;
         if($data){

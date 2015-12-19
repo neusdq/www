@@ -37,6 +37,8 @@ $config['alw_uc'] = array(
     'login'=>'/login/login',
 );
 
+$config['ewm_server'] = 'http://dc.pbchen.com/book/';
+
 /**
  * 缩略图配置
  */

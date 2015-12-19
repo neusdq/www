@@ -24,7 +24,7 @@ $(document).ready(function () {
         ],
         "aoColumns": [
             {"mData": "num_code"},
-            {"mData": "passwod"},
+            {"mData": "password"},
             {"mData": "status"},
             {"mData": "ctime"}
         ],

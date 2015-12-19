@@ -14,7 +14,6 @@ class order_manage extends CI_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model('user_model');
         $this->load->model('customer_model');
         $this->load->model('giftbook_model');
         $this->load->model('order_model');
@@ -41,9 +40,9 @@ class order_manage extends CI_Controller {
         $password = $this->input->post('password');
         $result = $this->order_model->check_cardauth($numcode, $password);
         if ($result) {
-            json_out_put(return_model(0, '验证成功', $numcode));
+            json_out_put(return_model(0, '验证成功', $result->id));
         } else {
-            json_out_put(return_model('2001', '验证失败', NULL));
+            json_out_put(return_model('2001', '卡号或密码错误！', NULL));
         }
     }
 
@@ -52,10 +51,10 @@ class order_manage extends CI_Controller {
      */
 
     public function gift_list() {
-        $num_code = $this->input->get('num_code');
+        $giftcard_id = $this->input->get('id');
         $d = array('title' => '兑换商品列比表', 'msg' => '', 'no_load_bootstrap_plugins' => true);
-        $data = $this->order_model->get_card_info($num_code);
-        $this->layout->view('order_manage/gift_list', $data);
+        $d['giftcard'] = $this->order_model->get_card_info($giftcard_id);
+        $this->layout->view('order_manage/gift_list', $d);
     }
 
     /*

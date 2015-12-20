@@ -11,7 +11,7 @@
                 <input name="order_id" class="input-medium form-control" placeholder="关联订单" type="text">
             </div>
             <div class="pull-left sort-disabled margin-left-1">
-                <input name="order_customer_name" class="input-medium form-control" placeholder="客户名称" type="text">
+                <input name="customer_name" class="input-medium form-control" placeholder="客户名称" type="text">
             </div>
             <div class="pull-left sort-disabled margin-left-1">
                 <select name="type" class="select-medium form-control">
@@ -21,7 +21,7 @@
                 </select>
             </div>
             <div class="pull-left sort-disabled margin-left-1">
-                <select name="order_status" class="select-medium form-control">
+                <select name="status" class="select-medium form-control">
                     <option value="0">状态</option>
                     <option value="1">未审核</option>
                     <option value="2">未入库</option>
@@ -43,7 +43,7 @@
             </div>
         </div>
         <div class="empty"></div>
-        <table class="table table-striped table-bordered dTableR" id="orderlist_tb">
+        <table class="table table-striped table-bordered dTableR" id="rorderlist_tb">
             <thead
                 <tr>
                     <th class="table_checkbox center">

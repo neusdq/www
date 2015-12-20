@@ -40,20 +40,20 @@
                 <div class="form-group">
                     <label for="order_id" class="control-label col-sm-1">订单:</label>
                     <div class="col-sm-2">
-                        <input name="order_id" id="order_id" class="input-xlarge form-control" value="" type="text">
-                    </div> 
+                        <input name="order_id" id="order_id" class="input-xlarge form-control" value="<?php echo $order_id ?>" type="text" readonly>
+                    </div>
                 </div> 
 
                 <div class="form-group">
 
                     <label for="card_num" class="control-label col-sm-1">卡号:</label>
                     <div class=" col-sm-2">
-                        <input class="form-control" id="card_num" type="text" value="" readonly>
+                        <input class="form-control" id="card_num" type="text" value="<?php echo $order_info['card_num'] ?>" readonly>
                     </div>
 
                     <label for="price" class="control-label col-sm-1">面值:</label>
                     <div class=" col-sm-2">
-                        <input class="form-control" id="price" type="text" value="" readonly>
+                        <input class="form-control" id="price" type="text" value="<?php echo $order_info['sale_price'] ?>" readonly>
                     </div>
 
                 </div>
@@ -62,12 +62,12 @@
 
                     <label for="gift_book" class="control-label col-sm-1">礼册:</label>
                     <div class=" col-sm-2">
-                        <input class="form-control" id="gift_book" type="text" value="" readonly>
+                        <input class="form-control" id="gift_book" type="text" value="<?php echo $order_info['book_name'] ?>" readonly>
                     </div>
 
                     <label for="gift" class="control-label col-sm-1">商品:</label>
                     <div class=" col-sm-2">
-                        <input class="form-control" id="gift" type="text" value="" readonly>
+                        <input class="form-control" id="gift" type="text" value="<?php echo $order_info['gift_name'] ?>" readonly>
                     </div>
 
                 </div>
@@ -75,16 +75,16 @@
 
                     <label for="customer" class="control-label col-sm-1">客户:</label>
                     <div class=" col-sm-2">
-                        <input class="form-control" id="customer" type="text" value="" readonly>
+                        <input class="form-control" id="customer" type="text" value="<?php echo $order_info['customer_name'] ?>" readonly>
                     </div>
 
                     <label for="phone" class="control-label col-sm-1">手机:</label>
                     <div class=" col-sm-2">
-                        <input class="form-control" id="phone" type="text" value="" readonly>
+                        <input class="form-control" id="phone" type="text" value="<?php echo $order_info['phone'] ?>" readonly>
                     </div>
                     <label for="deal_date" class="control-label col-sm-1">兑换日期:</label>
                     <div class=" col-sm-2">
-                        <input class="form-control" id="deal_date" type="text" value="" readonly>
+                        <input class="form-control" id="deal_date" type="text" value="<?php echo $order_info['ctime'] ?>" readonly>
                     </div>
 
                 </div>
@@ -92,7 +92,7 @@
 
                     <label for="address" class="control-label col-sm-1">地址:</label>
                     <div class=" col-sm-4">
-                        <input class="form-control" id="address" type="text" value="" readonly>
+                        <input class="form-control" id="address" type="text" value="<?php echo $order_info['address'] ?>" readonly>
                     </div>
 
 
@@ -100,11 +100,10 @@
                 <div class="form-group">
                     <label for="exchange_gift" class="control-label col-sm-1">换取商品:</label>
                     <div class="col-sm-2">
-                        <select name="exchange_gift" id="exchange_gift" data-placeholder="换取商品" class="chzn_a form-control">
-                            <?php $i = 0; ?>
-                            <?php foreach ($sales as $v): ?>
-                                <option value="<?php echo $v['id']; ?>" <?php echo $i == 0 ? 'selected="selected"' : ''; ?>>
-                                    <?php echo $v['nick_name'] ? $v['nick_name'] : $v['user_name']; ?>
+                        <select name="exchange_gift" id="exchange_gift" data-placeholder="换取商品" class="form-control">
+                            <?php foreach ($gift_arr as $v): ?>
+                                <option value="<?php echo $v['id']; ?>" <?php echo $v['id'] == $exchange_info['to_gift'] ? 'selected="selected"' : ''; ?>>
+                                    <?php echo $v['name'];?>
                                 </option>
                                 <?php $i++; ?>
                             <?php endforeach; ?>
@@ -117,7 +116,7 @@
 
                     <label for="diliver_money" class="control-label col-sm-1">快递费用:</label>
                     <div class=" col-sm-4">
-                        <input class="form-control" id="diliver_money" type="text" value="">
+                        <input class="form-control" id="diliver_money" type="text" value="<?php echo $exchange_info['diliver_money'] ?>">
                     </div>
 
                 </div>
@@ -125,14 +124,14 @@
                 <div class="form-group">
                     <label for="remark" class="control-label col-sm-1">备注:</label>
                     <div class="col-sm-5">
-                        <textarea name="remark" id="remark" cols="10" rows="3" class="form-control"></textarea>
+                        <textarea name="remark" id="remark" cols="10" rows="3" class="form-control"><?php echo $exchange_info['remark'] ?></textarea>
                     </div>
                 </div>
 
                 <br/>
                 <div class="form-group" style="text-align: center;">
                     <div class="col-sm-5"  style="margin-left: 30%;">
-                        <div class="btn btn-success col-sm-4" id="giftcard-order-ok">完成</div>
+                        <div class="btn btn-success col-sm-4" id="add-exorder-ok">完成</div>
                     </div>
                 </div>
             </fieldset>
@@ -151,4 +150,4 @@
 <script src="<?php echo RES; ?>js/pages/gebo_user_profile.js"></script>
 
 <?php $this->load->view('shared/upload-file'); ?>
-<script src="<?php echo RES; ?>order/add_exchange_order.js"></script>
+<script src="<?php echo RES; ?>order/edit_exchange_order.js"></script>

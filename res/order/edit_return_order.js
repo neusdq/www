@@ -79,7 +79,7 @@ $(document).ready(function () {
         }
 
         if (flag) {
-            $.post('/order_manage/save_return_order',
+            $.post('/order_manage/update_return_order',
                     {
                         order_id: order_id,
                         return_amount: return_amount,

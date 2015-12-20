@@ -1,38 +1,9 @@
 
 $(document).ready(function () {
-    $('#return-order-modal').modal({
-        backdrop: 'static',
-        show: false
-    });
-    $("#update-status").click(function () {
-        $("#update-status-modal").modal('show');
-    })
-    $("#eorder-status-btn").die().live('click', function () {
-        var status = $("#status").val();
-        var pay_remark = $("#pay_remark").val();
-        var ids = getCheckedIds();
-        var flag = true;
-        //alert(ids);
-        
-        if (flag) {
-            $.post('/order_manage/update_eorder_status',
-                {
-                    status:status,
-                    pay_remark: pay_remark,
-                    ids:ids
-                }, function (ret) {
-                    var d = $.parseJSON(ret);
-                    if (d.errCode == 0) {
-                        alertSuccess("#alert-success", '/order_manage/eorder_list');
-                    } else {
-                        alertError("#alert-error", d.msg);
-                    }
-            });
-        }
-    })
-    var ajax_source = "/order_manage/ajax_eorder_list";
+
+    var ajax_source = "/order_manage/ajax_rorder_list";
     //列表datatable
-        var oTable = $('#eorderlist_tb').dataTable({
+        var oTable = $('#rorderlist_tb').dataTable({
         "sDom": "<'row'<'col-sm-6'f>r>t<'row'<'col-sm-2'<'dt_actions'>l><'col-sm-2'i><'col-sm-8'p>>",
         "sPaginationType": "bootstrap_alt",
         "bFilter": false, //禁止过滤
@@ -47,14 +18,14 @@ $(document).ready(function () {
         ],
         "aoColumns": [
             {"mData": "checkbox"},
-            {"mData": "deal_date"},
-            {"mData": "sales_name"},
-            {"mData": "customer_name"},            
+            {"mData": "id"},
+            {"mData": "customer_name"},
+            {"mData": "phone"},            
             {"mData": "oper_person"},
-            {"mData": "order_name"},
-            {"mData": "price"},
+            {"mData": "type"},
             {"mData": "status"},
-            {"mData": "pay_remark"},
+            {"mData": "return_amount"},
+            {"mData": "ctime"},
             {"mData": "remark"},
             {"mData": "oper"}      
         ],
@@ -86,15 +57,14 @@ $(document).ready(function () {
      */
     function getSearchParams() {
         var params;
-        params = "?customer_name=" + encodeURIComponent($("input[name=s_customer_name]").val())
-                + "&order_name=" + encodeURIComponent($("input[name=s_order_name]").val())
-                + "&sales_name=" + encodeURIComponent($("input[name=s_sales_name]").val())
-                + "&status=" + $("input[name=s_status]").val()
-                + "&start_date=" + $("input[name=s_start_date]").val()
-                + "&end_date=" + $("input[name=s_end_date]").val();
+        params = "?order_id=" + $("input[name=order_id]").val()
+                + "&customer_name=" + encodeURIComponent($("input[name=customer_name]").val())
+                + "&type=" + $("select[name=type]").val()
+                + "&status=" + $("select[name=status]").val();
+
         return params;
     }
-        function getCheckedIds() {
+    function getCheckedIds() {
         var ids = [],
                 checkedInput = $("tbody input[name=row_sel]:checked");
         for (var i = 0; i < checkedInput.length; i++) {

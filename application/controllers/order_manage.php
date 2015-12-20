@@ -271,6 +271,32 @@ class order_manage extends CI_Controller {
         $d = array('title' => '退换货管理', 'msg' => '', 'no_load_bootstrap_plugins' => true);
         $this->layout->view('order_manage/rorder_list', $d);
     }
+    /*
+     * ajax 获取退换货列表
+     */
+    public function ajax_rorder_list(){
+        $queryWhere = array();
+        if (!isset($_REQUEST['type']) || (isset($_REQUEST['type'])&&$_REQUEST['type'] == '0') ){
+            $r_arr = $this->order_model->rorder_page_data($this->data_table_parser);
+            $ex_arr = $this->order_model->exorder_page_data($this->data_table_parser);
+            $arr = array_merge($r_arr,$ex_arr);
+            
+        }
+        elseif($_REQUEST['type'] =='1'){
+            $arr = $this->order_model->rorder_page_data($this->data_table_parser);
+        }
+        elseif($_REQUEST['type'] =='2'){
+            $arr = $this->order_model->exorder_page_data($this->data_table_parser);
+        }
+        //$arr = $this->order_model->rorder_page_data($this->data_table_parser);
+        $d['code'] = 0;
+        $d['iTotal'] = count($arr);
+        $d['iFilteredTotal'] = $d['iTotal'];
+        $d['aaData'] = $arr;
+        //var_dump($d);
+        $this->load->view('json/datatable', $d);
+    }
+    
 
     /**
      * 新增退货
@@ -285,9 +311,30 @@ class order_manage extends CI_Controller {
      * 编辑退货
      */
     public function edit_return_order() {
-        $d = array('title' => '', 'msg' => '退货', 'no_load_bootstrap_plugins' => true);
-        //$d['giftbook'] = $this->giftbook_model->get_giftbook_info();
+        $id = $this->input->get('id');
+        $d['order_id'] = $id;
+        $d['order_info'] = $this->order_model->search_order_info($this->data_table_parser, $id)[0];
+        $d['return_info'] = $this->order_model->search_return_info(array('order_id' =>$id))[0];
+        //var_dump($d);
         $this->layout->view('order_manage/edit_return_order', $d);
+    }
+    
+    public function update_return_order() {
+        $order_id = $this->input->post('order_id');
+        $data['return_amount'] = $this->input->post('return_amount');
+        $data['bank'] = $this->input->post('bank');
+        $data['open_bank_address'] = $this->input->post('open_bank_address');
+        $data['bank_card_num'] = $this->input->post('bank_card_num');
+        $data['bank_card_name'] = $this->input->post('bank_card_name');
+        $data['oper_person'] = $this->uc_service->get_user_nickname();;
+        $data['remark'] = $this->input->post('remark');
+        
+        $affect_row = $this->order_model->update_return_order($data, array('order_id' => $order_id));
+        if (is_numeric($affect_row)) {
+            json_out_put(return_model(0, '修改成功', $affect_row));
+        } else {
+            json_out_put(return_model('2001', '修改失败', NULL));
+        }
     }
 
     /**
@@ -326,6 +373,7 @@ class order_manage extends CI_Controller {
         $open_bank_address = $this->input->post('open_bank_address');
         $bank_card_num = $this->input->post('bank_card_num');
         $bank_card_name = $this->input->post('bank_card_name');
+        $remark = $this->input->post('remark');
         $data['ctime'] = date('Y-m-d H:i:s');
         $data['utime'] = date('Y-m-d H:i:s');
         $data['order_id'] = $order_id;
@@ -334,6 +382,8 @@ class order_manage extends CI_Controller {
         $data['open_bank_address'] = $open_bank_address;
         $data['bank_card_num'] = $bank_card_num;
         $data['bank_card_name'] = $bank_card_name;
+        $data['oper_person'] = $this->uc_service->get_user_nickname();
+        $data['remark'] = $remark;
 
         $insert_id = $this->order_model->save_return_order($data);
 
@@ -348,9 +398,32 @@ class order_manage extends CI_Controller {
      * 编辑换货
      */
     public function edit_exchange_order() {
-        $d = array('title' => '', 'msg' => '换货', 'no_load_bootstrap_plugins' => true);
-        //$d['giftbook'] = $this->giftbook_model->get_giftbook_info();
+        
+        $id = $this->input->get('id');
+        $d['order_id'] = $id;
+        $d['order_info'] = $this->order_model->search_order_info($this->data_table_parser, $id)[0];
+        $book_id = $d['order_info']['book_id'];
+        $gift_arr = $this->order_model->search_gifts_by_book($this->data_table_parser, $book_id);
+        $d['exchange_info'] = $this->order_model->search_exchange_info(array('order_id' =>$id))[0];
+        $d['gift_arr'] = $gift_arr;
+        //var_dump($d);
         $this->layout->view('order_manage/edit_exchange_order', $d);
+     
+    }
+    public function update_exchange_order() {
+        $order_id = $this->input->post('order_id');
+        $data['diliver_money'] = $this->input->post('diliver_money');
+        $data['remark'] = $this->input->post('remark');
+        $data['to_gift'] = $this->input->post('to_gift');
+        $data['oper_person'] = $this->uc_service->get_user_nickname();
+        $data['utime'] = date('Y-m-d H:i:s');
+        
+        $affect_row = $this->order_model->update_exchange_order($data, array('order_id' => $order_id));
+        if (is_numeric($affect_row)) {
+            json_out_put(return_model(0, '修改成功', $affect_row));
+        } else {
+            json_out_put(return_model('2001', '修改失败', NULL));
+        }
     }
 
     /*

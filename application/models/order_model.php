@@ -39,6 +39,14 @@ class order_model extends CI_Model {
         '2' => '微信',
         '3' => '蓝卡官网'
     );
+    private $_change_order_status = array(
+        '1' => '未审核',
+        '2' => '未入库',
+        '3' => '未出库',
+        '4' => '已退货',
+        '5' => '已换货',
+        '6' => '审核未通过'
+    );
 
     function __construct() {
         parent::__construct();
@@ -419,6 +427,135 @@ class order_model extends CI_Model {
     public function save_exchange_order($data) {
         $this->db->insert($this->_exchange_order_tb, $data);
         return $this->db->insert_id();
+    }
+
+    /*
+     * 查询退货列表
+     */
+
+    public function rorder_page_data($dtparser) {
+        $cols = array(
+            '`change_order`.`id`',
+            '`change_order`.`customer_name`',
+            '`change_order`.`phone`',
+            '`change_order`.`status`',
+            '`return_order_detail`.`oper_person`',
+            '`return_order_detail`.`ctime`',
+            '`return_order_detail`.`remark`',
+            '`return_order_detail`.`return_amount`',
+            '`return_order_detail`.`remark`');
+        $cwhere = array();
+        if (isset($_REQUEST['customer_name']) && $_REQUEST['customer_name'] != '') {
+            $cwhere['`change_order`.`customer_name` LIKE '] = '%' . $_REQUEST['customer_name'] . '%';
+        }
+        if (isset($_REQUEST['order_id']) && $_REQUEST['order_id'] != '') {
+            $cwhere['`change_order`.`id` LIKE '] = '%' . $_REQUEST['order_id'] . '%';
+        }
+        if (isset($_REQUEST['status']) && $_REQUEST['status'] != 0) {
+            $cwhere['`change_order`.`status`'] = $_REQUEST['status'];
+        }
+        $sort_cols = array('4' => '`return_order_detail`.`ctime`');
+        //查询主表
+        $dtparser->select($cols,$sort_cols,array());
+        $dtparser->from('change_order');
+        $dtparser->join('return_order_detail', '`change_order`.`id`=`return_order_detail`.`order_id`');
+        //$dtparser->order_by('`return_order_detail`.`ctime`', 'DESC');
+
+
+        $query = $dtparser->get($cwhere);
+        $arr = $query->result_array();
+        $this->ajax_rorderlist_table_data($arr);
+
+
+        return $arr;
+    }
+
+    public function ajax_rorderlist_table_data(&$pageData) {
+        foreach ($pageData as &$v) {
+            $v['checkbox'] = "<input name='row_sel' type='checkbox' id='{$v['id']}'>";
+            $v['oper'] = "<a rel='{$v['id']}'class='edit oper' href='/order_manage/edit_return_order?id={$v['id']}'>编辑</a>";
+            $v['oper'] .= "<a rel='{$v['id']}'class='edit oper'>&nbsp;打印</a>";
+            $v['status'] = isset($this->_change_order_status[$v['status']]) ? $this->_change_order_status[$v['status']] : '';
+            $v['type'] = '退货';
+        }
+    }
+/*
+     * 查询换货列表
+     */
+
+    public function exorder_page_data($dtparser) {
+        $cols = array(
+            '`change_order`.`id`',
+            '`change_order`.`customer_name`',
+            '`change_order`.`phone`',
+            '`change_order`.`status`',
+            '`exchange_order_detail`.`oper_person`',
+            '`exchange_order_detail`.`ctime`',
+            '`exchange_order_detail`.`remark`'
+            );
+        $cwhere = array();
+        if (isset($_REQUEST['customer_name']) && $_REQUEST['customer_name'] != '') {
+            $cwhere['`change_order`.`customer_name` LIKE '] = '%' . $_REQUEST['customer_name'] . '%';
+        }
+        if (isset($_REQUEST['order_id']) && $_REQUEST['order_id'] != '') {
+            $cwhere['`change_order`.`id` LIKE '] = '%' . $_REQUEST['order_id'] . '%';
+        }
+        if (isset($_REQUEST['status']) && $_REQUEST['status'] != 0) {
+            $cwhere['`change_order`.`status`'] = $_REQUEST['status'];
+        }
+        $sort_cols = array('4' => '`exchange_order_detail`.`ctime`');
+        //查询主表
+        $dtparser->select($cols,$sort_cols,array());
+        $dtparser->from('change_order');
+        $dtparser->join('exchange_order_detail', '`change_order`.`id`=`exchange_order_detail`.`order_id`');
+        //$dtparser->order_by('`return_order_detail`.`ctime`', 'DESC');
+
+
+        $query = $dtparser->get($cwhere);
+        $arr = $query->result_array();
+        $this->ajax_exorderlist_table_data($arr);
+
+
+        return $arr;
+    }
+    public function ajax_exorderlist_table_data(&$pageData) {
+        foreach ($pageData as &$v) {
+            $v['checkbox'] = "<input name='row_sel' type='checkbox' id='{$v['id']}'>";
+            $v['oper'] = "<a rel='{$v['id']}'class='edit oper' href='/order_manage/edit_exchange_order?id={$v['id']}'>编辑</a>";
+            $v['oper'] .= "<a rel='{$v['id']}'class='edit oper'>&nbsp;打印</a>";
+            $v['status'] = isset($this->_change_order_status[$v['status']]) ? $this->_change_order_status[$v['status']] : '';
+            $v['type'] = '换货';
+            $v['return_amount'] = '0';
+        }
+    }
+    
+    public function search_return_info($where=array()) {
+         $this->db->select('*')->from('return_order_detail');     
+        $this->db->where($where);
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+    public function search_exchange_info($where=array()) {
+         $this->db->select('*')->from('exchange_order_detail');     
+        $this->db->where($where);
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+    public function update_return_order($updata, $where = array()) {
+        if ($where) {
+            $this->db->where($where);
+        }
+        $this->db->update('return_order_detail', $updata);
+        return $this->db->affected_rows();
+    }
+    
+    public function update_exchange_order($updata, $where = array()) {
+        if ($where) {
+            $this->db->where($where);
+        }
+        $this->db->update('exchange_order_detail', $updata);
+        return $this->db->affected_rows();
     }
 
 }

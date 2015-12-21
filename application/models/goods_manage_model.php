@@ -216,10 +216,13 @@ class goods_manage_model extends CI_Model {
      * 获取商品信息
      * @param type $where
      */
-    public function get_goods_info($where=array()){
+    public function get_goods_info($where=array(),$where_in=array()){
         $this->db->select('*')->from($this->_goods_tb);
         if($where){
             $this->db->where($where);
+        }
+        if($where_in){
+            $this->db->where_in($where_in);
         }
         $query = $this->db->get();
         $res = $query->result_array();

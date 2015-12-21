@@ -25,14 +25,14 @@
             </div>
             
             <div class="pull-left sort-disabled margin-left-1">
-                <input name="a_start_date" id="a_deliver_date" class="datepicker" data-date-format="yy-mm-dd" placeholder="开始时间">
+                <input name="a_start_date" id="a_deliver_date" class="datepicker input-medium form-control" data-date-format="yy-mm-dd" placeholder="开始时间">
             </div>
             <div class="pull-left sort-disabled margin-left-1">
-                <input name="a_end_date" id="a_deliver_date" class="datepicker" data-date-format="yy-mm-dd" placeholder="结束时间">
+                <input name="a_end_date" id="a_deliver_date" class="datepicker input-medium form-control" data-date-format="yy-mm-dd" placeholder="结束时间">
             </div>
             
 
-            <div class="pull-left sort-disabled margin-left-2">
+            <div class="pull-left sort-disabled margin-left-1">
                 <button class="btn btn-success label search">查询</button>
             </div>
         </div>

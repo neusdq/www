@@ -25,8 +25,11 @@ class order_model extends CI_Model {
     const MEDIA_STOP_STATUS = 2;
 
     private $_order_status = array(
-        '1' => '启用',
-        '2' => '停用'
+        '0' => '已作废',
+        '1' => '未审核',
+        '2' =>'未发货',
+        '3'=> '已发货',
+        '4'=> '已送达'
     );
     private $_eorder_status = array(
         '1' => '未付款',
@@ -40,6 +43,7 @@ class order_model extends CI_Model {
 
     function __construct() {
         parent::__construct();
+        $this->load->model('goods_manage_model');
     }
 
     public function check_cardauth($numcode, $password) {
@@ -59,8 +63,9 @@ class order_model extends CI_Model {
      * @return type
      */
     public function get_card_info($id) {
-        $query = $this->db->query("SELECT a.num_code,a.expire_date,b.id book_id,b.name book_name,b.sale_price FROM gift_management.gift_card a join gift_management.gift_book b on a.book_id=b.id  where a.id='" . $id . "'");
+        $query = $this->db->query("SELECT a.id as card_id,a.num_code,a.expire_date,b.id book_id,b.name book_name,b.sale_price FROM gift_management.gift_card a join gift_management.gift_book b on a.book_id=b.id  where a.id='" . $id . "'");
         $row = $query->row();
+        $data['card_id'] = $row->card_id;
         $data['num_code'] = $row->num_code;
         $data['expire_date'] = $row->expire_date;
         $data['book_id'] = $row->book_id;
@@ -68,8 +73,63 @@ class order_model extends CI_Model {
         $data['sale_price'] = $row->sale_price;
         return $data;
     }
+    
+    /**
+     * 获取订单信息
+     * @param type $where
+     */
+    public function get_order_info($where){
+        $cols = array('card_id','card_num','gift_id','customer_name','phone','address',
+            'postcode','deliver_id','deliver_date','remark','deliver_num','status');
+        $this->db->select($cols);
+        $this->db->from($this->_order_tb);
+        $this->db->where($where);
+        $query = $this->db->get();
+        return $query->row_array();
+    }
+    
+    /**
+     * 
+     * @param type $giftcard_id
+     */
+    public function get_gift_list($giftcard_id){
+        $sql = 'SELECT `gift_book`.`group_ids` FROM `gift_card` LEFT JOIN `gift_book` '
+            . ' ON `gift_book`.`id`=`gift_card`.`book_id`'
+            . ' WHERE `gift_card`.`id`=' . $giftcard_id;
+        $query = $this->db->query($sql);
+        $row = $query->row();
+        $gift = array();
+        if($row && $row->group_ids){
+            $tmp = explode(',', $row->group_ids);
+            foreach($tmp as $t){
+                if($t){
+                    $t_arr = explode('*',$t);
+                    $giftids[] = array_shift($t_arr);
+                }
+            }
+            if(count($giftids)>0){
+                $gift = $this->goods_manage_model->get_goods_info(array('store_num >'=>0),array('id'=>$giftids));
+            }
+        }
+        return $gift;
+    }
+    
+    /**
+     * 获取礼品信息
+     * @param type $where
+     * @return type
+     */
+    public function get_gift_info($where){
+        $cols = array('`id`','`name`');
+        $this->db->select($cols);
+        $this->db->from('`gift_management`.`gift`');
+        $this->db->where($where);
+        $query = $this->db->get();
+        return $query->result_array();
+    }
 
     public function get_order_params() {
+        $data['card_id'] = $this->input->post('card_id');
         $data['card_num'] = $this->input->post('card_num');
         $data['gift_id'] = $this->input->post('gift_id');
         $data['customer_name'] = $this->input->post('customer_name');
@@ -80,6 +140,23 @@ class order_model extends CI_Model {
         $deliver_date = $this->input->post('deliver_date');
         $data['deliver_date'] = date('Y-m-d', strtotime($deliver_date));
         $data['remark'] = $this->input->post('remark');
+        return $data;
+    }
+    
+    public function get_editorder_params() {
+        $data['card_id'] = $this->input->post('card_id');
+        $data['card_num'] = $this->input->post('card_num');
+        $data['gift_id'] = $this->input->post('gift_id');
+        $data['customer_name'] = $this->input->post('customer_name');
+        $data['phone'] = $this->input->post('phone');
+        $data['address'] = $this->input->post('address');
+        $data['postcode'] = $this->input->post('postcode');
+        $data['deliver_id'] = $this->input->post('deliver_id');
+        $deliver_date = $this->input->post('deliver_date');
+        $data['deliver_date'] = date('Y-m-d', strtotime($deliver_date));
+        $data['remark'] = $this->input->post('remark');
+        $data['status'] = $this->input->post('status');
+        $data['deliver_num'] = $this->input->post('delivernum');
         return $data;
     }
 
@@ -105,6 +182,17 @@ class order_model extends CI_Model {
             }
         }
         return $this->db->get()->result_array();
+    }
+    
+    public function update_order_info($updata,$where=array(),$where_in=array()){
+        if($where){
+            $this->db->where($where); 
+        }
+        if($where_in){
+            $this->db->where_in($where_in); 
+        }
+        $this->db->update($this->_order_tb,$updata);
+        return $this->db->affected_rows();
     }
 
     public function gift_page_data($dtparser) {
@@ -135,15 +223,18 @@ class order_model extends CI_Model {
     }
 
     public function order_page_data($dtparser) {
-        $cols = array('`view_order_gift_card`.`id`', '`view_order_gift_card`.`deliver_num`', '`view_order_gift_card`.`deliver_id`', '`view_order_gift_card`.`gift_name`'
-            , '`view_order_gift_card`.`customer_name`', '`view_order_gift_card`.`phone`', '`view_order_gift_card`.`address`'
-            , '`view_order_gift_card`.`status`'
-            , '`view_order_gift_card`.`order_source`');
-        $sort_cols = array('4' => '`view_order_gift_card`.`status`');
+        $cols = array('`change_order`.`id`', '`change_order`.`card_id`', '`change_order`.`gift_id`',
+            '`gift`.`name` AS `gift_name`', '`change_order`.`customer_name`', '`change_order`.`phone`',
+            '`change_order`.`address`','`change_order`.`postcode`','`change_order`.`deliver_id`','`change_order`.`deliver_num`',
+            '`change_order`.`deliver_date`','`change_order`.`deliver_date`','`change_order`.`remark`',
+            '`change_order`.`status`','`change_order`.`order_source`','`deliver`.`name` AS `deliver`');
+        $sort_cols = array();
         $filter_cols = array();
         //查询主表
         $dtparser->select($cols, $sort_cols, $filter_cols, FALSE);
-        $dtparser->from($this->_view_order_gift_card_tb);
+        $dtparser->from($this->_order_tb);
+        $dtparser->join('`gift_management`.`deliver`', 'deliver.id=change_order.deliver_id', 'left');
+        $dtparser->join('`gift_management`.`gift`', 'gift.id=change_order.gift_id', 'left');
         //条件
         $cwhere = $this->get_order_page_where();
         $d['code'] = 0;
@@ -164,8 +255,8 @@ class order_model extends CI_Model {
     public function ajax_orderlist_table_data(&$pageData) {
         foreach ($pageData as &$v) {
             $v['checkbox'] = "<input name='row_sel' type='checkbox' id='{$v['id']}'>";
-            $v['oper'] = "<a rel='{$v['id']}'class='edit oper'>编辑</a>";
-            $v['oper'] .= "<a rel='{$v['id']}'class='edit oper'>&nbsp;&nbsp;&nbsp;打印</a>";
+            $v['oper'] = "<a href='/order_manage/edit_order?id={$v['id']}' class='edit oper'>编辑</a>";
+            $v['oper'] .= "<a href='/order_manage/print_out_order?id={$v['id']}' target='_blank' class='edit oper'>&nbsp;&nbsp;&nbsp;打印</a>";
             $v['status'] = isset($this->_order_status[$v['status']]) ? $this->_order_status[$v['status']] : '';
             $v['order_source'] = isset($this->_order_source[$v['order_source']]) ? $this->_order_source[$v['order_source']] : '';
         }
@@ -284,8 +375,8 @@ class order_model extends CI_Model {
       public function ajax_eorderlist_table_data(&$pageData) {
         foreach ($pageData as &$v) {
             $v['checkbox'] = "<input name='row_sel' type='checkbox' id='{$v['id']}'>";
-            $v['oper'] = "<a rel='{$v['id']}'class='edit oper'>编辑</a>";
-            $v['oper'] .= "<a rel='{$v['id']}'class='edit oper'>&nbsp;打印</a>";
+            $v['oper'] = "<a rel='{$v['id']}' class='edit oper'>编辑</a>";
+            $v['oper'] .= "<a rel='{$v['id']}' class='edit oper'>&nbsp;打印</a>";
             $v['status'] = isset($this->_eorder_status[$v['status']]) ? $this->_eorder_status[$v['status']] : '';
             
         }
@@ -298,5 +389,5 @@ class order_model extends CI_Model {
         return $this->db->affected_rows();
         
     }
-
+    
 }

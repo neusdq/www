@@ -1,5 +1,35 @@
 
 $(document).ready(function () {
+    $('#update-status-modal').modal({
+        backdrop: 'static',
+        show: false
+    });
+    $("#update-status").click(function () {
+        $("#update-status-modal").modal('show');
+    })
+    $("#eorder-status-btn").die().live('click', function () {
+        var status = $("#status").val();
+        var pay_remark = $("#pay_remark").val();
+        var ids = getCheckedIds();
+        var flag = true;
+        //alert(ids);
+        
+        if (flag) {
+            $.post('/order_manage/update_eorder_status',
+                {
+                    status:status,
+                    pay_remark: pay_remark,
+                    ids:ids
+                }, function (ret) {
+                    var d = $.parseJSON(ret);
+                    if (d.errCode == 0) {
+                        alertSuccess("#alert-success", '/order_manage/eorder_list');
+                    } else {
+                        alertError("#alert-error", d.msg);
+                    }
+            });
+        }
+    })
     var ajax_source = "/order_manage/ajax_eorder_list";
     //列表datatable
         var oTable = $('#eorderlist_tb').dataTable({

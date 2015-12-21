@@ -8,20 +8,20 @@
         <h3 class="heading">退换货</h3>
         <div class="w-box-header col_lg_12">
             <div class="pull-left sort-disabled margin-left-1">
-                <input name="s_customer_name" class="input-medium form-control" placeholder="关联订单" type="text">
+                <input name="order_id" class="input-medium form-control" placeholder="关联订单" type="text">
             </div>
             <div class="pull-left sort-disabled margin-left-1">
-                <input name="s_order_name" class="input-medium form-control" placeholder="客户名称" type="text">
+                <input name="customer_name" class="input-medium form-control" placeholder="客户名称" type="text">
             </div>
             <div class="pull-left sort-disabled margin-left-1">
-                <select name="s_status" class="select-medium form-control">
+                <select name="type" class="select-medium form-control">
                     <option value="0">类型</option>
                     <option value="1">退货</option>
                     <option value="2">换货</option>
                 </select>
             </div>
             <div class="pull-left sort-disabled margin-left-1">
-                <select name="s_status" class="select-medium form-control">
+                <select name="status" class="select-medium form-control">
                     <option value="0">状态</option>
                     <option value="1">未审核</option>
                     <option value="2">未入库</option>
@@ -38,13 +38,12 @@
         </div>
         <div class="w-box-header">
             <div class="pull-left sort-disabled">
-                <a class="btn btn-success label" href="/media_manage/add_media">退货</a>
-                <a class="btn btn-success label margin-left-2" id="stop-media">换货</a>
-                <a class="btn btn-success label margin-left-2" id="stop-media">修改状态</a>               
+                <a class="btn btn-success label" href="/order_manage/add_return_order">退货</a>
+                <a class="btn btn-success label margin-left-2" href="/order_manage/add_exchange_order">换货</a>
             </div>
         </div>
         <div class="empty"></div>
-        <table class="table table-striped table-bordered dTableR" id="orderlist_tb">
+        <table class="table table-striped table-bordered dTableR" id="rorderlist_tb">
             <thead
                 <tr>
                     <th class="table_checkbox center">

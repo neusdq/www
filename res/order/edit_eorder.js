@@ -1,10 +1,11 @@
 $(document).ready(function () {
+    rendGiftList();
     //添加提示框
     $('#add-card-modal').modal({
         backdrop: 'static',
         show: false
     });
-
+    
     //新建
     $(".add_card").click(function () {
         $("#add-card-modal").modal('show');
@@ -155,6 +156,7 @@ $(document).ready(function () {
 
     $("#giftcard-order-ok").die().live('click', function () {
         var flag = true;
+        var eorder_id = $("#eorder_id").val();
         var sales = $("#a_sales").val();
         var deal_date = $('#a_deal_date').val();
         var customer = $('#a_customer').val();
@@ -211,10 +213,10 @@ $(document).ready(function () {
             alertError("#alert-error", '请添加礼品册！');
             return;
         }
-
         if (flag) {
-            $.post('/order_manage/save_eorder',
+            $.post('/order_manage/update_eorder',
                 {
+                    eorder_id:eorder_id,
                     sales: sales,
                     deal_date: deal_date,
                     customer: customer,

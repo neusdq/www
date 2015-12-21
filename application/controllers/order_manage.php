@@ -17,6 +17,7 @@ class order_manage extends CI_Controller {
         $this->load->model('customer_model');
         $this->load->model('giftbook_model');
         $this->load->model('order_model');
+        $this->load->model('deliver_model');
         $this->load->library('Data_table_parser');
         $this->data_table_parser->set_db($this->db);
         $this->load->library('uc_service', array('cfg' => $this->config->item('alw_uc')));
@@ -54,13 +55,14 @@ class order_manage extends CI_Controller {
         $giftcard_id = $this->input->get('id');
         $d = array('title' => '兑换商品列比表', 'msg' => '', 'no_load_bootstrap_plugins' => true);
         $d['giftcard'] = $this->order_model->get_card_info($giftcard_id);
+        $d['gift'] = $this->order_model->get_gift_list($giftcard_id);
+        $d['deliver'] = $this->deliver_model->get_deliver();
         $this->layout->view('order_manage/gift_list', $d);
     }
 
     /*
      * ajax 显示礼品列表
      */
-
     public function ajax_gift_list() {
         $d = $this->order_model->gift_page_data($this->data_table_parser);
         $this->load->view('json/datatable', $d);
@@ -71,7 +73,6 @@ class order_manage extends CI_Controller {
      */
 
     public function save_porder() {
-
         $data = $this->order_model->get_order_params();
         $data['ctime'] = $data['utime'] = date('Y-m-d H:i:s');
         $data['order_source'] = 1;
@@ -80,6 +81,21 @@ class order_manage extends CI_Controller {
             json_out_put(return_model(0, '操作成功', $insert_id));
         } else {
             json_out_put(return_model('2001', '操作失败', NULL));
+        }
+    }
+    
+    /**
+     * 
+     */
+    public function update_porder_status(){
+        $ids = $this->input->post('ids');
+        $data['status'] = $this->input->post('status');
+        $data['remark'] = $this->input->post('remark');
+        $aff_num = $this->order_model->update_order_info($data,array(),array('id'=>$ids));
+        if(is_numeric($aff_num)){
+            json_out_put(return_model(0, '修改成功！', $aff_num));
+        }else{
+            json_out_put(return_model(2001, '修改失败！', NULL));
         }
     }
 
@@ -97,7 +113,6 @@ class order_manage extends CI_Controller {
      */
 
     public function ajax_order_list() {
-
         $d = $this->order_model->order_page_data($this->data_table_parser);
         $this->load->view('json/datatable', $d);
     }
@@ -183,10 +198,7 @@ class order_manage extends CI_Controller {
         $d = array('title' => '退换货管理', 'msg' => '', 'no_load_bootstrap_plugins' => true);
         $this->layout->view('order_manage/rorder_list', $d);
     }
-
-    /*
-     * 后面保留
-     */
+    
 
     /**
      * 加载编辑视图
@@ -194,9 +206,36 @@ class order_manage extends CI_Controller {
     public function edit_order() {
         $id = $this->input->get('id');
         $d = array('title' => '编辑客户', 'msg' => '', 'no_load_bootstrap_plugins' => true);
-        $order = $this->order_model->get_order_info(array('id' => $id));
-        $d['order'] = $order[0];
+        $d['order'] = $this->order_model->get_order_info(array('id' => $id));
+        $d['order']['id'] = $id;
+        $d['giftcard'] = $this->order_model->get_card_info($d['order']['card_id']);
+        $d['gift'] = $this->order_model->get_gift_list($d['order']['card_id']);
+        $d['deliver'] = $this->deliver_model->get_deliver();
         $this->layout->view('order_manage/edit_order', $d);
+    }
+    
+    /**
+     * 打印出库订单
+     */
+    public function print_out_order(){
+        $id = $this->input->get('id');
+        $d['order'] = $this->order_model->get_order_info(array('id' => $id));
+        $d['gift'] = $this->order_model->get_gift_info(array('id'=>$d['order']['gift_id']));
+        $this->load->view('order_manage/print_order', $d);
+    }
+    
+    /**
+     * 更新请求
+     */
+    public function do_edit_order(){
+        $id = $this->input->post('orderid');
+        $updata = $this->order_model->get_editorder_params();
+        $aff_row = $this->order_model->update_order_info($updata,array('id'=>$id));
+        if (is_numeric($aff_row)) {
+            json_out_put(return_model(0, '更新成功', $aff_row));
+        } else {
+            json_out_put(return_model('2001', '更新失败', NULL));
+        }
     }
 
     /**

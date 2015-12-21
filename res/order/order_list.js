@@ -1,8 +1,21 @@
 
 $(document).ready(function () {
+    
+    //成功提示框设置
+    $('#alert-success').modal({
+        backdrop: false,
+        show: false
+    });
+    
+    //修改状态提示框
+    $('#update-order-status-modal').modal({
+        backdrop: false,
+        show: false
+    });
+    
     var ajax_source = "/order_manage/ajax_order_list";
     //列表datatable
-        var oTable = $('#orderlist_tb').dataTable({
+    var oTable = $('#orderlist_tb').dataTable({
         "sDom": "<'row'<'col-sm-6'f>r>t<'row'<'col-sm-2'<'dt_actions'>l><'col-sm-2'i><'col-sm-8'p>>",
         "sPaginationType": "bootstrap_alt",
         "bFilter": false, //禁止过滤
@@ -19,14 +32,14 @@ $(document).ready(function () {
             {"mData": "checkbox"},
             {"mData": "id"},
             {"mData": "deliver_num"},
-            {"mData": "deliver_id"},            
+            {"mData": "deliver"},
             {"mData": "gift_name"},
             {"mData": "customer_name"},
             {"mData": "phone"},
             {"mData": "address"},
             {"mData": "status"},
             {"mData": "order_source"},
-            {"mData": "oper"}      
+            {"mData": "oper"}
         ],
         "oLanguage": {
             "sLengthMenu": "显示 _MENU_ ",
@@ -41,7 +54,7 @@ $(document).ready(function () {
             }
         }
     });
-  
+
 
     //查询
     $('button.search').die().live("click", function (e) {
@@ -65,7 +78,8 @@ $(document).ready(function () {
                 + "&order_source=" + encodeURIComponent($("input[name=s_order_source]").val());
         return params;
     }
-        function getCheckedIds() {
+    
+    function getCheckedIds() {
         var ids = [],
                 checkedInput = $("tbody input[name=row_sel]:checked");
         for (var i = 0; i < checkedInput.length; i++) {
@@ -73,6 +87,45 @@ $(document).ready(function () {
         }
         return ids;
     }
+    
+    //修改状态
+    $("#update-status-a").click(function(){
+        $('e-status-error').text('');
+        $('e-remark-error').text('');
+        $('textarea[name=e_remark]').val('');
+        var ids = getCheckedIds();
+        if(ids.length<=0){
+            alertError("#alert-error", '请选择要更换状态的订单！');
+        }else{
+            $("#update-order-status-modal").modal('show');
+        }
+    });
+    
+    $("#update-status-bnt").click(function(){
+       var ids =  getCheckedIds();
+       var remark = $('textarea[name=e_remark]').val();
+       var status = $('select[name=e_status]').val();
+       $('e-remark-error').text('');
+       if(remark=='' && remark==unundefined){
+           $('e-remark-error').text('备注不能为空！');
+           return false;
+       }
+       $("#update-order-status-modal").modal('hide');
+       $.post('/order_manage/update_porder_status',{
+           ids:ids,status:status,remark:remark
+       },function(ret){
+           var d = $.parseJSON(ret);
+           if (d.errCode == 0) {
+                alertSuccess("#alert-success", '');
+                var oSettings = oTable.fnSettings();
+                oSettings.sAjaxSource = ajax_source + getSearchParams();
+                oTable.fnDraw();
+            } else {
+                alertError("#alert-error", d.msg);
+            }
+       })
+       
+    });
 
 });
 

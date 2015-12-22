@@ -95,6 +95,17 @@ class giftcard_manage extends CI_Controller {
     }
     
     /**
+     * 打印销售单
+     */
+    public function print_sales_order(){
+        $id = $this->input->get('id');
+        $order = $this->giftcard_model->sales_order_info(array('card_order.id'=>$id));
+        $d['order'] = $order[0];
+        $d['book'] = $this->giftcard_model->get_order_book(array('order_id'=>$id));
+        $this->load->view('giftcard_manage/sales_order', $d);
+    }
+    
+    /**
      * 修改开卡付款状态
      */
     public function update_paystatus(){

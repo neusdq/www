@@ -48,7 +48,7 @@ $(document).ready(function () {
             if (flag) {
                 var gift_json = {};
                 gift_json.gift_book_id = giftBook.val();
-                gift_json.gift_book_name = $('.modal-body [value="' + giftBook.val() + '"]').html();
+                gift_json.gift_book_name = $.trim($('.modal-body [value="' + giftBook.val() + '"]').html());
                 gift_json.gift_price = $.trim(giftBookPrice.val());
                 gift_json.discount = $.trim(discount.val());
                 gift_json.start_num = $.trim(start_num.val());

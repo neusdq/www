@@ -26,7 +26,7 @@ and open the template in the editor.
                         </th>
                     </tr>
                     <tr>
-                        <th colspan="8">销&nbsp;售&nbsp;退&nbsp;单</th>
+                        <th colspan="8">销&nbsp;售&nbsp;单</th>
                     </tr>
                     <tr>
                         <th>录入人:</th>

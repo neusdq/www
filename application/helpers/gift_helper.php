@@ -135,12 +135,71 @@ if (!function_exists('make_dir')) {
  * 简单生成一个32位的随机串
  * @return type string
  */
-if( ! function_exists('create_uniqid') ){
-   
-    function create_uniqid(){
-        return md5(uniqid(md5(microtime(true)),true));
+if (!function_exists('create_uniqid')) {
+
+    function create_uniqid() {
+        return md5(uniqid(md5(microtime(true)), true));
     }
-    
+
+}
+
+
+if (!function_exists('rmb')) {
+
+    function rmb($money) {
+        
+        $b_unit = array('零','壹','贰','叁','肆','伍','陆','柒','捌','玖');
+
+        $unit = array('','拾','佰','仟');
+
+        $m_unit = array('','万','亿');
+
+        $f_unit = array('角','分');
+        
+        $y = '元';
+        $intval = '整';
+        $ch_rmb_str = '';
+                
+        $money = bcadd($money, 0, 2);
+        list($rmb_a, $rmb_b) = explode('.', $money);
+
+        $rmb_a = str_replace(',', '', $rmb_a);
+
+        $a_len = strlen($rmb_a);
+        
+        for ($d = $j = 0; $d < $a_len; $d++) {
+            $e = $a_len - $d - 1;
+            $i = substr($rmb_a, $d, 1);
+            $g = floor($e / 4);
+            $e = $e % 4;
+            if ($i == 0) {
+                $j++;
+            } else {
+                if ($j > 0)
+                    $ch_rmb_str .= $b_unit[0];
+                $j = 0;
+                $ch_rmb_str .= $b_unit[$i] . $unit[$e];
+            }
+            if ($e == 0 && $j < 4)
+                $ch_rmb_str .= $m_unit[$g];
+        }
+        $ch_rmb_str .= $y;
+        if ($rmb_b) {
+            $b_len = strlen($rmb_b);
+            for ($l = 0; $l < $b_len && $l < 2; $l++) {
+                $t = substr($rmb_b, $l, 1);
+                if ($t) {
+                    $ch_rmb_str .= $b_unit[$t] . $f_unit[$l];
+                }
+            }
+        }
+
+        if ($ch_rmb_str == '') {
+            $ch_rmb_str .= $b_unit[0] . $y;
+        }
+        return $ch_rmb_str . $intval;
+    }
+
 }
     
 

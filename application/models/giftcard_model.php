@@ -95,6 +95,23 @@ class giftcard_model extends CI_Model {
     }
     
     /**
+     * 
+     * @param type $cancel_id
+     */
+    public function get_cancel_order_book($cancel_id){
+        $sql = "SELECT `sales_order_book`.*
+            FROM `gift_management`.`cancel_order_card`
+            INNER JOIN `gift_management`.`cancel_card_order` ON `cancel_card_order`.`id`=`cancel_order_card`.`cancel_id`
+            INNER JOIN `gift_management`.`card_order` ON `card_order`.`custom_id`=`cancel_card_order`.`custom_id`
+            INNER JOIN `gift_management`.`sales_order_book` ON (`sales_order_book`.`order_id`=`card_order`.`id`
+            AND `sales_order_book`.`scode`<=`cancel_order_card`.`start_code` 
+            AND `sales_order_book`.`ecode`>=`cancel_order_card`.`end_code`)
+            WHERE `cancel_card_order`.`id`=" . $cancel_id;
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+    
+    /**
      * 更新礼品卡订单信息
      * @param type $where
      * @param type $where_in
@@ -351,7 +368,7 @@ class giftcard_model extends CI_Model {
     public function ajax_cancel_giftcard_table_data(&$pageData){
         foreach($pageData as &$v){
             $v['checkbox'] = "<input name='row_sel' type='checkbox' id='{$v['id']}'>";
-            $v['oper'] = "<a rel='{$v['id']}' class='print oper'>&nbsp;&nbsp;&nbsp;打印</a>";
+            $v['oper'] = "<a href='/giftcard_manage/print_cancel_order?id={$v['id']}' target='_blank' class='print oper'>&nbsp;&nbsp;&nbsp;打印</a>";
             $v['oper'] .= "<a rel='{$v['id']}' cancel_date='{$v['cancel_date']}' custom_id='{$v['custom_id']}' sales_id='{$v['sales_id']}' end_user='{$v['end_user']}' class='edit oper'>&nbsp;&nbsp;&nbsp;修改</a>";
         }
     }

@@ -59,12 +59,39 @@ class giftcard_model extends CI_Model {
         $gift_books = $order_data['gift_book_arr'];
         unset($order_data['gift_book_arr']);
         $order_data['order_name'] = '';
+        $order_book = array();
         foreach($gift_books as $v){
+            $order_book[] = array(
+                'book_id'=>$v['gift_book_id'],
+                'book_name'=>$v['gift_book_name'],
+                'price'=>$v['gift_price'],
+                'discount'=>$v['discount'],
+                'scode'=>$v['start_num'],
+                'ecode'=>$v['end_num'],
+                'num'=>$v['num'],
+            );
             $order_data['order_name'] .= trim($v['gift_book_name']) . '*' . $v['num'];
         }
         $this->db->insert($this->_card_order_tb,$order_data);
         $order_id = $this->db->insert_id();
+        foreach($order_book as &$v){
+            $v['order_id'] = $order_id;
+        }
+        $this->db->insert_batch('`gift_management`.`sales_order_book`',$order_book);
         return $order_id;
+    }
+    
+    /**
+     * 获取订单礼册
+     * @param type $where
+     */
+    public function get_order_book($where){
+        $cols = array('*');
+        $this->db->select($cols);
+        $this->db->from('`gift_management`.`sales_order_book`');
+        $this->db->where($where);
+        $query = $this->db->get();
+        return $query->result_array();
     }
     
     /**
@@ -150,7 +177,7 @@ class giftcard_model extends CI_Model {
         foreach($pageData as &$v){
             $v['checkbox'] = "<input name='row_sel' type='checkbox' id='{$v['id']}'>";
             //$v['oper'] = "<a rel='{$v['id']}' class='info oper'>查看</a>";
-            $v['oper'] = "<a rel='{$v['id']}' class='print oper'>&nbsp;&nbsp;&nbsp;打印</a>";
+            $v['oper'] = "<a href='/giftcard_manage/print_sales_order?id={$v['id']}' target='_blank' class='print oper'>&nbsp;&nbsp;&nbsp;打印</a>";
             $v['oper'] .= "<a rel='{$v['id']}' trade_date='{$v['trade_date']}' wechat_id='{$v['wechat_id']}' custom_id='{$v['custom_id']}' sales_id='{$v['sales_id']}' end_user='{$v['end_user']}' class='edit oper'>&nbsp;&nbsp;&nbsp;编辑</a>";
             $v['oper'] .= "<a rel='{$v['id']}' ewm_url='{$ewm_server}{$v['wechat_id']}' class='ewm oper'>&nbsp;&nbsp;&nbsp;二维码</a>";
             $v['pay_status'] = isset($this->_pay_status[$v['pay_status']])?$this->_pay_status[$v['pay_status']]:'';
@@ -379,6 +406,25 @@ class giftcard_model extends CI_Model {
         }
         $this->db->update($this->_cancel_order_tb,$updata);
         return $this->db->affected_rows();
+    }
+    
+    /**
+     * 销售订单信息
+     * @param type $where
+     * @return type
+     */
+    public function sales_order_info($where){
+        $cols = array('`card_order`.`sales_id`','`card_order`.`custom_id`','`user`.`user_name`',
+            '`card_order`.`order_name`','`card_order`.`trade_date`','`card_order`.`end_user`',
+            '`card_order`.`modify_user`','`customer`.`name`','`customer`.`contact_person`',
+            '`customer`.`phone`','`customer`.`address`');
+        $this->db->select($cols);
+        $this->db->from($this->_card_order_tb);
+        $this->db->join('`gift_management`.`customer`', 'customer.id = card_order.custom_id', 'left');
+        $this->db->join('`gift_management`.`user`', 'user.id = card_order.sales_id', 'left');
+        $this->db->where($where);
+        $query = $this->db->get();
+        return $query->result_array();
     }
     
 }

@@ -106,6 +106,20 @@ class giftcard_manage extends CI_Controller {
     }
     
     /**
+     * 退卡打印
+     */
+    public function print_cancel_order(){
+        $id = $this->input->get('id');
+        $d['book'] = $this->giftcard_model->get_cancel_order_book($id);
+        $d['order'] = array();
+        if($d['book']){
+            $order = $this->giftcard_model->sales_order_info(array('card_order.id'=>$d['book'][0]['order_id']));
+            $d['order'] = $order[0];
+        }
+        $this->load->view('giftcard_manage/cancel_order', $d);
+    }
+    
+    /**
      * 修改开卡付款状态
      */
     public function update_paystatus(){

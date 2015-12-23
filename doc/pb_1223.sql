@@ -106,21 +106,23 @@ DROP TABLE IF EXISTS `change_order`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `change_order` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `card_id` int(11) NOT NULL,
-  `card_num` varchar(45) NOT NULL,
+  `card_id` int(11) NOT NULL DEFAULT '0',
+  `card_num` varchar(45) NOT NULL DEFAULT '',
   `gift_id` int(11) DEFAULT NULL COMMENT '选择兑换的商品id',
   `customer_name` varchar(45) DEFAULT NULL COMMENT '用户名称，收件人',
-  `photo` varchar(45) DEFAULT NULL COMMENT '电话',
+  `phone` varchar(45) DEFAULT NULL COMMENT '电话',
   `address` varchar(255) DEFAULT NULL COMMENT '收件地址',
-  `post_code` varchar(45) DEFAULT NULL COMMENT '邮编',
+  `postcode` varchar(45) DEFAULT NULL COMMENT '邮编',
   `deliver_id` int(11) DEFAULT NULL COMMENT '快递公司id',
   `deliver_date` datetime DEFAULT NULL COMMENT '发货日期',
   `remark` text COMMENT '备注',
   `status` int(11) DEFAULT NULL COMMENT '订单状态',
   `deliver_num` varchar(45) DEFAULT NULL COMMENT '快递单号',
   `order_source` int(11) NOT NULL COMMENT '订单来源，1: 电话，2: 官网，3:微信',
+  `ctime` datetime DEFAULT NULL,
+  `utime` datetime DEFAULT NULL,
   PRIMARY KEY (`id`,`card_id`,`card_num`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10002 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -178,6 +180,78 @@ CREATE TABLE `dim` (
   `dim_value` varchar(45) NOT NULL COMMENT '维度值',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `entity_order`
+--
+
+DROP TABLE IF EXISTS `entity_order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `entity_order` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sales` varchar(45) DEFAULT NULL,
+  `deal_date` date DEFAULT NULL,
+  `enduser` varchar(45) DEFAULT NULL,
+  `expire_date` date DEFAULT NULL,
+  `remark` varchar(255) DEFAULT NULL,
+  `ctime` datetime DEFAULT NULL,
+  `utime` datetime DEFAULT NULL,
+  `order_name` varchar(255) DEFAULT NULL,
+  `price` varchar(30) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `pay_remark` varchar(255) DEFAULT NULL,
+  `oper_person` varchar(45) DEFAULT NULL,
+  `customer_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `entity_order_book_map`
+--
+
+DROP TABLE IF EXISTS `entity_order_book_map`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `entity_order_book_map` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `eorder_id` int(11) DEFAULT NULL,
+  `book_id` int(11) DEFAULT NULL,
+  `book_name` varchar(255) DEFAULT NULL,
+  `price` int(11) DEFAULT NULL,
+  `discount` int(11) DEFAULT NULL,
+  `book_count` int(11) DEFAULT NULL,
+  `sum_price` int(11) DEFAULT NULL,
+  `book_remark` varchar(255) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `ctime` datetime DEFAULT NULL,
+  `utime` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `exchange_order_detail`
+--
+
+DROP TABLE IF EXISTS `exchange_order_detail`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `exchange_order_detail` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_id` int(11) DEFAULT NULL,
+  `to_gift` int(11) DEFAULT NULL,
+  `diliver_money` int(11) DEFAULT NULL,
+  `remark` int(11) DEFAULT NULL,
+  `oper_person` varchar(45) DEFAULT NULL,
+  `ctime` datetime DEFAULT NULL,
+  `utime` datetime DEFAULT NULL,
+  `from_gift` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `order_id_UNIQUE` (`order_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -341,6 +415,52 @@ CREATE TABLE `media` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `mediainfo`
+--
+
+DROP TABLE IF EXISTS `mediainfo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `mediainfo` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `media_id` int(11) NOT NULL COMMENT '存储路径,包括商品图片，多媒体管理里面的图片／视频／音频',
+  `name` varchar(45) DEFAULT NULL COMMENT '名称',
+  `status` int(11) NOT NULL DEFAULT '2' COMMENT '1:停用 2启用',
+  `ctime` datetime DEFAULT NULL COMMENT '创建时间',
+  `utime` datetime DEFAULT NULL COMMENT '更新时间',
+  `type` int(11) DEFAULT NULL,
+  `author` varchar(45) DEFAULT NULL,
+  `remark` varchar(255) DEFAULT NULL,
+  `expire_date` date DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `return_order_detail`
+--
+
+DROP TABLE IF EXISTS `return_order_detail`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `return_order_detail` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_id` varchar(45) DEFAULT NULL,
+  `return_amount` float DEFAULT NULL,
+  `bank` int(11) DEFAULT NULL,
+  `open_bank_address` varchar(255) DEFAULT NULL,
+  `bank_card_num` varchar(45) DEFAULT NULL,
+  `bank_card_name` varchar(45) DEFAULT NULL,
+  `ctime` datetime DEFAULT NULL,
+  `utime` datetime DEFAULT NULL,
+  `oper_person` varchar(45) DEFAULT NULL,
+  `remark` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `order_id_UNIQUE` (`order_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `role`
 --
 
@@ -352,6 +472,27 @@ CREATE TABLE `role` (
   `name` varchar(45) NOT NULL COMMENT '角色名称',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sales_order_book`
+--
+
+DROP TABLE IF EXISTS `sales_order_book`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sales_order_book` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `order_id` int(11) NOT NULL COMMENT '订单ID',
+  `book_id` bigint(20) NOT NULL COMMENT '礼册ID',
+  `book_name` varchar(40) NOT NULL COMMENT '礼册名',
+  `price` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '单价',
+  `discount` decimal(15,2) DEFAULT NULL COMMENT '折扣',
+  `scode` bigint(20) NOT NULL COMMENT '开始号码',
+  `ecode` bigint(20) NOT NULL COMMENT '结束号码',
+  `num` int(11) NOT NULL DEFAULT '0' COMMENT '数量',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -408,6 +549,90 @@ CREATE TABLE `user` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Temporary view structure for view `view_book_card`
+--
+
+DROP TABLE IF EXISTS `view_book_card`;
+/*!50001 DROP VIEW IF EXISTS `view_book_card`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `view_book_card` AS SELECT 
+ 1 AS `num_code`,
+ 1 AS `expire_date`,
+ 1 AS `book_id`,
+ 1 AS `book_name`,
+ 1 AS `sale_price`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `view_book_gift`
+--
+
+DROP TABLE IF EXISTS `view_book_gift`;
+/*!50001 DROP VIEW IF EXISTS `view_book_gift`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `view_book_gift` AS SELECT 
+ 1 AS `gift_id`,
+ 1 AS `book_id`,
+ 1 AS `gift_name`,
+ 1 AS `sale_price`,
+ 1 AS `store_num`,
+ 1 AS `sold_num`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `view_eorder_customer_user`
+--
+
+DROP TABLE IF EXISTS `view_eorder_customer_user`;
+/*!50001 DROP VIEW IF EXISTS `view_eorder_customer_user`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `view_eorder_customer_user` AS SELECT 
+ 1 AS `id`,
+ 1 AS `sales`,
+ 1 AS `deal_date`,
+ 1 AS `enduser`,
+ 1 AS `expire_date`,
+ 1 AS `remark`,
+ 1 AS `order_name`,
+ 1 AS `price`,
+ 1 AS `status`,
+ 1 AS `oper_person`,
+ 1 AS `customer_id`,
+ 1 AS `pay_remark`,
+ 1 AS `customer_name`,
+ 1 AS `contact_person`,
+ 1 AS `phone`,
+ 1 AS `address`,
+ 1 AS `sales_name`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `view_order_gift_card`
+--
+
+DROP TABLE IF EXISTS `view_order_gift_card`;
+/*!50001 DROP VIEW IF EXISTS `view_order_gift_card`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `view_order_gift_card` AS SELECT 
+ 1 AS `id`,
+ 1 AS `card_num`,
+ 1 AS `gift_id`,
+ 1 AS `gift_name`,
+ 1 AS `customer_name`,
+ 1 AS `phone`,
+ 1 AS `address`,
+ 1 AS `deliver_id`,
+ 1 AS `status`,
+ 1 AS `deliver_num`,
+ 1 AS `order_source`,
+ 1 AS `book_id`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `website`
 --
 
@@ -421,9 +646,9 @@ CREATE TABLE `website` (
   `domain` varchar(45) DEFAULT NULL COMMENT '绑定域名',
   `hotline` varchar(45) DEFAULT NULL COMMENT '客服热线',
   `qq` varchar(45) DEFAULT NULL COMMENT 'qq号码',
-  `expire_time` date DEFAULT NULL COMMENT '有效期',
+  `expire_date` date DEFAULT NULL COMMENT '有效期',
   `pic_id` int(11) DEFAULT NULL COMMENT 'log id，来自呀media表',
-  `describe` text COMMENT '描述',
+  `description` text COMMENT '描述',
   `remark` varchar(45) DEFAULT NULL COMMENT '备注',
   `status` int(11) NOT NULL DEFAULT '1' COMMENT '1: 启用 2:停用',
   `ctime` datetime DEFAULT NULL COMMENT '创建时间',
@@ -444,13 +669,17 @@ CREATE TABLE `wechat` (
   `name` varchar(45) NOT NULL COMMENT '模版名称',
   `style` int(11) DEFAULT NULL COMMENT '样式，从dim 取wechat_style',
   `pic_id` int(11) DEFAULT NULL COMMENT '图片id',
-  `autio_id` varchar(45) DEFAULT NULL COMMENT '音频id',
+  `audio_id` varchar(45) DEFAULT NULL COMMENT '音频id',
   `vedio_id` varchar(45) DEFAULT NULL COMMENT '视频id',
   `copywriter` text COMMENT '文案',
   `url` varchar(255) DEFAULT NULL COMMENT '网址',
   `expire_time` date DEFAULT NULL COMMENT '有效期',
   `status` int(11) NOT NULL DEFAULT '1' COMMENT '1: 启用 2:停用',
+  `sender` varchar(45) DEFAULT NULL,
+  `reciver` varchar(45) DEFAULT NULL,
   `remark` text COMMENT '备注',
+  `ctime` datetime DEFAULT NULL,
+  `utime` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;

@@ -26,10 +26,47 @@ CREATE TABLE `book_goods_mapping` (
   `gift_book_id` int(10) unsigned NOT NULL COMMENT '礼册id',
   `gift_id` int(10) unsigned NOT NULL COMMENT '商品id',
   `gift_num` int(11) DEFAULT NULL COMMENT '商品数量',
-  `ctime` datetime DEFAULT NULL COMMENT '添加时间',
+  `ctime` datetime NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`gift_book_id`,`gift_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `cancel_card_order`
+--
+
+DROP TABLE IF EXISTS `cancel_card_order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `cancel_card_order` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sales_id` int(11) DEFAULT NULL COMMENT '销售员id，从user表获取',
+  `custom_id` int(11) DEFAULT NULL COMMENT '客户id，从客户表取',
+  `cancel_date` date DEFAULT NULL COMMENT '退卡日期',
+  `end_user` varchar(20) DEFAULT NULL COMMENT '最终用户',
+  `remark` text COMMENT '备注',
+  `status` int(11) NOT NULL DEFAULT '1' COMMENT '1:退卡不可重新销售 2: 退卡可重新销售',
+  `modify_user` int(20) DEFAULT NULL COMMENT '操作人id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `cancel_order_card`
+--
+
+DROP TABLE IF EXISTS `cancel_order_card`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `cancel_order_card` (
+  `cancel_id` int(11) NOT NULL COMMENT '退卡id',
+  `start_code` bigint(20) DEFAULT NULL COMMENT '开始号码',
+  `end_code` bigint(20) DEFAULT NULL COMMENT '结束号码',
+  `num` int(11) DEFAULT NULL COMMENT '数量',
+  PRIMARY KEY (`cancel_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
 
 --
 -- Table structure for table `card_order`
@@ -40,17 +77,26 @@ DROP TABLE IF EXISTS `card_order`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `card_order` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_name` varchar(45) DEFAULT NULL COMMENT '册1*2，册2*3',
   `sales_id` int(11) DEFAULT NULL COMMENT '销售员id，从user表获取',
   `custom_id` int(11) DEFAULT NULL COMMENT '客户id，从客户表取',
+  `contact_person` varchar(20) NOT NULL COMMENT '联系人',
   `delever_id` int(11) DEFAULT NULL COMMENT '快递公司id',
+  `trade_date` date NOT NULL COMMENT '下单日期',
   `expire_date` date DEFAULT NULL COMMENT '失效日期',
+  `cancel_date` date DEFAULT NULL COMMENT '退卡日期',
   `wechat_id` int(11) DEFAULT NULL COMMENT '微信模版id',
+  `price` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '总价格',
+  `pay_status` tinyint(1) NOT NULL DEFAULT '2' COMMENT '付款状态(1:已付款,2:未付款)',
+  `pay_remark` varchar(520) DEFAULT NULL COMMENT '付款备注',
+  `end_user` varchar(20) DEFAULT NULL COMMENT '最终用户',
   `remark` text COMMENT '备注',
   `delivrer_num` varchar(45) DEFAULT NULL COMMENT '快递单号',
-  `order_name` varchar(45) DEFAULT NULL COMMENT '册1*2，册2*3',
-  `status` int(11) NOT NULL DEFAULT '1' COMMENT '1:待审核 2: 待发货 3: 已完成 4作废',
+  `status` int(11) NOT NULL DEFAULT '1' COMMENT '1:待审核 2: 待发货 3: 已完成 4作废 5已退卡',
+  `modify_user` varchar(20) DEFAULT NULL COMMENT '操作人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -291,14 +337,15 @@ DROP TABLE IF EXISTS `gift_card`;
 CREATE TABLE `gift_card` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `num_code` int(11) DEFAULT NULL COMMENT '礼品卡号码',
-  `password` int(11) DEFAULT NULL COMMENT '密码',
-  `ctime` varchar(45) DEFAULT NULL COMMENT '生成时间',
-  `status` int(11) NOT NULL DEFAULT '3' COMMENT '状态 1: 未激活 2: 已激活 3:已使用 4: 已过期 5: 已退卡 6: 冻结',
+  `password` varchar(12) DEFAULT NULL COMMENT '密码',
+  `ctime` datetime DEFAULT NULL COMMENT '生成时间',
+  `status` int(11) NOT NULL DEFAULT '1' COMMENT '状态 1: 未激活 2: 已激活 3:已使用 4: 已过期 5: 已退卡 6: 冻结',
   `book_id` int(11) NOT NULL COMMENT '礼册id',
+  `price` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '价格',
   `discount` decimal(15,2) DEFAULT NULL COMMENT '折扣 0-10',
-  `expire_date` date DEFAULT NULL,
+  `expire_date` datetime DEFAULT NULL COMMENT '失效时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -496,7 +543,7 @@ CREATE TABLE `user` (
   `password` varchar(45) DEFAULT NULL COMMENT '密码',
   `email` varchar(45) DEFAULT NULL COMMENT '邮箱',
   `phone` varchar(45) DEFAULT NULL COMMENT '手机号',
-  `role` int(11) DEFAULT NULL COMMENT '角色身份id',
+  `role` varchar(120) DEFAULT NULL COMMENT '角色身份id',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_name` (`user_name`)

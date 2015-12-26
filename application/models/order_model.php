@@ -11,7 +11,7 @@
  *
  * @author pbchen
  */
-class order_model extends CI_Model {
+class order_model extends CI_Model { 
 
     private $_order_tb = '`gift_management`.`change_order`';
     private $_eorder_tb = '`gift_management`.`entity_order`';

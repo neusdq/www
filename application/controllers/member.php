@@ -93,7 +93,7 @@ class Member extends CI_Controller {
         $d['email'] = $this->input->post('email');
         $d['phone'] = $this->input->post('phone');
         $d['role'] = implode(',', $this->input->post('roles'));
-        $d['password'] = md5($this->input->post('password'));
+        $d['password'] = md5(trim($this->input->post('password')));
         $d['create_time'] = date('Y-m-d H:i:s');
         $inser_id = $this->user_model->add_user($d);
         if(intval($inser_id)){

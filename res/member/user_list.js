@@ -120,10 +120,6 @@ $(document).ready(function () {
                 flag = flag & false;
                 $("#a-name-error").text('请填写用户名称！');
             }
-            if( passowrd=='' ){
-                flag = flag & false;
-                $("#a-password-error").text('请填写用户密码！');
-            }
             if( nickname=='' ){
                 flag = flag & false;
                 $("#a-nickname-error").text('请填写用户姓名！');
@@ -142,7 +138,7 @@ $(document).ready(function () {
             }
             if(flag){
                 $.post('/member/add_user?',{
-                        name:name,passowrd:passowrd,nickname:nickname,
+                        name:name,password:passowrd,nickname:nickname,
                         email:email,phone:phone,roles:roles
                     },function(ret){
                     var d = $.parseJSON(ret);

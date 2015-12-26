@@ -136,10 +136,12 @@ $(document).ready(function () {
                 flag = flag & false;
                 $("#a-passowrd-error").text('请填写用户密码！');
             }
+            /*
             if( phone==''||(!is_mobile.test(phone) && !is_phone.test(phone)) ){
                 flag = flag & false;
                 $("#a-phone-error").text('请填写用户电话！');
             }
+            */
             if(flag){
                 $.post('/member/add_user?',{
                         name:name,passowrd:passowrd,nickname:nickname,

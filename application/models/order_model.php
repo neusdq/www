@@ -386,7 +386,7 @@ class order_model extends CI_Model {
         foreach ($pageData as &$v) {
             $v['checkbox'] = "<input name='row_sel' type='checkbox' id='{$v['id']}'>";
             $v['oper'] = "<a rel='{$v['id']}'class='edit oper' href='/order_manage/edit_eorder?id={$v['id']}'>编辑</a>";
-            $v['oper'] .= "<a rel='{$v['id']}'class='edit oper'>&nbsp;打印</a>";
+            $v['oper'] .= "<a href='/order_manage/print_eorder?id={$v['id']}' target='_blank' class='print oper'>&nbsp;&nbsp;&nbsp;打印</a>";
             $v['status'] = isset($this->_eorder_status[$v['status']]) ? $this->_eorder_status[$v['status']] : '';
         }
     }

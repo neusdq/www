@@ -209,6 +209,22 @@ class order_manage extends CI_Controller {
         //var_dump($d);
         $this->layout->view('order_manage/edit_eorder', $d);
     }
+    
+    /*
+     * 打印实物销售单
+     */
+    
+    public function print_eorder(){
+        $id = $this->input->get('id');
+        $order = $this->order_model->get_eorder_info(array('id' => $id));
+        $eorder = $order[0];
+        $customer = $this->customer_model->get_customer(array('id' => $eorder['customer_id']))[0];
+        $d['book_list'] = $this->order_model->get_eorder_book_list(array('status' => 1, 'eorder_id' => $eorder['id']));       
+        $d['eorder'] = $eorder;
+        $d['customer'] = $customer;
+        //var_dump($d);
+        $this->load->view('order_manage/print_eorder', $d);
+    }
 
     /**
      * 编辑保存实物销售单

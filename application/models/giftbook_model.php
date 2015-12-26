@@ -248,8 +248,8 @@ class giftbook_model extends CI_Model {
         foreach ($pageData as &$v) {
             $v['checkbox'] = "<input name='row_sel' type='checkbox' id='{$v['id']}'>";
             $v['oper'] = "<a rel='{$v['id']}'class='edit oper'href='/giftbook_manage/edit_giftbook?id={$v['id']}'>编辑</a>";
-            $v['oper'] .= "<a rel='{$v['id']}'class='minus oper'>&nbsp;&nbsp;&nbsp;出库</a>";
-            $v['oper'] .= "<a rel='{$v['id']}'class='add oper'>&nbsp;&nbsp;&nbsp;入库</a>";
+            //$v['oper'] .= "<a rel='{$v['id']}'class='minus oper'>&nbsp;&nbsp;&nbsp;出库</a>";
+            //$v['oper'] .= "<a rel='{$v['id']}'class='add oper'>&nbsp;&nbsp;&nbsp;入库</a>";
             $v['status'] = isset($this->_giftbook_status[$v['status']]) ? $this->_giftbook_status[$v['status']] : '';
             $v['type'] = isset($this->_giftbook_type[$v['type']]) ? $this->_giftbook_type[$v['type']] : '';
             $v['goods_num'] = $v['goods_num']? $v['goods_num']:0;

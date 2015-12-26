@@ -72,6 +72,9 @@ $(document).ready(function () {
             alertError("#alert-error", '请填写商品库存！');
             return;
         }
+        if (g_type == 2){
+            g_inventory = 0;
+        }
         if (g_unit == '') {
             flag = flag & false;
             alertError("#alert-error", '请填写商品单位！');

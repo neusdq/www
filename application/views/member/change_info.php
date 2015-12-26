@@ -63,8 +63,8 @@
         $("#nick_name-error").text('');
         $("#phone-error").text('');
         $("#email-error").text('');
-        if (nick_name === ''|| nick_name_len<4 || nick_name_len>10) {
-            $("#nick_name-error").text('请输入4-10位字符的姓名！');
+        if (nick_name === ''|| nick_name_len<2 || nick_name_len>10) {
+            $("#nick_name-error").text('请输入2-10位字符的姓名！');
             return false;
         }
         if (phone == '' ||(!is_mobile.test(phone) && !is_phone.test(phone))) {

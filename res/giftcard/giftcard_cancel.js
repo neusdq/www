@@ -124,6 +124,7 @@ $(document).ready(function () {
         var cancel_date = $('#a_cancel_date').val();
         var customer = $('#a_customer').val();
         var contact_person = $('#a_contact_person').val();
+        var enduser = $('#a_enduser').val();
         var telephone = $('#a_telephone').val();
         var address = $('#a_address').val();
         var remark = $.trim($("textarea[name=a_remark]").val());
@@ -181,6 +182,7 @@ $(document).ready(function () {
                     cancel_date: cancel_date,
                     customer: customer,
                     contact_person: contact_person,
+                    enduser:enduser,
                     telephone: telephone,
                     address: address,
                     remark: remark,

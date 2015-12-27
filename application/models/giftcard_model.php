@@ -45,6 +45,7 @@ class giftcard_model extends CI_Model {
         $data['trade_date'] = $this->input->post('trade_date');
         $data['custom_id'] = $this->input->post('customer');
         $data['wechat_id'] = $this->input->post('wechat');
+        $data['end_user'] = $this->input->post('enduser');
         $data['expire_date'] = $this->input->post('expiration_date');
         $data['remark'] = trim($this->input->post('remark'));
         $data['gift_book_arr'] = $this->input->post('gift_book_arr');
@@ -59,6 +60,7 @@ class giftcard_model extends CI_Model {
         $gift_books = $order_data['gift_book_arr'];
         unset($order_data['gift_book_arr']);
         $order_data['order_name'] = '';
+        $price = 0;
         $order_book = array();
         foreach($gift_books as $v){
             $order_book[] = array(
@@ -70,8 +72,16 @@ class giftcard_model extends CI_Model {
                 'ecode'=>$v['end_num'],
                 'num'=>$v['num'],
             );
+            if($v['discount']){
+                $price += round($v['gift_price']*$v['discount']/10, 2);
+            }else{
+                $price += $v['gift_price'];
+            }
+            $wh = array('`num_code` >='=>$v['start_num'],'`num_code` <='=>$v['end_num']);
+            $this->db->where($wh)->update('`gift_management`.`gift_card`',array('book_id'=>$v['gift_book_id']));
             $order_data['order_name'] .= trim($v['gift_book_name']) . '*' . $v['num'];
         }
+        $order_data['price'] = $price;
         $this->db->insert($this->_card_order_tb,$order_data);
         $order_id = $this->db->insert_id();
         foreach($order_book as &$v){
@@ -159,7 +169,7 @@ class giftcard_model extends CI_Model {
             ,'`card_order`.`contact_person`','`card_order`.`order_name`','`card_order`.`price`',
             '`card_order`.`pay_status`','`card_order`.`pay_remark`','`card_order`.`remark`',
             '`card_order`.`trade_date`','`card_order`.`wechat_id`','`card_order`.`custom_id`',
-            '`card_order`.`sales_id`','`card_order`.`end_user`');
+            '`card_order`.`sales_id`','`card_order`.`end_user`','`card_order`.`modify_user`');
         $sort_cols = array('6'=>'`price`');
         $filter_cols = array();
         //查询主表
@@ -380,6 +390,7 @@ class giftcard_model extends CI_Model {
         $data['sales_id'] = $this->input->post('sales');
         $data['cancel_date'] = $this->input->post('cancel_date');
         $data['custom_id'] = $this->input->post('customer');
+        $data['end_user'] = $this->input->post('enduser');
         $data['remark'] = trim($this->input->post('remark'));
         $data['code_arr'] = $this->input->post('code_arr');
         return $data;

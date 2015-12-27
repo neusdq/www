@@ -50,7 +50,7 @@ $(document).ready(function () {
             {"mData": "trade_date"},
             {"mData": "sales"},
             {"mData": "customer"},
-            {"mData": "contact_person"},
+            {"mData": "modify_user"},
             {"mData": "order_name"},
             {"mData": "price"},
             {"mData": "pay_status"},

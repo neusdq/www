@@ -295,8 +295,8 @@ class giftcard_model extends CI_Model {
         $data = array();
         $num = $d['ecode']-$d['scode'];
         $time = date('Y-m-d H:i:s');
-        for($i=0;$i<$num;$i++){
-            $num_code = $d['ecode'] + $i;
+        for($i=0;$i<=$num;$i++){
+            $num_code = $d['scode'] + $i;
             $password = substr(create_uniqid(), 2, 6);
             $data[] = array('num_code'=>$num_code,'password'=>$password,'ctime'=>$time);
         }

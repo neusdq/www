@@ -19,6 +19,7 @@ class order_manage extends CI_Controller {
         $this->load->model('order_model');
         $this->load->model('deliver_model');
         $this->load->model('user_model');
+        $this->load->model('goods_manage_model');
         $this->load->library('Data_table_parser');
         $this->data_table_parser->set_db($this->db);
         $this->load->library('uc_service', array('cfg' => $this->config->item('alw_uc')));
@@ -56,6 +57,7 @@ class order_manage extends CI_Controller {
         $giftcard_id = $this->input->get('id');
         $d = array('title' => '兑换商品列比表', 'msg' => '', 'no_load_bootstrap_plugins' => true);
         $d['giftcard'] = $this->order_model->get_card_info($giftcard_id);
+        //var_dump($d);
         $d['gift'] = $this->order_model->get_gift_list($giftcard_id);
         $d['deliver'] = $this->deliver_model->get_deliver();
         $this->layout->view('order_manage/gift_list', $d);
@@ -348,6 +350,18 @@ class order_manage extends CI_Controller {
         $this->layout->view('order_manage/edit_return_order', $d);
     }
     
+    /*
+     * 打印退货入库单
+     */
+    public function print_in_rorder(){
+        $id = $this->input->get('id');
+        $d['order_id'] = $id;
+        $d['order_info'] = $this->order_model->search_order_info($this->data_table_parser, $id)[0];
+        $d['return_info'] = $this->order_model->search_return_info(array('order_id' =>$id))[0];
+        //var_dump($d);
+        $this->load->view('order_manage/print_in_rorder', $d);
+    }
+    
     public function update_return_order() {
         $order_id = $this->input->post('order_id');
         $data['return_amount'] = $this->input->post('return_amount');
@@ -439,6 +453,36 @@ class order_manage extends CI_Controller {
         $this->layout->view('order_manage/edit_exchange_order', $d);
      
     }
+    /*
+     * 打印换货入库单
+     */
+    public function print_in_exorder(){
+        $id = $this->input->get('id');
+        $d['order_id'] = $id;
+        $d['order_info'] = $this->order_model->search_order_info($this->data_table_parser, $id)[0];
+        $exchange_info = $this->order_model->search_exchange_info(array('order_id' =>$id))[0];
+        $gift = $this->goods_manage_model->get_goods_info(array('id'=>$exchange_info['from_gift']),array())[0];
+        $d['exchange_info']=$exchange_info;
+        $d['gift']=$gift;
+        //var_dump($d);
+        $this->load->view('order_manage/print_in_exorder', $d);
+    }
+    
+       /*
+     * 打印换货出库单
+     */
+    public function print_out_exorder(){
+        $id = $this->input->get('id');
+        $d['order_id'] = $id;
+        $d['order_info'] = $this->order_model->search_order_info($this->data_table_parser, $id)[0];
+        $exchange_info = $this->order_model->search_exchange_info(array('order_id' =>$id))[0];
+        $gift = $this->goods_manage_model->get_goods_info(array('id'=>$exchange_info['to_gift']),array())[0];
+        $d['exchange_info']=$exchange_info;
+        $d['gift']=$gift;
+        //var_dump($d);
+        $this->load->view('order_manage/print_out_exorder', $d);
+    }
+    
     public function update_exchange_order() {
         $order_id = $this->input->post('order_id');
         $data['diliver_money'] = $this->input->post('diliver_money');

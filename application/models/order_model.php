@@ -73,13 +73,14 @@ class order_model extends CI_Model {
      */
     public function get_card_info($id) {
         $query = $this->db->query("SELECT a.id as card_id,a.num_code,a.expire_date,b.id book_id,b.name book_name,b.sale_price FROM gift_management.gift_card a join gift_management.gift_book b on a.book_id=b.id  where a.id='" . $id . "'");
+        
         $row = $query->row();
         $data['card_id'] = $row->card_id;
         $data['num_code'] = $row->num_code;
         $data['expire_date'] = $row->expire_date;
         $data['book_id'] = $row->book_id;
         $data['book_name'] = $row->book_name;
-        $data['sale_price'] = $row->sale_price;
+        $data['sale_price'] = $row->sale_price;       
         return $data;
     }
     
@@ -565,7 +566,7 @@ class order_model extends CI_Model {
         foreach ($pageData as &$v) {
             $v['checkbox'] = "<input name='row_sel' type='checkbox' id='{$v['id']}'>";
             $v['oper'] = "<a rel='{$v['id']}'class='edit oper' href='/order_manage/edit_return_order?id={$v['id']}'>编辑</a>";
-            $v['oper'] .= "<a rel='{$v['id']}'class='edit oper'>&nbsp;打印</a>";
+            $v['oper'] .= "<a href='/order_manage/print_in_rorder?id={$v['id']}' target='_blank' class='edit oper'>&nbsp入库单</a>";
             $v['status'] = isset($this->_change_order_status[$v['status']]) ? $this->_change_order_status[$v['status']] : '';
             $v['type'] = '退货';
         }
@@ -613,7 +614,8 @@ class order_model extends CI_Model {
         foreach ($pageData as &$v) {
             $v['checkbox'] = "<input name='row_sel' type='checkbox' id='{$v['id']}'>";
             $v['oper'] = "<a rel='{$v['id']}'class='edit oper' href='/order_manage/edit_exchange_order?id={$v['id']}'>编辑</a>";
-            $v['oper'] .= "<a rel='{$v['id']}'class='edit oper'>&nbsp;打印</a>";
+            $v['oper'] .= "<a href='/order_manage/print_in_exorder?id={$v['id']}' target='_blank' class='edit oper'>&nbsp入库单</a>";
+            $v['oper'] .= "<a href='/order_manage/print_out_exorder?id={$v['id']}' target='_blank' class='edit oper'>出库单</a>";
             $v['status'] = isset($this->_change_order_status[$v['status']]) ? $this->_change_order_status[$v['status']] : '';
             $v['type'] = '换货';
             $v['return_amount'] = '0';

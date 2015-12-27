@@ -153,6 +153,7 @@ $(document).ready(function () {
         var expiration_date = $('#a_expiration_date').val();
         var remark = $("#a_remark").val();
         var wechat = $("#a_wechat").val();
+        var enduser = $("#a_enduser").val();
         var is_mobile = /^(?:13\d|15\d|18\d)\d{5}(\d{3}|\*{3})$/;
         var is_phone = /^((0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
         
@@ -221,6 +222,7 @@ $(document).ready(function () {
                     telephone: telephone,
                     address: address,
                     wechat:wechat,
+                    enduser:enduser,
                     expiration_date: expiration_date,
                     remark: remark,
                     gift_book_arr: giftArr

@@ -31,6 +31,7 @@ class giftcard_manage extends CI_Controller {
     public function giftcard_order() {
         if ($_POST) {
             $data = $this->giftcard_model->get_giftcard_order_params();
+            $data['modify_user'] = $this->uc_service->get_user_name();
             if ($insert_id = $this->giftcard_model->add_giftcard_order($data)) {
                 json_out_put(return_model(0, '添加成功', $insert_id));
             } else {

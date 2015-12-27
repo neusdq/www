@@ -54,7 +54,7 @@
 
                     <label for="a_trade_date" class="control-label col-sm-1">交易日期</label>
                     <div class=" col-sm-2">
-                        <input class="form-control" readonly id="a_trade_date" type="text" value="2016-05-01">
+                        <input class="form-control" readonly id="a_trade_date" type="text" value="<?php echo date('Y-m-d');?>">
                     </div>
 
                 </div>
@@ -98,7 +98,7 @@
                 <div class="form-group">
                     <label for="a_expiration_date" class="control-label col-sm-2">失效日期</label>
                     <div class=" col-sm-2">
-                        <input class="form-control" id="a_expiration_date" type="text" value="2016-05-01" readonly>
+                        <input class="form-control" id="a_expiration_date" type="text" value="<?php echo date('Y-m-d',time()+86400);?>" readonly>
                     </div>
                 </div>
 

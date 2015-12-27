@@ -38,7 +38,7 @@
                             </span>
                             <span style="max-width: 120px;max-height: 80px;">
                                 <?php if(isset($v['pic_ids'][0])):?>
-                                <img src="<?php echo RES . $v['pic_ids'][0]['path'] . $v['pic_ids'][0]['name']; ?>" alt="" style="max-width: 120px;max-height: 80px;margin-left: 6px;">
+                                <img src="<?php echo UPLOAD . $v['pic_ids'][0]['path'] . $v['pic_ids'][0]['name']; ?>" alt="" style="max-width: 120px;max-height: 80px;margin-left: 6px;">
                                 <?php endif;?>
                             </span>
                         </label>

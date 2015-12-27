@@ -84,6 +84,7 @@
                             <td class="text-left" style="vertical-align: middle;width: 80px;">客户名称</td>
                             <td colspan="3">
                                 <select name="e_customer" data-placeholder="选择客户" class="chzn_a form-control">
+                                    <option value="">请选择</option>
                                     <?php foreach ($customer as $v): ?>
                                         <option value="<?php echo $v['id']; ?>"><?php echo $v['name']; ?></option>
                                     <?php endforeach; ?>

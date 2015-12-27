@@ -42,6 +42,7 @@
                     <label for="a_sales" class="control-label col-sm-2">销售员</label>
                     <div class="col-sm-2">
                         <select name="a_sales" id="a_sales" data-placeholder="选择销售员" class="chzn_a form-control">
+                            <option value="">请选择</option>
                             <?php $i = 0; ?>
                             <?php foreach ($sales as $v): ?>
                                 <option value="<?php echo $v['id']; ?>" <?php echo $v['id'] == $eorder['sales'] ? 'selected="selected"' : ''; ?>>

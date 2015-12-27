@@ -161,6 +161,7 @@
                                 <td class="center">选择礼册</td>
                                 <td>
                                     <select name="giftBook" id="giftBook" data-placeholder="选择礼册" class="chzn_a form-control">
+                                        <option value="">请选择</option>
                                         <?php $i = 0; ?>
         
                                         <?php foreach ($giftbook as $v): ?>

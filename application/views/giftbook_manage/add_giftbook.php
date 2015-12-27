@@ -157,6 +157,7 @@
             var description = $("#a_description").val();
             var remark = $("#a_remark").val();
             var pic_ids = getUploadImg();
+            console.log(pic_ids);
             var price_preg = /^([0-9]+[\.]?[0-9]+|\d+)$/;
             if(name=='' || name==undefined){
                 flag = flag & false;
@@ -203,7 +204,7 @@
                 {
                     name:name,price:price,type:type,theme:theme,
                     set:set,gift_ids:gift_ids,des:description,
-                    pic_ids:pic_ids,remark:remark
+                    pic_id:pic_ids,remark:remark
                 },function(ret){
                     var d = $.parseJSON(ret);
                     if(d.errCode==0){

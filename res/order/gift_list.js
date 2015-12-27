@@ -6,7 +6,10 @@ $(document).ready(function () {
         backdrop: false,
         show: false
     });
-    
+    $('#r_date').datepicker({
+        minDate: new Date(),
+        dateFormat: "yy-mm-dd"
+    });
     //选择监听
     $("li.checkbox").die().live('click',function(){
         $(this).siblings('li.checkbox').find('input[name=row_sel]').attr('checked',false);

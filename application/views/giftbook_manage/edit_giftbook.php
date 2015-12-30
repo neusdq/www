@@ -175,7 +175,7 @@
             var gift_ids = $("#e_giftids").val();
             var description = $("#e_description").val();
             var remark = $("#e_remark").val();
-            var pic_ids = getUploadImg();
+            var pic_ids = getUploadImg().split(',')[0];
             var price_preg = /^([0-9]+[\.]?[0-9]+|\d+)$/;
             if(name=='' || name==undefined){
                 flag = flag & false;

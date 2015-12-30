@@ -156,7 +156,7 @@
             var gift_ids = $("#a_giftids").val();
             var description = $("#a_description").val();
             var remark = $("#a_remark").val();
-            var pic_ids = getUploadImg();
+            var pic_ids = getUploadImg().split(',')[0];
             console.log(pic_ids);
             var price_preg = /^([0-9]+[\.]?[0-9]+|\d+)$/;
             if(name=='' || name==undefined){

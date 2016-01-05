@@ -96,7 +96,7 @@ $(document).ready(function () {
                     }, function (ret) {
                 var d = $.parseJSON(ret);
                 if (d.errCode == 0) {
-                    alertSuccess("#alert-success", '/goods_manage/add_goods');
+                    alertSuccess("#alert-success", '/goods_manage/goods_list');
                 } else {
                     alertError("#alert-error", d.msg);
                 }

@@ -127,6 +127,7 @@ $(document).ready(function () {
         var enduser = $('#a_enduser').val();
         var telephone = $('#a_telephone').val();
         var address = $('#a_address').val();
+        var is_sales = $('#a_status').val();
         var remark = $.trim($("textarea[name=a_remark]").val());
         var is_mobile = /^(?:13\d|15\d|18\d)\d{5}(\d{3}|\*{3})$/;
         var is_phone = /^((0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
@@ -186,6 +187,7 @@ $(document).ready(function () {
                     telephone: telephone,
                     address: address,
                     remark: remark,
+                    is_sales:is_sales,
                     code_arr: giftArr
                 }, function (ret) {
                     var d = $.parseJSON(ret);

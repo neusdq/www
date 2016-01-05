@@ -229,7 +229,7 @@ $(document).ready(function () {
                 }, function (ret) {
                     var d = $.parseJSON(ret);
                     if (d.errCode == 0) {
-                        alertSuccess("#alert-success", '/giftcard_manage/giftcard_order');
+                        alertSuccess("#alert-success", '/giftcard_manage/giftcard_order_list');
                     } else {
                         alertError("#alert-error", d.msg);
                     }

@@ -392,6 +392,7 @@ class giftcard_model extends CI_Model {
         $data['cancel_date'] = $this->input->post('cancel_date');
         $data['custom_id'] = $this->input->post('customer');
         $data['end_user'] = $this->input->post('enduser');
+        $data['is_sales'] = $this->input->post('is_sales');
         $data['remark'] = trim($this->input->post('remark'));
         $data['code_arr'] = $this->input->post('code_arr');
         return $data;
@@ -403,7 +404,9 @@ class giftcard_model extends CI_Model {
      */
     public function add_cancel_giftcard($data){
         $codes = $data['code_arr'];
+        $tmp_status = $data['is_sales']==2 ? 1 : 5;
         unset($data['code_arr']);
+        unset($data['is_sales']);
         $this->db->insert($this->_cancel_order_tb,$data);
         $id = $this->db->insert_id();
         $d = array();
@@ -412,6 +415,8 @@ class giftcard_model extends CI_Model {
                         'cancel_id'=>$id,'start_code'=>$v['start_num']
                         ,'end_code'=>$v['end_num'],'num'=>$v['num']
                     );
+            $wh = array('`num_code` >='=>$v['start_num'],'`num_code` <='=>$v['end_num']);
+            $this->db->where($wh)->update('`gift_management`.`gift_card`',array('status'=>$tmp_status,'is_draw'=>0));
         }
         if($d){
             $this->db->insert_batch($this->_cancel_order_card_tb,$d);

@@ -104,11 +104,11 @@
                     <label for="r_status" class="control-label col-sm-2">状态</label>
                     <div class="col-sm-2">
                         <select name="r_status" id="r_status" data-placeholder="选择状态..." class="chzn_a form-control">
-                            <option value="0">已作废</option>
-                            <option value="1">未审核</option>
-                            <option value="2">未发货</option>
-                            <option value="3">已发货</option>
-                            <option value="4">已送达</option>
+                            <option value="0" <?php echo $order['status']==0?"selected='selected'":'';?>>已作废</option>
+                            <option value="1" <?php echo $order['status']==1?"selected='selected'":'';?>>未审核</option>
+                            <option value="2" <?php echo $order['status']==2?"selected='selected'":'';?>>未发货</option>
+                            <option value="3" <?php echo $order['status']==3?"selected='selected'":'';?>>已发货</option>
+                            <option value="4" <?php echo $order['status']==4?"selected='selected'":'';?>>已送达</option>
                         </select>
                     </div>
                 </div>

@@ -43,7 +43,10 @@ class order_manage extends CI_Controller {
         $password = $this->input->post('password');
         $result = $this->order_model->check_cardauth($numcode, $password);
         if ($result) {
-            json_out_put(return_model(0, '验证成功', $result->id));
+            if( $result->is_draw != 0 ){
+                json_out_put(return_model(0, '验证成功', $result->id));
+            }
+            json_out_put(return_model(2001, '该卡不能进行兑换！', NULL));
         } else {
             json_out_put(return_model('2001', '卡号或密码错误！', NULL));
         }

@@ -171,8 +171,24 @@ class order_model extends CI_Model {
     }
 
     public function add_order($order_info) {
-        $this->db->insert($this->_order_tb, $order_info);
-        return $this->db->insert_id();
+        $row = $this->db->query("select `gift_book`.`type_id` 
+        from `gift_management`.`gift_book` 
+        where `gift_book`.`id`={$order_info['gift_id']}")->row();
+        $order_num = 1;
+        if(isset($row->type_id)){
+            if($row->type_id==2){
+                $order_num=12;
+            }elseif($row->type_id==3){
+                $order_num=6;
+            }else{
+                $order_num=3;
+            }
+        }
+        for($i=0;$i<$order_num;$i++){
+            $order_info['deliver_date'] = date('Y-m-d',strtotime($order_info['deliver_date'])+86400*30);
+            $this->db->insert($this->_order_tb, $order_info);
+        }
+        return TRUE;
     }
 
     /**

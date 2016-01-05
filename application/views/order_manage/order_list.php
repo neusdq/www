@@ -55,6 +55,7 @@
                     </th>
                     <th class="center">订单编号</th>
                     <th class="center">快递单号</th>
+                    <th class="center">发货日期</th>
                     <th class="center">快递公司</th>
                     <th class="center">商品名称</th>
                     <th class="center">收件人</th>

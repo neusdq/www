@@ -29,8 +29,9 @@ class giftcard_model extends CI_Model {
     );
     
     private $_card_status = array(
-        '1' => '已开卡',
-        '2' => '未开卡',
+        '1' => '未开卡',
+        '2' => '已开卡',
+        '5' => '已退卡',
     );
             
     function __construct() {

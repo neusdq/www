@@ -32,6 +32,7 @@ $(document).ready(function () {
             {"mData": "checkbox"},
             {"mData": "id"},
             {"mData": "deliver_num"},
+            {"mData": "deliver_date"},
             {"mData": "deliver"},
             {"mData": "gift_name"},
             {"mData": "customer_name"},
@@ -60,7 +61,6 @@ $(document).ready(function () {
     $('button.search').die().live("click", function (e) {
         var oSettings = oTable.fnSettings();
         oSettings.sAjaxSource = ajax_source + getSearchParams();
-        alert();
         oTable.fnDraw();
     });
 

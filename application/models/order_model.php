@@ -57,7 +57,7 @@ class order_model extends CI_Model {
     }
 
     public function check_cardauth($numcode, $password) {
-        $query = $this->db->query("SELECT id,num_code,password FROM gift_management.gift_card  where num_code='" . $numcode . "' and password='" . $password . "'");
+        $query = $this->db->query("SELECT id,num_code,password,is_draw FROM gift_management.gift_card  where num_code='" . $numcode . "' and password='" . $password . "'");
         $row = $query->row();
         if (isset($row)) {
             return $row;

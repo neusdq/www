@@ -264,6 +264,7 @@ class order_model extends CI_Model {
 
     public function ajax_orderlist_table_data(&$pageData) {
         foreach ($pageData as &$v) {
+            $v['deliver_date'] = date('Y-m-d',strtotime($v['deliver_date']));
             $v['checkbox'] = "<input name='row_sel' type='checkbox' id='{$v['id']}'>";
             $v['oper'] = "<a href='/order_manage/edit_order?id={$v['id']}' class='edit oper'>编辑</a>";
             $v['oper'] .= "<a href='/order_manage/print_out_order?id={$v['id']}' target='_blank' class='edit oper'>&nbsp;&nbsp;&nbsp;打印</a>";

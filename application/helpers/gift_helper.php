@@ -12,7 +12,7 @@ if (!function_exists('nav_item_display')) {
 
     function nav_item_display($display_role, $user_role) {
         if (!is_array($user_role)) {
-            $user_role = array($user_role);
+            $user_role = explode(',', $user_role);
         }
         if (array_intersect($display_role, $user_role)) {
             return true;

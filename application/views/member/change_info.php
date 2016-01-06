@@ -56,7 +56,7 @@
         var phone = $("#phone").val();
         var email = $("#email").val();
         var nick_name_len = nick_name.length;
-        var is_mobile = /^(?:13\d|15\d)\d{5}(\d{3}|\*{3})$/;   
+        var is_mobile = /^(?:13\d|15\d|18\d)\d{5}(\d{3}|\*{3})$/;   
         var is_phone = /^((0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
         var is_email =  /^[a-z0-9-\_]+[\.a-z0-9_\-]*@([_a-z0-9\-]+\.)+([a-z]{2}|aero|arpa|biz|com|coop|edu|gov|info|int|jobs|mil|museum|name|nato|net|org|pro|travel)$/;
         

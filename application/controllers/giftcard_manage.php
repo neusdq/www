@@ -42,7 +42,7 @@ class giftcard_manage extends CI_Controller {
             $d['sales'] = $this->user_model->get_user();
             $d['customer'] = $this->customer_model->get_customer();
             $d['wechat'] = $this->wechat_model->get_wechat();
-            $d['giftbook'] = $this->giftbook_model->get_giftbook_info();
+            $d['giftbook'] = $this->giftbook_model->get_giftbook_info(array('status'=>1));
             $this->layout->view('giftcard_manage/giftcard_order', $d);
         }
     }

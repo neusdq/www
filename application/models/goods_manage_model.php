@@ -74,7 +74,7 @@ class goods_manage_model extends CI_Model {
             $cwhere['`gift`.`status`'] = $_REQUEST['status'];
         }
         if (isset($_REQUEST['type']) && $_REQUEST['type']!=0) {
-            $cwhere['`gift`.`id`'] = $_REQUEST['type'];
+            $cwhere['`gift`.`type`'] = $_REQUEST['type'];
         }
         if (isset($_REQUEST['supply']) && $_REQUEST['supply']!=0) {
             $cwhere['`gift`.`supply_id`'] = $_REQUEST['supply'];
@@ -93,10 +93,10 @@ class goods_manage_model extends CI_Model {
      */
     private function _goods_page_cols(){
         
-        return $cols = array('`gift`.`id` AS `id`', '`gift`.`name` AS `g_name`'
-                , '`gift`.`type`','`gift`.`store_num`', '`gift`.`sold_num`'
-                ,'`gift`.`status`','`gift_brand`.`name` AS `b_name`'
-                ,'`gift_classify`.`name` AS `c_name`','`gift_supply`.`name` AS `s_name`'
+        return $cols = array('`gift`.`name` AS `g_name`','`gift`.`id` AS `id`' 
+                ,'`gift`.`status`','`gift`.`store_num`', '`gift`.`sold_num`'
+                ,'`gift_supply`.`name` AS `s_name`','`gift_classify`.`name` AS `c_name`'
+                ,'`gift_brand`.`name` AS `b_name`', '`gift`.`type`'
             );
     }
     
@@ -106,7 +106,7 @@ class goods_manage_model extends CI_Model {
      */
     public function goods_page_data($dtparser){
         $cols = $this->_goods_page_cols();
-        $sort_cols = array('4'=>'`gift`.`store_num`');
+        $sort_cols = array('0'=>'`gift`.`ctime`','4'=>'`gift`.`store_num`');
         $filter_cols = array();
         //查询主表
         $dtparser->select($cols, $sort_cols, $filter_cols, FALSE);

@@ -12,7 +12,7 @@ $(document).ready(function () {
         "sDom": "<'row'<'col-sm-6'f>r>t<'row'<'col-sm-2'<'dt_actions'>l><'col-sm-2'i><'col-sm-8'p>>",
         "sPaginationType": "bootstrap_alt",
         "bFilter": false, //禁止过滤
-        "aaSorting": [[4, 'desc']], //默认排序
+        "aaSorting": [[0, 'desc']], //默认排序
         "sAjaxSource": ajax_source,
         "bServerSide": true,
         "aoColumnDefs": [

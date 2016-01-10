@@ -24,9 +24,12 @@
             </div>
             <div class="pull-left sort-disabled margin-left-1">
                 <select name="s_status" class="select-medium form-control">
-                    <option value="0">订单状态</option>
-                    <option value="1">未审核</option>
-                    <option value="2">已审核</option>
+                    <option value="">订单状态</option>
+                    <option value="0">已作废</option>
+                    <option value="1">待审核</option>
+                    <option value="2">待发货</option>
+                    <option value="3">待签收</option>
+                    <option value="4">已签收</option>
                 </select>
             </div>
             <div class="pull-left sort-disabled margin-left-1">
@@ -89,10 +92,9 @@
                             <td>
                                 <select name="e_status" class="select-medium form-control">
                                     <option value="0" >已作废</option>
-                                    <option value="1" selected="selected">未审核</option>
-                                    <option value="2">未发货</option>
-                                    <option value="3">已发货</option>
-                                    <option value="4">已送达</option>
+                                    <option value="2">待发货</option>
+                                    <option value="3">待签收</option>
+                                    <option value="4">已签收</option>
                                 </select>
                             </td>
                             <td class="alert-label-error center" id="e-status-error"></td>

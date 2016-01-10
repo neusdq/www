@@ -199,6 +199,9 @@ class giftcard_manage extends CI_Controller {
         $d['scode'] = $this->input->post('scode');
         $d['ecode'] = $this->input->post('ecode');
         $aff_row = $this->giftcard_model->create_giftcard($d);
+        if($aff_row==-1){
+            json_out_put(return_model(3001, '用户卡号已存在！', NULL));
+        }
         if(intval($aff_row)>0){
             json_out_put(return_model(0, '添加成功', $aff_row));
         }else{

@@ -105,7 +105,7 @@ class order_model extends CI_Model {
     public function get_gift_list($giftcard_id){
         $sql = 'SELECT `gift_book`.`group_ids` FROM `gift_card` LEFT JOIN `gift_book` '
             . ' ON `gift_book`.`id`=`gift_card`.`book_id`'
-            . ' WHERE `gift_card`.`id`=' . $giftcard_id;
+            . ' WHERE `gift_card`.`status` IN(1,2) AND `gift_card`.`id`=' . $giftcard_id;
         $query = $this->db->query($sql);
         $row = $query->row();
         $gift = array();

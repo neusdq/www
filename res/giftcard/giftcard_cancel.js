@@ -194,7 +194,7 @@ $(document).ready(function () {
                     if (d.errCode == 0) {
                         alertSuccess("#alert-success", '/giftcard_manage/cancel_giftcard');
                     } else {
-                        alertError("#alert-error", d.msg);
+                        alertError("#alert-error", d.val);
                     }
             });
         }

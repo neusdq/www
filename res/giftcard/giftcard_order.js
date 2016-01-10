@@ -7,6 +7,7 @@ $(document).ready(function () {
 
     //新建
     $(".add_card").click(function () {
+        $("#add-card-modal input").val('');
         $("#add-card-modal").modal('show');
         $('#giftBook').change(function () {
             $('.gift_show_price').html(13)

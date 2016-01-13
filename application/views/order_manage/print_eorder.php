@@ -44,14 +44,16 @@ and open the template in the editor.
                         <td class="center"></td>
                         <td class="center">数量</td>
                     </tr>
-                    <tr>
+                    
                         <?php foreach($book_list as $v):?>
+                        <tr>
                             <td class="center"><?php echo $v['book_id']; ?></td>
                             <td class="center"><?php echo $v['book_name']; ?></td>
                             <td class="center"></td>
                             <td class="center"><?php echo $v['book_count']; ?></td>
+                        </tr>
                         <?php endforeach;?>
-                    </tr>
+                    
                     <tr>
                         <td class="center">收货方</td>
                         <td class="center" colspan="3"><?php echo $customer['name'];?></td>

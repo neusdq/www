@@ -37,7 +37,7 @@ $(document).ready(function () {
                 price.parents('tr').find('.alert-label-error').html('请填单价');
             }
 
-            if (discount.val() == '' || !isNum.test(discount.val())) {
+            if (discount.val() == '') {
                 flag = flag & false;
                 discount.parents('tr').find('.alert-label-error').html('请填写正确的折扣');
             }
@@ -138,9 +138,9 @@ $(document).ready(function () {
     //客户选择监听
     $("#giftBook").live('change',function(e){
        e.preventDefault();
-       for(i in giftBook){
-           if(giftBook[i].id==$(this).val()){
-                $("#price").val(giftBook[i].sale_price);
+       for(i in gifts){
+           if(gifts[i].id==$(this).val()){
+                $("#price").val(gifts[i].sale_price);
             }
        }
     });

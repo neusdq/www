@@ -155,17 +155,17 @@
             <div class="modal-content" id="modal-max-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h3 class="modal-title">增加礼册</h3>
+                    <h3 class="modal-title">增加商品</h3>
                 </div>
                 <div class="modal-body">
                     <table class="table table-condensed table-striped">
                         <tbody>
                             <tr>
-                                <td class="center">选择礼册</td>
+                                <td class="center">选择商品</td>
                                 <td>
                                     <select name="giftBook" id="giftBook" data-placeholder="选择礼册" class="chzn_a form-control">
                                         <?php $i = 0; ?>
-                                        <?php foreach ($giftbook as $v): ?>
+                                        <?php foreach ($gift as $v): ?>
                                             <option value="<?php echo $v['id']; ?>" <?php echo $i == 0 ? 'selected:"selected"' : '' ?>>
                                                 <?php echo $v['name']; ?>
                                             </option>
@@ -257,5 +257,5 @@
     }
     var customerArr = <?php echo json_encode($customer); ?>;
     
-    var giftBook = <?php echo json_encode($giftbook); ?>;
+    var gifts = <?php echo json_encode($gift); ?>;
 </script>

@@ -40,6 +40,7 @@
             <div class="pull-left sort-disabled">
                 <a class="btn btn-success label" href="/order_manage/add_return_order">退货</a>
                 <a class="btn btn-success label margin-left-2" href="/order_manage/add_exchange_order">换货</a>
+                <a class="btn btn-success label" id="update-status-a">更换状态</a>
             </div>
         </div>
         <div class="empty"></div>
@@ -68,7 +69,50 @@
     </div> 
 </div>
 
-
+<div class="modal fade" id="update-order-status-modal">
+    <div class="modal-dialog">
+        <div class="modal-content" id="modal-max-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title">修改状态</h3>
+            </div>
+            <div class="modal-body">
+                <table class="table table-condensed table-striped">
+                    <tbody>
+                        <tr>
+                            <td class="center">订单状态</td>
+                            <td>
+                                <select name="e_status" class="select-medium form-control">
+                                    <option value="0" >已作废</option>
+                                    <option value="1" selected="selected">未审核</option>
+                                    <option value="2">未发货</option>
+                                    <option value="3">已发货</option>
+                                    <option value="4">已送达</option>
+                                </select>
+                            </td>
+                            <td class="alert-label-error center" id="e-status-error"></td>
+                        </tr>
+                        <tr>
+                            <td class="center">备注</td>
+                            <td>
+                                <textarea name="e_remark" cols="6" rows="3" class="form-control"></textarea>
+                            </td>
+                            <td class="alert-label-error center" ></td>
+                        </tr>
+                        <tr>
+                            <td class="alert-label-error center" id="e-remark-error" colspan="3" style="text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="center">
+                                <button type="button" class="btn btn-success" id="update-status-bnt">确认</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- datatable -->
 <script src="<?php echo RES; ?>lib/datatables/jquery.dataTables.min.js"></script>
 <script src="<?php echo RES; ?>lib/datatables/extras/Scroller/media/js/dataTables.scroller.min.js"></script>

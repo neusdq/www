@@ -3,16 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/usr/local/nginx/www/application/config/database.php</file>
-            <file>file:/usr/local/nginx/www/application/views/member/change_info.php</file>
-            <file>file:/usr/local/nginx/www/application/views/member/user_info.php</file>
+            <file>file:/usr/local/nginx/www/application/views/media_manage/add_media.php</file>
+            <file>file:/usr/local/nginx/www/application/views/goods_manage/edit_goods.php</file>
             <file>file:/usr/local/nginx/www/application/controllers/goods_manage.php</file>
-            <file>file:/usr/local/nginx/www/application/models/deliver_model.php</file>
-            <file>file:/usr/local/nginx/www/application/models/giftbook_model.php</file>
+            <file>file:/usr/local/nginx/www/application/controllers/website_manage.php</file>
             <file>file:/usr/local/nginx/www/application/views/goods_manage/add_goods.php</file>
-            <file>file:/usr/local/nginx/www/application/views/customer_manage/add_customer.php</file>
-            <file>file:/usr/local/nginx/www/application/config/config.php</file>
-            <file>file:/usr/local/nginx/www/application/views/giftbook_manage/giftbook_list.php</file>
+            <file>file:/usr/local/nginx/www/application/views/website_manage/add_website.php</file>
         </group>
     </open-files>
 </project-private>

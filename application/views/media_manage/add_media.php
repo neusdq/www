@@ -95,7 +95,7 @@
                 var html = '<li class="template-download fade none-list-style in">';
                     html += '<p class="preview">';
                     html += '<a href="'+file_path+ file_name+'" target="_blank" class="img-uploaded" title="'+file_name+'" >';
-                    html += '<img src="'+file_path+'thumb_'+file_name+'">';
+                    html += file_name;
                     html += '</a></p>';
                     html += '<span class="delete text-center btn-danger img-uploaded" id="'+file_id+'">删除</span>';
                     html += '</li>';

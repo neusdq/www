@@ -138,7 +138,11 @@ class media_model extends CI_Model {
         $this->db->select('*')->from($this->_mediainfo_tb);
         $this->db->where($where);
         $query = $this->db->get();
-        return $query->result_array();
+        $res = $query->result_array();
+        foreach ($res as &$value) {
+            $value['pic_ids'] = $this->get_media(array(),array('id'=>explode(',',$value['media_id'])));
+        }
+        return $res;
     }
 
     /*

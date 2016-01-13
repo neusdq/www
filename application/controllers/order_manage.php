@@ -149,7 +149,8 @@ class order_manage extends CI_Controller {
         $d = array('title' => '', 'msg' => '新建实物销售单', 'no_load_bootstrap_plugins' => true);
         $d['sales'] = $this->user_model->get_user();
         $d['customer'] = $this->customer_model->get_customer();
-        $d['giftbook'] = $this->giftbook_model->get_giftbook_info();
+        $d['gift'] = $this->goods_manage_model->get_goods_info(array('status' => 1),array());
+        #var_dump($d);
         $this->layout->view('order_manage/add_eorder', $d);
     }
 
@@ -204,14 +205,15 @@ class order_manage extends CI_Controller {
         $d = array('title' => '编辑实物销售单', 'msg' => '', 'no_load_bootstrap_plugins' => true);
         $d['sales'] = $this->user_model->get_user();
         $d['customer'] = $this->customer_model->get_customer();
-        $d['giftbook'] = $this->giftbook_model->get_giftbook_info();
+        #$d['giftbook'] = $this->giftbook_model->get_giftbook_info();
+        $d['gift'] = $this->goods_manage_model->get_goods_info(array('status' => 1),array());
         $order = $this->order_model->get_eorder_info(array('id' => $id));
         $eorder = $order[0];
         $init_customer = $this->customer_model->get_customer(array('id' => $eorder['customer_id']))[0];
         $d['init_customer'] = $init_customer;
         $d['book_list'] = $this->order_model->get_eorder_book_list(array('status' => 1, 'eorder_id' => $eorder['id']));
         $d['eorder'] = $eorder;
-        //var_dump($d);
+        //var_dump($d['book_list']);
         $this->layout->view('order_manage/edit_eorder', $d);
     }
     

@@ -62,6 +62,7 @@ class media_manage extends CI_Controller {
         $id = $this->input->get('id');
         $d = array('title' => '编辑多媒体', 'msg' => '', 'no_load_bootstrap_plugins' => true);
         $d['media']=$this->media_model->get_mediainfo(array('id' => $id))[0];
+        //var_dump($d);
         $this->layout->view('media_manage/edit_media', $d);
     }
     

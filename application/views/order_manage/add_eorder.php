@@ -54,7 +54,7 @@
 
                     <label for="a_deal_date" class="control-label col-sm-1">交易日期</label>
                     <div class=" col-sm-2">
-                        <input class="form-control" readonly id="a_deal_date" type="text" value="">
+                        <input class="form-control" readonly id="a_deal_date" type="text" value="<?php echo date('Y-m-d');?>">
                     </div>
 
                 </div>
@@ -158,13 +158,13 @@
                     <table class="table table-condensed table-striped">
                         <tbody>
                             <tr>
-                                <td class="center">选择礼册</td>
+                                <td class="center">选择商品</td>
                                 <td>
-                                    <select name="giftBook" id="giftBook" data-placeholder="选择礼册" class="chzn_a form-control">
+                                    <select name="giftBook" id="giftBook" data-placeholder="选择商品" class="chzn_a form-control">
                                         <option value="">请选择</option>
                                         <?php $i = 0; ?>
         
-                                        <?php foreach ($giftbook as $v): ?>
+                                        <?php foreach ($gift as $v): ?>
                                             <option value="<?php echo $v['id']; ?>">
                                                 <?php echo $v['name']; ?>
                                             </option>
@@ -243,5 +243,5 @@
 <script>
     var giftArr = [];
     var customerArr = <?php echo json_encode($customer); ?>;
-    var giftBook = <?php echo json_encode($giftbook); ?>;
+    var gifts = <?php echo json_encode($gift); ?>;
 </script>

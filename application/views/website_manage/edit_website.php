@@ -50,7 +50,31 @@
                         <input name="g_expire_date" id="g_expire_date" class="datepicker" data-date-format="yy-mm-dd" value="<?php echo $website['expire_date']; ?>">                     
                     </div>
                 </div>
-                
+                <div class="form-group">
+                    <label for="fileinput" class="control-label col-sm-2">上传</label>
+                    <!-- The table listing the files available for upload/download -->
+                    <span role="presentation" class="table table-striped">
+                     <ul class="files">
+                            <?php foreach ($website['pic_ids'] as $img): ?>
+                                <li class="template-download fade none-list-style in">
+                                    <p class="preview">
+                                        <a href="<?php echo UPLOAD.$img['path'].$img['name']; ?>" class="img-uploaded" title="<?php echo $img['name']; ?>">
+                                            <img src="<?php echo UPLOAD.$img['path'].'thumb_'.$img['name']; ?>">
+                                        </a>
+                                    </p>
+                                    <span class="delete text-center btn-danger img-uploaded" id="<?php echo $img['id'];?>">
+                                        删除
+                                    </span>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </span>
+                    <span class="btn btn-success fileinput-button" id="fileupload-bnt" title="添加图片">
+                        <i class="glyphicon glyphicon-plus"></i>
+                        <!-- The file input field used as target for the file upload widget -->
+                        <input id="fileupload-img" type="file" name="files" multiple="" data-url="/upload_file/img_upload?" onclick="return checkUpload(5);">
+                    </span>
+                </div>
                 <div class="form-group">
                     <label for="g_description" class="control-label col-sm-2">网站描述</label>
                     <div class="col-sm-5">

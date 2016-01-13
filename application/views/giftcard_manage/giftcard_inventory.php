@@ -16,6 +16,7 @@
                     <option value="0">状态</option>
                     <option value="1">已开卡</option>
                     <option value="2">未开卡</option>
+                    <option value="3">已兑换</option>
                     <option value="5">已退卡</option>
                 </select>
             </div>

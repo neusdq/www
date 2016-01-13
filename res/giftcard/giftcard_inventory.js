@@ -93,6 +93,7 @@ $(document).ready(function () {
                 oSettings.sAjaxSource = ajax_source + getSearchParams();
                 oTable.fnDraw();
             } else {
+                $("#create-giftcard-modal").modal('hide');
                 alertError("#alert-error", d.msg);
             }
        });

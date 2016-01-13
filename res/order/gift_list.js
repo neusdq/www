@@ -1,6 +1,4 @@
-
 $(document).ready(function () {
-    
     //成功提示框设置
     $('#alert-success').modal({
         backdrop: false,
@@ -43,11 +41,7 @@ $(document).ready(function () {
             alertError("#alert-error", '收货地址不能为空！');
             return;
         }
-        if (postcode == '' || postcode == undefined) {
-            flag = flag & false;
-            alertError("#alert-error", '邮政编码不能为空！');
-            return;
-        }
+        
         if (remark == '' || remark == undefined) {
             flag = flag & false;
             alertError("#alert-error", '备注不能为空！');
@@ -73,10 +67,7 @@ $(document).ready(function () {
             });
         }
         
-    });
-    
-    
-    
+    }); 
 });
 
 

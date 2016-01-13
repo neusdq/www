@@ -74,8 +74,8 @@ $(document).ready(function () {
                 + "&deliver_num=" + encodeURIComponent($("input[name=s_deliver_num]").val())
                 + "&customer_name=" + $("input[name=s_customer_name]").val()
                 + "&book_id=" + encodeURIComponent($("input[name=s_book_id]").val())
-                + "&status=" + encodeURIComponent($("input[name=s_status]").val())
-                + "&order_source=" + encodeURIComponent($("input[name=s_order_source]").val());
+                + "&status=" + encodeURIComponent($("select[name=s_status]").val())
+                + "&order_source=" + encodeURIComponent($("select[name=s_order_source]").val());
         return params;
     }
     

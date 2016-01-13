@@ -31,6 +31,7 @@ class giftcard_model extends CI_Model {
     private $_card_status = array(
         '1' => '未开卡',
         '2' => '已开卡',
+        '3' => '已兑换',
         '5' => '已退卡',
     );
             
@@ -307,6 +308,16 @@ class giftcard_model extends CI_Model {
         $data = array();
         $num = $d['ecode']-$d['scode'];
         $time = date('Y-m-d H:i:s');
+        $tmp_arr = array();
+        for($i=0;$i<=$num;$i++){
+            $tmp_arr[] = $d['scode'] + $i;
+        }
+        $tmp_str = implode(',', $tmp_arr);
+        $sql = "SELECT COUNT(*) AS `cnt` FROM `gift_management`.`gift_card` WHERE `num_code` IN({$tmp_str})";
+        $row = $this->db->query($sql)->row();
+        if( $row->cnt>0 ){
+            return -1;
+        }
         for($i=0;$i<=$num;$i++){
             $num_code = $d['scode'] + $i;
             $password = substr(create_uniqid(), 2, 6);
@@ -412,6 +423,7 @@ class giftcard_model extends CI_Model {
         $id = $this->db->insert_id();
         $d = array();
         foreach($codes as $v){
+            $this->_is_cancel($v['start_num'],$v['end_num']);
             $d[] = array(
                         'cancel_id'=>$id,'start_code'=>$v['start_num']
                         ,'end_code'=>$v['end_num'],'num'=>$v['num']
@@ -426,6 +438,25 @@ class giftcard_model extends CI_Model {
     }
     
     /**
+     * 检查是否能退卡
+     * @param type $snum
+     * @param type $enum
+     */
+    private function _is_cancel($snum,$enum){
+        $sql = "SELECT `num_code`,IF(`status`=3,'已兑换','已退卡') AS `status_msg` 
+            FROM `gift_management`.`gift_card`
+            WHERE `num_code`>={$snum} AND `num_code`<={$enum} AND `status` IN(3,5)";
+        $res = $this->db->query($sql)->result_array();
+        if($res){
+            $str = '';
+            foreach ($res as $v){
+                $str .= $v['num_code'] . ':' . $v['status_msg'] . ',';
+            }
+            json_out_put(return_model('3001', '添加失败', $str));
+        }
+    }
+    
+    /**
      * 更新
      * @param type $updata
      * @param type $where
@@ -433,7 +464,7 @@ class giftcard_model extends CI_Model {
      * @return type
      */
     public function update_cancel_giftcard($updata,$where,$where_in=array()){
-        if($where){
+        if($where){                  
             $this->db->where($where);
         }
         if($where_in){
@@ -441,7 +472,7 @@ class giftcard_model extends CI_Model {
         }
         $this->db->update($this->_cancel_order_tb,$updata);
         return $this->db->affected_rows();
-    }
+    }               
     
     /**
      * 销售订单信息

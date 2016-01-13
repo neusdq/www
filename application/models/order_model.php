@@ -28,10 +28,10 @@ class order_model extends CI_Model {
 
     private $_order_status = array(
         '0' => '已作废',
-        '1' => '未审核',
-        '2' =>'未发货',
-        '3'=> '已发货',
-        '4'=> '已送达'
+        '1' => '待审核',
+        '2' =>'待发货',
+        '3'=> '待签收',
+        '4'=> '已签收'
     );
     private $_eorder_status = array(
         '1' => '未付款',
@@ -103,9 +103,12 @@ class order_model extends CI_Model {
      * @param type $giftcard_id
      */
     public function get_gift_list($giftcard_id){
-        $sql = 'SELECT `gift_book`.`group_ids` FROM `gift_card` LEFT JOIN `gift_book` '
-            . ' ON `gift_book`.`id`=`gift_card`.`book_id`'
-            . ' WHERE `gift_card`.`id`=' . $giftcard_id;
+        $sql = 'SELECT `gift_book`.`group_ids` FROM `gift_card` '
+            . 'LEFT JOIN `gift_book` ON `gift_book`.`id`=`gift_card`.`book_id` '
+            . ' INNER JOIN `sales_order_book` ON `sales_order_book`.`book_id`=`gift_book`.`id` '
+            . ' INNER JOIN `card_order` ON `card_order`.`id`=`sales_order_book`.`order_id` '
+            . ' WHERE `gift_card`.`status` IN(1,2) AND `card_order`.`expire_date`>=CURDATE() '
+            . ' AND `gift_card`.`id`=' . $giftcard_id;
         $query = $this->db->query($sql);
         $row = $query->row();
         $gift = array();
@@ -322,6 +325,9 @@ class order_model extends CI_Model {
         }
         if (isset($_REQUEST['phone']) && $_REQUEST['phone'] != '') {
             $cwhere['`order`.`phone`'] = $_REQUEST['phone'];
+        }
+        if (isset($_REQUEST['status']) && $_REQUEST['status'] !== '') {
+            $cwhere['`change_order`.`status`'] = $_REQUEST['status'];
         }
         return $cwhere;
     }

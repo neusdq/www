@@ -30,6 +30,10 @@
                     <option value="2">待发货</option>
                     <option value="3">待签收</option>
                     <option value="4">已签收</option>
+                    <option value="6">申请退货</option>
+                    <option value="7">申请换货</option>
+                    <option value="5">已退货</option>
+                    <option value="8">已换货</option>
                 </select>
             </div>
             <div class="pull-left sort-disabled margin-left-1">

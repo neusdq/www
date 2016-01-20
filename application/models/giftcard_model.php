@@ -81,7 +81,8 @@ class giftcard_model extends CI_Model {
             }
             $wh = array('`num_code` >='=>$v['start_num'],'`num_code` <='=>$v['end_num']);
             $this->db->where($wh)->update('`gift_management`.`gift_card`',
-                    array('book_id'=>$v['gift_book_id'],'expire_date'=>$order_data['expire_date']));
+                    array('book_id'=>$v['gift_book_id'],'expire_date'=>$order_data['expire_date']
+                    ,'status'=>2,'is_draw'=>1));
             $order_data['order_name'] .= trim($v['gift_book_name']) . '*' . $v['num'];
         }
         $order_data['price'] = $price;

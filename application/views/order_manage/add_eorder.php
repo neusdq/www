@@ -63,6 +63,7 @@
                     <label for="a_customer" class="control-label col-sm-2">客户名称</label>
                     <div class="col-sm-2">
                         <select name="a_customer" id="a_customer" data-placeholder="选择客户" class="chzn_a form-control">
+                            <option value="">请选择</option>
                             <?php foreach ($customer as $v): ?>
                                 <option value="<?php echo $v['id']; ?>"><?php echo $v['name']; ?></option>
                             <?php endforeach; ?>
@@ -95,12 +96,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="a_expire_date" class="control-label col-sm-2">失效日期</label>
-                    <div class=" col-sm-2">
-                        <input class="form-control" id="a_expire_date" type="text" value="" readonly>
-                    </div>
-                </div>
+   
 
 
 

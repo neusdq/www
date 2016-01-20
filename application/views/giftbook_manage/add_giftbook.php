@@ -208,7 +208,7 @@
                 },function(ret){
                     var d = $.parseJSON(ret);
                     if(d.errCode==0){
-                        alertSuccess("#alert-success",'/giftbook_manage/add_giftbook');
+                        alertSuccess("#alert-success",'/giftbook_manage/giftbook_list');
                     }else{
                         alertError("#alert-error",d.msg);
                     }

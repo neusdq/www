@@ -162,7 +162,6 @@ $(document).ready(function () {
         var contact_person = $('#a_contact_person').val();
         var telephone = $('#a_telephone').val();
         var address = $('#a_address').val();
-        var expire_date = $('#a_expire_date').val();
         var remark = $("#a_remark").val();
         
         var is_mobile = /^(?:13\d|15\d|18\d)\d{5}(\d{3}|\*{3})$/;
@@ -176,11 +175,6 @@ $(document).ready(function () {
         if (deal_date == '' || deal_date == undefined) {
             flag = flag & false;
             alertError("#alert-error", '交易日期不能为空！');
-            return;
-        }
-        if (expire_date == '' || expire_date == undefined) {
-            flag = flag & false;
-            alertError("#alert-error", '失效日期不能为空！');
             return;
         }
         if (customer == '' || customer == undefined) {
@@ -222,7 +216,6 @@ $(document).ready(function () {
                     enduser:enduser,
                     telephone: telephone,
                     address: address,
-                    expire_date: expire_date,
                     remark: remark,
                     gift_book_arr: giftArr
                 }, function (ret) {

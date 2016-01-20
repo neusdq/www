@@ -16,7 +16,7 @@ $config['gift_navigation'] = array(
         'self_url'=>'member',
         'is_home'=> true,
         'sort' => 1,
-        'display_role'=>array(1),
+        'display_role'=>array(1,2,3),
         'collapse'=>'collapseHome',
         'sub_nav' => array(
             'change_password'=>array(
@@ -25,7 +25,7 @@ $config['gift_navigation'] = array(
                     'self_url'=>'change_password',
                     'is_home'=> false,
                     'sort' => 1,
-                    'display_role'=>array(1),
+                    'display_role'=>array(1,2,3),
                     'sub_nav' => array(),
                 ),
             'change_info'=>array(
@@ -34,7 +34,7 @@ $config['gift_navigation'] = array(
                     'self_url'=>'change_info',
                     'is_home'=> false,
                     'sort' => 2,
-                    'display_role'=>array(1),
+                    'display_role'=>array(1,2,3),
                     'sub_nav' => array(),
                 ),
             'user_list'=>array(
@@ -43,7 +43,7 @@ $config['gift_navigation'] = array(
                     'self_url'=>'user_list',
                     'is_home'=> false,
                     'sort' => 3,
-                    'display_role'=>array(1),
+                    'display_role'=>array(3),
                     'sub_nav' => array(),
                 ),
         ),
@@ -54,7 +54,7 @@ $config['gift_navigation'] = array(
         'self_url'=>'goods_manage',
         'is_home'=> false,
         'sort' => 2,
-        'display_role'=>array(1),
+        'display_role'=>array(1,2,3),
         'collapse'=>'collapseGoods',
         'sub_nav' => array(
             'add_goods'=>array(
@@ -63,7 +63,7 @@ $config['gift_navigation'] = array(
                     'self_url'=>'add_goods',
                     'is_home'=> false,
                     'sort' => 1,
-                    'display_role'=>array(1),
+                    'display_role'=>array(1,2,3),
                     'sub_nav' => array(),
                 ),
             'goods_list'=>array(
@@ -72,7 +72,7 @@ $config['gift_navigation'] = array(
                     'self_url'=>'goods_list',
                     'is_home'=> false,
                     'sort' => 2,
-                    'display_role'=>array(1),
+                    'display_role'=>array(1,2,3),
                     'sub_nav' => array(),
                 ),
             'classify_list'=>array(
@@ -81,7 +81,7 @@ $config['gift_navigation'] = array(
                     'self_url'=>'classify_list',
                     'is_home'=> false,
                     'sort' => 3,
-                    'display_role'=>array(1),
+                    'display_role'=>array(1,2,3),
                     'sub_nav' => array(),
                 ),
             'brand_list'=>array(
@@ -90,7 +90,7 @@ $config['gift_navigation'] = array(
                     'self_url'=>'brand_list',
                     'is_home'=> false,
                     'sort' => 4,
-                    'display_role'=>array(1),
+                    'display_role'=>array(1,2,3),
                     'sub_nav' => array(),
                 ),
             'supply_list'=>array(
@@ -99,7 +99,7 @@ $config['gift_navigation'] = array(
                     'self_url'=>'supply_list',
                     'is_home'=> false,
                     'sort' => 2,
-                    'display_role'=>array(1),
+                    'display_role'=>array(1,2,3),
                     'sub_nav' => array(),
                 ),
         ),
@@ -110,7 +110,7 @@ $config['gift_navigation'] = array(
         'self_url'=>'giftbook_manage',
         'is_home'=> false,
         'sort' => 3,
-        'display_role'=>array(1),
+        'display_role'=>array(1,2,3),
         'collapse'=>'collapseGiftbook',
         'sub_nav' => array(
             'add_giftbook'=>array(
@@ -119,7 +119,7 @@ $config['gift_navigation'] = array(
                     'self_url'=>'add_giftbook',
                     'is_home'=> false,
                     'sort' => 1,
-                    'display_role'=>array(1),
+                    'display_role'=>array(1,2,3),
                     'sub_nav' => array(),
                 ),
             'giftbook_list'=>array(
@@ -128,7 +128,7 @@ $config['gift_navigation'] = array(
                     'self_url'=>'giftbook_list',
                     'is_home'=> false,
                     'sort' => 2,
-                    'display_role'=>array(1),
+                    'display_role'=>array(1,2,3),
                     'sub_nav' => array(),
                 ),
             'theme_list'=>array(
@@ -137,7 +137,7 @@ $config['gift_navigation'] = array(
                     'self_url'=>'theme_list',
                     'is_home'=> false,
                     'sort' => 3,
-                    'display_role'=>array(1),
+                    'display_role'=>array(1,2,3),
                     'sub_nav' => array(),
                 ),
             'set_list'=>array(
@@ -146,7 +146,7 @@ $config['gift_navigation'] = array(
                     'self_url'=>'set_list',
                     'is_home'=> false,
                     'sort' => 4,
-                    'display_role'=>array(1),
+                    'display_role'=>array(1,2,3),
                     'sub_nav' => array(),
                 ),
         ),
@@ -157,7 +157,7 @@ $config['gift_navigation'] = array(
         'self_url'=>'giftcard_manage',
         'is_home'=> false,
         'sort' => 4,
-        'display_role'=>array(1),
+        'display_role'=>array(1,2,3),
         'collapse'=>'collapseGiftcard',
         'sub_nav' => array(
             'add_giftcard'=>array(
@@ -166,7 +166,7 @@ $config['gift_navigation'] = array(
                     'self_url'=>'giftcard_order',
                     'is_home'=> false,
                     'sort' => 1,
-                    'display_role'=>array(1),
+                    'display_role'=>array(1,2,3),
                     'sub_nav' => array(),
                 ),
             'giftcard_list'=>array(
@@ -175,7 +175,7 @@ $config['gift_navigation'] = array(
                     'self_url'=>'giftcard_order_list',
                     'is_home'=> false,
                     'sort' => 2,
-                    'display_role'=>array(1),
+                    'display_role'=>array(1,2,3),
                     'sub_nav' => array(),
                 ),
             'giftcard_inventory'=>array(
@@ -184,7 +184,7 @@ $config['gift_navigation'] = array(
                     'self_url'=>'giftcard_inventory',
                     'is_home'=> false,
                     'sort' => 3,
-                    'display_role'=>array(1),
+                    'display_role'=>array(1,2,3),
                     'sub_nav' => array(),
                 ),
             'cancel_giftcard'=>array(
@@ -193,7 +193,7 @@ $config['gift_navigation'] = array(
                     'self_url'=>'cancel_giftcard',
                     'is_home'=> false,
                     'sort' => 4,
-                    'display_role'=>array(1),
+                    'display_role'=>array(1,2,3),
                     'sub_nav' => array(),
                 ),
         ),
@@ -205,7 +205,7 @@ $config['gift_navigation'] = array(
         'self_url'=>'order_manage',
         'is_home'=> false,
         'sort' => 5,
-        'display_role'=>array(1),
+        'display_role'=>array(1,2,3),
         'collapse'=>'collapseOrder',
         'sub_nav' => array(
             'add_giftcard'=>array(
@@ -214,7 +214,7 @@ $config['gift_navigation'] = array(
                     'self_url'=>'add_porder',
                     'is_home'=> false,
                     'sort' => 1,
-                    'display_role'=>array(1),
+                    'display_role'=>array(1,2,3),
                     'sub_nav' => array(),
                 ),
             'giftcard_list'=>array(
@@ -223,7 +223,7 @@ $config['gift_navigation'] = array(
                     'self_url'=>'order_list',
                     'is_home'=> false,
                     'sort' => 2,
-                    'display_role'=>array(1),
+                    'display_role'=>array(1,2,3),
                     'sub_nav' => array(),
                 ),
             'giftcard_inventory'=>array(
@@ -232,7 +232,7 @@ $config['gift_navigation'] = array(
                     'self_url'=>'eorder_list',
                     'is_home'=> false,
                     'sort' => 3,
-                    'display_role'=>array(1),
+                    'display_role'=>array(1,2,3),
                     'sub_nav' => array(),
                 ),
             'cancel_giftcard'=>array(
@@ -241,7 +241,7 @@ $config['gift_navigation'] = array(
                     'self_url'=>'rorder_list',
                     'is_home'=> false,
                     'sort' => 4,
-                    'display_role'=>array(1),
+                    'display_role'=>array(1,2,3),
                     'sub_nav' => array(),
                 ),
         ),
@@ -253,7 +253,7 @@ $config['gift_navigation'] = array(
         'self_url'=>'business_manage',
         'is_home'=> false,
         'sort' => 6,
-        'display_role'=>array(1),
+        'display_role'=>array(1,2,3),
         'collapse'=>'collapseBusiness',
         'sub_nav' => array(
             
@@ -263,7 +263,7 @@ $config['gift_navigation'] = array(
                     'self_url'=>'customer_list',
                     'is_home'=> false,
                     'sort' => 1,
-                    'display_role'=>array(1),
+                    'display_role'=>array(1,2,3),
                     'sub_nav' => array(),
                 ),
             'customer_website'=>array(
@@ -272,7 +272,7 @@ $config['gift_navigation'] = array(
                     'self_url'=>'website_list',
                     'is_home'=> false,
                     'sort' => 2,
-                    'display_role'=>array(1),
+                    'display_role'=>array(1,2,3),
                     'sub_nav' => array(),
                 ),
             'add_website'=>array(
@@ -281,7 +281,7 @@ $config['gift_navigation'] = array(
                     'self_url'=>'wechat_list',
                     'is_home'=> false,
                     'sort' => 3,
-                    'display_role'=>array(1),
+                    'display_role'=>array(1,2,3),
                     'sub_nav' => array(),
                 ),
             'media_list'=>array(
@@ -290,7 +290,7 @@ $config['gift_navigation'] = array(
                     'self_url'=>'media_list',
                     'is_home'=> false,
                     'sort' => 4,
-                    'display_role'=>array(1),
+                    'display_role'=>array(1,2,3),
                     'sub_nav' => array(),
                 ),
         ),

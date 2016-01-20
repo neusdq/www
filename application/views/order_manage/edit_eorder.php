@@ -98,12 +98,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="a_expire_date" class="control-label col-sm-2">失效日期</label>
-                    <div class=" col-sm-2">
-                        <input class="form-control" id="a_expire_date" type="text" value="<?php echo $eorder['expire_date']; ?>" readonly>
-                    </div>
-                </div>
+
 
 
 
